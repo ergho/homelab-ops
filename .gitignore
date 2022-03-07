@@ -1,0 +1,6 @@
+kubeconfig
+.decrypted~*.yaml
+*.agekey
+.terraform
+.terraform.tfstate*
+terraform.tfstate*
