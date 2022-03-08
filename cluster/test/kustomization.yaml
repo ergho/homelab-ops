@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - calico.yaml
   - istio.yaml
+  - cluster-sops-keys
