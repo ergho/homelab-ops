@@ -31,10 +31,6 @@ spec:
     cleanupOnFail: true
   values:
     configInline:
-      peers:
-        - peer-address: 192.168.30.1
-          peer-asn: 64512
-          my-asn: 64512
       address-pools:
         - name: default
           protocol: bgp
