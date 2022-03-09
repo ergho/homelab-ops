@@ -40,4 +40,5 @@ spec:
           protocol: bgp
           addresses:
             - 192.168.69.0/24
-      speaker: false
+      speaker:
+        enabled: false
