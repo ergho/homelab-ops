@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: truenas-isci
+  name: isci
   namespace: democratic-csi
 spec:
   interval: 5m
@@ -33,7 +33,7 @@ spec:
     csiDriver:
       name: "org.democratic-csi.isci"
     storageClasses:
-      - name: truenas-iscsi-csi
+      - name: iscsi-csi
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
