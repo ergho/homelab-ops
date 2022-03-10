@@ -7,3 +7,4 @@ resources:
   - cluster-sops-keys/cluster-secrets.sops.yaml
   - cluster-settings.yaml
   - metallb-system
+  - storage
