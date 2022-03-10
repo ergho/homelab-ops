@@ -9,12 +9,12 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://democratic-csi.github.io/charts
-    chart: democratic-csi
-    version: 0.10.0
-    sourceRef:
-      kind: HelmRepository
-      name: democratic-csi-charts
-      namespace: flux-system
+      chart: democratic-csi
+      version: 0.10.0
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi-charts
+        namespace: flux-system
   install:
     timeout: 10m
     remediation:
