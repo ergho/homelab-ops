@@ -63,7 +63,8 @@ spec:
           host: 192.168.30.191
           port: 22
           username: root
-          privateKey: "${TRUENAS_PRIVATE_KEY}"
+          password: "${TRUENAS_PASSWORD}"
+            #privateKey: "${TRUENAS_PRIVATE_KEY}"
         zfs:
           cli:
             paths:
