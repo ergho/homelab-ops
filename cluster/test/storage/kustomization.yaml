@@ -5,3 +5,4 @@ resources:
   #  - nfs-release.yaml
   #  - truenas-secret.sops.yaml
   - truenas-iscsi.yaml
+  - truenas-nfs.yaml
