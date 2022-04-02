@@ -1,0 +1,100 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nfs
+  namespace: democratic-csi
+spec:
+  chart:
+    spec:
+      chart: democratic-csi
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi-charts
+        namespace: flux-system
+      version: 0.11.1
+  install:
+    remediation:
+      retries: 3
+    timeout: 10m
+  interval: 5m
+  rollback:
+    cleanupOnFail: true
+    recreate: true
+    timeout: 10m
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      remediateLastFailure: true
+      retries: 3
+    timeout: 10m
+  values:
+    csiDriver:
+      name: org.democratic-csi.nfs
+    driver:
+      config:
+        driver: freenas-nfs
+        httpConnection:
+          allowInsecure: true
+          apiKey: ${TRUENAS_API_KEY}
+          apiVersion: 2
+          host: 192.168.30.191
+          port: 443
+          protocol: https
+          username: root
+        instance_id:
+        nfs:
+          shareAlldirs: false
+          shareAllowedHosts: []
+          shareAllowedNetworks: []
+          shareHost: 192.168.30.191
+          shareMapallGroup: ""
+          shareMapallUser: ""
+          shareMaprootGroup: wheel
+          shareMaprootUser: root
+        sshConnection:
+          host: 192.168.30.191
+          password: {$TRUENAS_PASSWORD}
+          port: 22
+          username: root
+        zfs:
+          datasetEnableQuotas: true
+          datasetEnableReservation: false
+          datasetParentName: BeepyBoopy/k8nfs/vols
+          datasetPermissionsGroup: wheel
+          datasetPermissionsMode: 0777
+          datasetPermissionsUser: root
+          detachedSnapshotsDatasetParentName: BeepyBoopy/k8nfs/snaps
+    storageClasses:
+      - allowVolumeExpansion: true
+        defaultClass: false
+        mountOptions:
+          - noatime
+          - nfsvers=4
+        name: truenas-nfs-csi
+        parameters:
+          fsType: nfs
+        reclaimPolicy: Delete
+        secrets:
+          controller-expand-secret:
+          controller-publish-secret:
+          node-publish-secret:
+          node-stage-secret:
+          provisioner-secret:
+        volumeBindingMode: Immediate
+      - allowVolumeExpansion: true
+        defaultClass: false
+        mountOptions:
+          - noatime
+          - async
+          - nfsvers=4
+        name: truenas-nfs-csi-async
+        paramters:
+          fsType: nfs
+        reclaimPolicy: Delete
+        secrets:
+          controller-expand-secret:
+          controller-publish-secret:
+          node-publish-secret:
+          node-stage-secret:
+          provisioner-secret:
+        volumeBindingMode: Immediate
