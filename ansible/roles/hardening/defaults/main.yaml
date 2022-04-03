@@ -1,0 +1,32 @@
+password_diff_old_chars: "5"
+password_remember: "5"
+password_min_length: "12"
+password_min_digits: "-1"
+password_min_lowercase: "-1"
+password_min_uppercase: "-1"
+password_min_other: "-1"
+password_min_char_classes: "3"
+password_max_repeat: "2"
+password_max_class_repeat: "4"
+password_gecos_check: "1"
+password_dict_check: "1"
+password_user_check: "1"
+password_enforcement: "1"
+password_prompt_retry: "3"
+password_max_sequence: "2"
+password_min_days: "1"
+password_attempts: "5"
+password_unlock_time: "30"
+
+accounts_tmout: "3600"
+accounts_fail_delay: "1"
+accounts_max_concurrent_login_sessions: "10"
+history_file_size: "5000"
+
+packages_to_remove_ubuntu:
+  - snapd
+  - btrfs-progs
+  - squashfs-tools
+  - xfsprogs
+
+modules_to_disable:

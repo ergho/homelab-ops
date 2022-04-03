@@ -1,0 +1,11 @@
+---
+- name: Fix timezones
+  hosts: all
+  become: true
+  gather_facts: false
+  vars:
+    timezone_value: "Europe/Stockholm"
+  tasks:
+    - name: Set timezone to {{ timezone_value }}
+      timezone:
+        name: "{{ timezone_value }}"

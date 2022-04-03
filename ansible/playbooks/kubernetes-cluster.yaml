@@ -1,0 +1,6 @@
+- become: true
+  gather_facts: true
+  hosts: all
+  name: 'deploy kubernetes cluster'
+  roles:
+    - k8_cluster

@@ -1,0 +1,64 @@
+- changed_when: false
+  command: modprobe br_netfilter
+  name: enable br_netfilter
+- loop: '{{ sysctl_config }}'
+  name: sysctl config
+  sysctl:
+    name: '{{ item.name }}'
+    state: present
+    value: '{{ item.value }}'
+- command: swapoff -a
+  name: disable swap
+  when: ansible_swaptotal_mb > 0
+- mount:
+    fstype: swap
+    name: '{{ item }}'
+    state: absent
+  name: disable swap in fstab
+  with_items:
+    - swap
+    - none
+- apt_key:
+    state: present
+    url: '{{ ubuntu_k8_gpg_key }}'
+  name: adding k8 repo apt key
+- apt_repository:
+    filename: kubernetes
+    repo: '{{ ubuntu_k8_repo }}'
+    state: present
+  name: adding k8 deb repo
+- loop: '{{ packages }}'
+  name: install k8 dependencies
+  package:
+    name: '{{ item }}'
+    state: present
+- name: multipath conf
+  template:
+    dest: /etc/multipath.conf
+    mode: 384
+    src: multipath.conf
+- loop: '{{ iscsi_services }}'
+  name: start and enable iscsi services
+  service:
+    enabled: true
+    name: '{{ item }}'
+    state: started
+- name: install k8 tools
+  package:
+    name:
+      - 'kubeadm={{ kubernetes.apt_version }}'
+      - 'kubectl={{ kubernetes.apt_version }}'
+      - 'kubelet={{ kubernetes.apt_version }}'
+- dpkg_selections:
+    name: '{{ item }}'
+    selection: hold
+  name: hold k8 packages
+  with_items:
+    - kubeadm
+    - kubectl
+    - kubelet
+- name: ensure kubelet is enabled
+  service:
+    enabled: true
+    name: kubelet
+    state: started

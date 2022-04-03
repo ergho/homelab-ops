@@ -1,0 +1,149 @@
+- apt:
+    name: '{{ item }}'
+    purge: true
+    state: absent
+  loop: '{{ packages_to_remove_ubuntu }}'
+  name: 'uninstall unneeded packages'
+- name: 'install libpam-pwquality'
+  package:
+    name: libpam-pwquality
+    state: present
+- name: 'install sysstat'
+  package:
+    name: sysstat
+    state: present
+- name: 'enable systat service'
+  systemd:
+    enabled: true
+    name: sysstat
+    state: started
+- apt:
+    autoremove: true
+  name: 'remove unneeded deps'
+- apt:
+    autoclean: true
+  name: 'remove useless packages from cache'
+- changed_when: 'reboot_needed.rc == 0'
+  failed_when: false
+  name: 'check if reboot needed'
+  notify: reboot
+  register: reboot_needed
+  shell: "[ -f /var/run/reboot-required ]"
+- lineinfile:
+    dest: /etc/security/limits.conf
+    insertbefore: "^# End of file"
+    line: "*        hard    maxlogins     {{ accounts_max_concurrent_login_sessions\
+      \ }}"
+    regexp: "^#?\\*.*maxlogins"
+    state: present
+  name: 'limit amount of concurrent login sessions per user'
+- lineinfile:
+    dest: /etc/security/limits.conf
+    insertbefore: "^# End of file"
+    line: "*        hard    core          0"
+    regexp: "^#?\\*.*core"
+    state: present
+  name: 'disable core dumps'
+- lineinfile:
+    line: 'Defaults use_pty'
+    path: /etc/sudoers
+    regexp: ^[\s]*Defaults.*\buse_pty\b.*$
+    validate: '/usr/sbin/visudo -cf %s'
+  name: 'Ensure use_pty is enabled in /etc/sudoers'
+- community.general.pamd:
+    control: requisite
+    module_arguments: 'retry={{ password_prompt_retry }}'
+    module_path: pam_pwquality.so
+    name: common-password
+    state: args_present
+    type: password
+  name: 'set password retry limit'
+- community.general.pamd:
+    control: "[success=1 default=ignore]"
+    module_arguments: nullok
+    module_path: pam_unix.so
+    name: common-auth
+    state: args_absent
+    type: auth
+  name: 'Don''t allow empty password'
+- community.general.pamd:
+    control: "[success=1 default=ignore]"
+    module_path: pam_unix.so
+    name: common-auth
+    new_control: required
+    new_module_path: pam_tally2.so
+    new_type: auth
+    state: before
+    type: auth
+  name: 'use pam_tally'
+- community.general.pamd:
+    control: required
+    module_arguments:
+      - 'deny={{ password_attempts }}'
+      - 'unlock_time={{ password_unlock_time }}'
+    module_path: pam_tally2.so
+    name: common-auth
+    state: args_present
+    type: auth
+  name: 'arguments pam tally'
+- lineinfile:
+    dest: /etc/login.defs
+    line: 'PASS_MIN_DAYS {{ password_min_days }}'
+    regexp: '^PASS_MIN_DAYS *[0-9]*'
+    state: present
+  name: 'set password minimum age'
+- name: 'configure passwd quality'
+  template:
+    dest: /etc/security/pwquality.conf
+    group: root
+    mode: 384
+    owner: root
+    src: pwquality.conf.j2
+- loop:
+    - name: kernel.sysrq
+      value: 0
+    - name: kernel.randomize_va_space
+      value: 2
+    - name: kernel.kptr_restrict
+      value: 2
+    - name: kernel.kexec_load_disabled
+      value: 1
+    - name: kernel.yama.ptrace_scope
+      value: 1
+  name: 'restrict dangers execution patterns'
+  sysctl:
+    name: '{{ item.name }}'
+    reload: true
+    state: present
+    value: '{{ item.value }}'
+- loop:
+    - name: net.ipv4.icmp_ignore_bogus_error_responses
+      value: 1
+    - name: net.ipv4.conf.all.log_martians
+      value: 1
+    - name: net.ipv4.conf.default.log_martians
+      value: 1
+    - name: net.ipv4.conf.all.secure_redirects
+      value: 0
+    - name: net.ipv4.conf.default.secure_redirects
+      value: 0
+    - name: net.ipv4.conf.all.accept_redirects
+      value: 0
+    - name: net.ipv4.conf.all.send_redirects
+      value: 0
+    - name: net.ipv4.conf.default.send_redirects
+      value: 0
+    - name: net.ipv4.icmp_echo_ignore_broadcasts
+      value: 1
+    - name: net.ipv4.conf.default.accept_redirects
+      value: 0
+    - name: net.ipv6.conf.all.accept_redirects
+      value: 0
+    - name: net.ipv6.conf.default.accept_redirects
+      value: 0
+  name: 'sets sysctl values for networking'
+  sysctl:
+    name: '{{ item.name }}'
+    reload: true
+    state: present
+    value: '{{ item.value }}'
