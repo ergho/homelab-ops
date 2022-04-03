@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: isci
+  name: iscsi
   namespace: democratic-csi
 spec:
   interval: 5m
@@ -53,14 +53,14 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          host: 192.168.30.191
+          host: "${TRUENAS_HOST}"
           port: 443
           apiKey: "${TRUENAS_API_KEY}"
           username: root
           allowInsecure: true
           apiVersion: 2
         sshConnection:
-          host: 192.168.30.191
+          host: "${TRUENAS_HOST}"
           port: 22
           username: root
           password: "${TRUENAS_PASSWORD}"
@@ -88,7 +88,7 @@ spec:
           # 512, 1K, 2K, 4K, 8K, 16K, 64K, 128K default is 16K
           zvolBlocksize:
         iscsi:
-          targetPortal: "192.168.30.191:3260"
+          targetPortal: "${TRUENAS_HOST}:3260"
           # for multipath
           targetPortals: [] # [ "server[:port]", "server[:port]", ... ]
           # leave empty to omit usage of -I with iscsiadm

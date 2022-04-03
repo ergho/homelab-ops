@@ -72,14 +72,14 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          host: 192.168.30.191
+          host: "${TRUENAS_HOST}"
           port: 443
           apiKey: "${TRUENAS_API_KEY}"
           username: root
           allowInsecure: true
           apiVersion: 2
         sshConnection:
-          host: 192.168.30.191
+          host: "${TRUENAS_HOST}"
           port: 22
           username: root
           password: "${TRUENAS_PASSWORD}"
@@ -94,7 +94,7 @@ spec:
 
         nfs:
           # shareCommentTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
-          shareHost: 192.168.30.191
+          shareHost: "${TRUENAS_HOST}"
           shareAlldirs: false
           shareAllowedHosts: []
           shareAllowedNetworks: []

@@ -8,3 +8,4 @@ data:
   YOUR_NAME: ergho
   CLUSTER_TZ: "Europe/Stockholm"
   METALLB_RANGE: "192.168.30.20-192.168.30.35"
+  TRUENAS_HOST: "192.168.30.191"
