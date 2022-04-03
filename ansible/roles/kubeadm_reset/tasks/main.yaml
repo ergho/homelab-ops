@@ -1,0 +1,3 @@
+- name: run kubeadm reset
+  command: kubeadm reset -f
+  changed_when: false

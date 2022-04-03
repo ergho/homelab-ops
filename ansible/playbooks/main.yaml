@@ -1,0 +1,8 @@
+- import_playbook: timezone.yaml
+- import_playbook: users.yaml
+- import_playbook: sshd.yaml
+- import_playbook: hardening.yaml
+- import_playbook: container-runtime.yaml
+- import_playbook: kubernetes-install.yaml
+- import_playbook: kubernetes-cluster.yaml
+- import_playbook: node-exporter.yaml

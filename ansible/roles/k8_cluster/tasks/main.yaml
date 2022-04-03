@@ -1,0 +1,63 @@
+- block:
+    - args:
+        creates: '{{ k8s_admin_config }}'
+      command: 'kubeadm init --kubernetes-version "{{ k8s_version }}" --pod-network-cidr
+        "{{ k8s_pod_network }}" --service-dns-domain "{{ k8s_service_dns }}" --control-plane-endpoint
+        "{{ k8s_cluster_endpoint }}:{{ k8s_api_port }}" --upload-certs'
+      name: 'initialize kubernetes cluster {{ k8s_version }} using kubeadm'
+    - file:
+        group: '{{ k8s_user }}'
+        mode: 488
+        owner: '{{ k8s_user }}'
+        path: '{{ k8s_user_dir }}/.kube'
+        state: directory
+      name: 'setup kubeconfig for {{ k8s_user }} user'
+    - copy:
+        dest: '{{ k8s_user_dir }}/.kube/config'
+        group: '{{ k8s_user }}'
+        mode: 416
+        owner: '{{ k8s_user }}'
+        remote_src: true
+        src: '{{ k8s_admin_config }}'
+      name: 'copy {{ k8s_admin_config }}'
+    - get_url:
+        dest: '{{ k8s_user_dir }}/{{ calico_net_config }}'
+        group: '{{ k8s_user }}'
+        mode: 416
+        owner: '{{ k8s_user }}'
+        url: '{{ calico_net_url }}'
+      name: 'download {{ calico_net_url }}'
+    - name: 'set calico_ipv4pool_cidr to {{ k8s_pod_network }}'
+      replace:
+        path: '{{ k8s_user_dir }}/{{ calico_net_config }}'
+        regexp: 192.168.0.0/16
+        replace: '{{ k8s_pod_network }}'
+    - become: false
+      command: 'kubectl apply -f "{{ k8s_user_dir }}/{{ calico_net_config }}"'
+      name: 'install calico'
+    - command: 'kubeadm token create --print-join-command'
+      name: 'generate node join command'
+      register: join_node_command
+    - become: false
+      copy:
+        content: '{{ join_node_command.stdout_lines[0] }}'
+        dest: '../{{ k8s_token_file_node }}'
+        mode: 420
+      delegate_to: localhost
+      name: 'copy node join command to local file'
+  name: 'configure control plane'
+  when: '''controller'' in group_names'
+- block:
+    - copy:
+        dest: '{{ k8s_user_dir }}/{{ k8s_token_file_node }}.sh'
+        group: '{{ k8s_user }}'
+        mode: 488
+        owner: '{{ k8s_user }}'
+        src: '../{{ k8s_token_file_node }}'
+      name: 'copy {{ k8s_token_file_node }} to worker nodes'
+    - args:
+        creates: '{{ k8s_kubelet_config }}'
+      command: 'sh "{{ k8s_user_dir }}/{{ k8s_token_file_node }}.sh"'
+      name: 'join worker node to cluster unless file {{ k8s_kubelet_config }} exists'
+  name: 'configure worker nodes'
+  when: '''worker'' in group_names'

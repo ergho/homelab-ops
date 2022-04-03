@@ -1,0 +1,26 @@
+kubelet_file: /etc/sysconfig/kubelet
+kubernetes:
+  apt_version: 1.23.3-00
+  name: ergho-home
+  version: v1.23.3
+packages:
+  - apt-transport-https
+  - curl
+  - libnfs-utils
+  - open-iscsi
+  - lsscsi
+  - sg3-utils
+  - multipath-tools
+  - scsitools
+iscsi_services:
+  - multipath-tools
+  - open-iscsi
+sysctl_config:
+  - name: net.ipv4.ip_forward
+    value: 1
+  - name: net.bridge.bridge-nf-call-iptables
+    value: 1
+  - name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+ubuntu_k8_gpg_key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+ubuntu_k8_repo: 'deb https://apt.kubernetes.io/ kubernetes-xenial main'

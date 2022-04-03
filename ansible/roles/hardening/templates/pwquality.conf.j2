@@ -1,0 +1,80 @@
+#
+#  MANAGED BY ANSIBLE
+#
+# Configuration for systemwide password quality limits
+# Defaults:
+#
+# Number of characters in the new password that must not be present in the
+# old password.
+difok = {{ password_diff_old_chars }}
+#
+# Minimum acceptable size for the new password (plus one if
+# credits are not disabled which is the default). (See pam_cracklib manual.)
+# Cannot be set to lower value than 6.
+minlen = {{ password_min_length }}
+#
+# The maximum credit for having digits in the new password. If less than 0
+# it is the minimum number of digits in the new password.
+dcredit = {{ password_min_digits }}
+#
+# The maximum credit for having uppercase characters in the new password.
+# If less than 0 it is the minimum number of uppercase characters in the new
+# password.
+ucredit = {{ password_min_uppercase }}
+#
+# The maximum credit for having lowercase characters in the new password.
+# If less than 0 it is the minimum number of lowercase characters in the new
+# password.
+lcredit = {{ password_min_lowercase }}
+#
+# The maximum credit for having other characters in the new password.
+# If less than 0 it is the minimum number of other characters in the new
+# password.
+ocredit = {{ password_min_other }}
+# The minimum number of required classes of characters for the new
+# password (digits, uppercase, lowercase, others).
+minclass = {{ password_min_char_classes }}
+#
+# The maximum number of allowed consecutive same characters in the new password.
+# The check is disabled if the value is 0.
+maxrepeat = {{ password_max_repeat }}
+#
+# The maximum number of allowed consecutive characters of the same class in the
+# new password.
+# The check is disabled if the value is 0.
+maxclassrepeat = {{ password_max_class_repeat }}
+#
+# Whether to check for the words from the passwd entry GECOS string of the user.
+# The check is enabled if the value is not 0.
+gecoscheck = {{ password_gecos_check }}
+#
+# Whether to check for the words from the cracklib dictionary.
+# The check is enabled if the value is not 0.
+dictcheck = {{ password_dict_check }}
+#
+# Whether to check if it contains the user name in some form.
+# The check is enabled if the value is not 0.
+usercheck = {{ password_user_check }}
+#
+# Whether the check is enforced by the PAM module and possibly other
+# applications.
+# The new password is rejected if it fails the check and the value is not 0.
+enforcing = {{ password_enforcement }}
+#
+# Path to the cracklib dictionaries. Default is to use the cracklib default.
+# dictpath =
+#
+# Prompt user at most N times before returning with error. The default is 1.
+retry = {{ password_prompt_retry }}
+#
+# Enforces pwquality checks on the root user password.
+# Enabled if the option is present.
+enforce_for_root
+#
+# Skip testing the password quality for users that are not present in the
+# /etc/passwd file.
+# Enabled if the option is present.
+local_users_only
+
+# Maximum length of monotonic character sequence
+maxsequence = {{ password_max_sequence }}

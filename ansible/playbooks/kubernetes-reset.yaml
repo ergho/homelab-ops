@@ -1,0 +1,12 @@
+- hosts: worker
+  become: true
+  name: 'Resetting workers'
+  roles:
+    - name: 'run kubeadm reset'
+      role: kubeadm_reset
+- hosts: controller
+  become: true
+  name: 'Resetting controller'
+  roles:
+    - name: 'run kubeadm reset'
+      role: kubeadm_reset
