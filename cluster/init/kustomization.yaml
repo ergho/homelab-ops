@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - cluster-settings.yaml
   - cluster-sops-keys/cluster-secrets.sops.yaml
+  - namespaces
