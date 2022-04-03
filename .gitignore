@@ -1,3 +1,5 @@
+ansible/join-node-command
+ansible/vault-pass.key
 kubeconfig
 .decrypted~*.yaml
 *.agekey
