@@ -39,6 +39,7 @@
     // regexManager to read and process HelmRelease files
     {
       "fileMatch": [
+        "ansible/.+\\.ya?ml$"
         "cluster/.+\\.ya?ml$"
       ],
       "matchStrings": [
