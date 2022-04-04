@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   annotations:
-    volume.beta.kuernetes.io/storage-class: truenas-iscsi-csi
+    volume.beta.kuernetes.io/storage-class: iscsi-csi
   labels:
     app: nextcloud-server
   name: iscsi-pvc-nextcloud
@@ -14,4 +14,4 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  storageClassName: truenas-iscsi-csi
+  storageClassName: iscsi-csi
