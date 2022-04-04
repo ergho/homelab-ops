@@ -6,3 +6,4 @@ resources:
   - democratic-csi.yaml
   - metallb-system.yaml
   - istio-system.yaml
+  - nextcloud.yaml

@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - metallb-charts.yaml
   - democratic-csi.yaml
+  - nextcloud-charts.yaml
