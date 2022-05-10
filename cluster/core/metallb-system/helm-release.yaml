@@ -41,4 +41,4 @@ spec:
           addresses:
             - 192.168.69.0/24
     speaker:
-      enabled: false
+      enabled: true
