@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: init
+  name: config
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/init
+  path: ./cluster/config
   prune: true
   decryption:
     provider: sops
