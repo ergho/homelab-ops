@@ -8,3 +8,4 @@ resources:
   - istio-system.yaml
   - nextcloud.yaml
   - cert-manager.yaml
+  - media.yaml
