@@ -4,3 +4,4 @@ resources:
   - metallb-charts.yaml
   - democratic-csi.yaml
   - nextcloud-charts.yaml
+  - istio-charts.yaml
