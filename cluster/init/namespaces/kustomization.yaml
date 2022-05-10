@@ -7,3 +7,4 @@ resources:
   - metallb-system.yaml
   - istio-system.yaml
   - nextcloud.yaml
+  - cert-manager.yaml
