@@ -8,9 +8,13 @@ metadata:
 spec:
   releaseName: istio-base
   install:
+    remediation:
+      retries: 10
     crds: Create
   upgrade:
     crds: CreateReplace
+    remediation:
+      remediateLastFailure: false
   chart:
     spec:
       # renovate: registryUrl=https://istio-release.storage.googleapis.com/charts
@@ -33,6 +37,12 @@ spec:
   releaseName: istiod
   dependsOn:
     - name: istio-base
+  install:
+    remediation:
+      retries: 10
+  upgrade:
+    remediation:
+      remediateLastFailure: false
   chart:
     spec:
       # renovate: registryUrl=https://istio-release.storage.googleapis.com/charts
@@ -68,6 +78,12 @@ spec:
   dependsOn:
     - name: istio-base
     - name: istiod
+  install:
+    remediation:
+      retries: 10
+  upgrade:
+    remediation:
+      remediateLastFailure: false
   chart:
     spec:
       # renovate: registryUrl=https://istio-release.storage.googleapis.com/charts
