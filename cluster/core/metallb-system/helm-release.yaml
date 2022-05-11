@@ -35,6 +35,6 @@ spec:
         - name: default
           protocol: layer2
           addresses:
-            - 192.168.69.0/24
+            - 192.168.30.30-192.168.30.45
     speaker:
       enabled: true
