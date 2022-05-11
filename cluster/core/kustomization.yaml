@@ -7,4 +7,4 @@ resources:
   - storage
   - nextcloud
   - namespaces
-  - istio
+    #  - istio

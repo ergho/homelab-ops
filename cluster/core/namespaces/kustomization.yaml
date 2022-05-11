@@ -5,7 +5,7 @@ resources:
   - default.yaml
   - democratic-csi.yaml
   - metallb-system.yaml
-  - istio-system.yaml
+    #  - istio-system.yaml
   - nextcloud.yaml
   - cert-manager.yaml
   - media.yaml
