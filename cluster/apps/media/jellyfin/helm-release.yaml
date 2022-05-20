@@ -46,10 +46,8 @@ spec:
     persistence:
       media:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: 192.168.30.191
-            path: /mnt/BeepyBoopy/tv-shows
+        type: nfs
+        server: "192.168.30.191"
+        path: /mnt/BeepyBoopy/tv-shows
         mountPath: /media
-        readOnly: false
+        readOnly: true
