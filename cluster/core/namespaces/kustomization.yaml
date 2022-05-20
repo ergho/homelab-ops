@@ -9,3 +9,4 @@ resources:
   - nextcloud.yaml
   - cert-manager.yaml
   - media.yaml
+  - networking.yaml
