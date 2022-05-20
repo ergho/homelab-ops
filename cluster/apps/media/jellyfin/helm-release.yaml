@@ -44,6 +44,9 @@ spec:
           - 192.168.30.31
         externalTrafficPolicy: Local
     persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin-config-1
       media:
         enabled: true
         type: nfs
