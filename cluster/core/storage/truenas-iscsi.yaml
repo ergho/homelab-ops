@@ -33,7 +33,7 @@ spec:
     csiDriver:
       name: "org.democratic-csi.isci"
     storageClasses:
-      - name: iscsi-csi
+      - name: truenas-iscsi-csi
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
