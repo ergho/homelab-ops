@@ -5,3 +5,4 @@ resources:
   - democratic-csi.yaml
   - nextcloud-charts.yaml
   - ingress-nginx.yaml
+  - k8s-at-home-charts.yaml
