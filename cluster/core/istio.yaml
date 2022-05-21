@@ -9137,7 +9137,7 @@ spec:
         fsGroup: 1337
       containers:
         - name: discovery
-          image: "istio/pilot:1.13.3"
+          image: "istio/pilot:1.13.4"
           args:
             - "discovery"
             - --monitoringAddr=:15014
