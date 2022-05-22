@@ -6,7 +6,6 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  dependsOn:
   path: ./cluster/crds
   prune: true
   decryption:
