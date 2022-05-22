@@ -8917,7 +8917,7 @@ spec:
       serviceAccountName: istio-ingressgateway-service-account
       containers:
         - name: istio-proxy
-          image: "istio/proxyv2:1.13.3"
+          image: "istio/proxyv2:1.13.4"
           ports:
             - containerPort: 15021
               protocol: TCP
@@ -9137,7 +9137,7 @@ spec:
         fsGroup: 1337
       containers:
         - name: discovery
-          image: "istio/pilot:1.13.3"
+          image: "istio/pilot:1.13.4"
           args:
             - "discovery"
             - --monitoringAddr=:15014
