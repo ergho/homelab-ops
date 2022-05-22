@@ -7,8 +7,6 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
-    - name: config
-    - name: charts
   path: ./cluster/crds
   prune: true
   decryption:
