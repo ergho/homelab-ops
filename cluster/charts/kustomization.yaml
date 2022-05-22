@@ -6,3 +6,5 @@ resources:
   - nextcloud-charts.yaml
   - ingress-nginx.yaml
   - k8s-at-home-charts.yaml
+  - project-calico-charts.yaml
+  - jetstack-charts.yaml

@@ -12,6 +12,7 @@ packages:
   - sg3-utils
   - multipath-tools
   - scsitools
+  - nfs-commons
 iscsi_services:
   - multipath-tools
   - open-iscsi
