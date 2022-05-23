@@ -41,7 +41,7 @@ spec:
       main:
         type: LoadBalancer
         externalIPs:
-          - 192.168.30.31
+          - ${SVC_JELLYFIN_ADDR}
         externalTrafficPolicy: Local
     ingress:
       main:
