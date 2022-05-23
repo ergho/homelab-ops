@@ -8,3 +8,4 @@ resources:
   - k8s-at-home-charts.yaml
   - project-calico-charts.yaml
   - jetstack-charts.yaml
+  - k8s-gateway-charys.yaml
