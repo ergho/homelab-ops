@@ -58,6 +58,6 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "truenas.${SECRET_DOMAIN_NAME}"
+        server: "192.168.30.191"
         path: /mnt/BeepyBoopy/tv-shows/movies
         mountPath: /media
