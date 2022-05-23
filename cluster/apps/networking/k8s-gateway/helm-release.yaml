@@ -15,7 +15,24 @@ spec:
         name: k8s-gateway
         namespace: flux-system
       interval: 5m
+  install:
+    timeout: 10m
+    remediation:
+      retries: 3
+  upgrade:
+    timeout: 10m
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
+    updateStrategy: Recreate
+    env:
+      TZ: ${CLUSTER_TZ}
     fullnameOverride: *app
     domain: ${SECRET_DOMAIN_NAME}
     ttl: 1

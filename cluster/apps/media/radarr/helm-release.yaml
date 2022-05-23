@@ -2,19 +2,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app jellyfin
+  name: &app radarr
   namespace: media
 spec:
-  interval: 15m
+  interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: jellyfin
-      version: 9.4.2
+      chart: *app
+      version: 16.2.3
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
+      interval: 5m
   install:
     timeout: 10m
     remediation:
@@ -30,19 +31,14 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
+    global:
+      nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/jellyfin
-      tag: v10.7.7
+      repository: ghcr.io/k8s-at-home/radarr
+      tag: v4.1.0.6175
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
-      JELLYFIN_CACHE_DIR: "/config/cache"
-    service:
-      main:
-        type: LoadBalancer
-        annotations:
-          metallb.universe.tf/loadBalancerIPs: ${SVC_JELLYFIN_ADDR
-        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
@@ -58,11 +54,10 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: jellyfin-config-1
+        existingClaim: radarr-config-v1
       media:
         enabled: true
         type: nfs
         server: "truenas.${SECRET_DOMAIN_NAME}"
-        path: /mnt/BeepyBoopy/tv-shows
+        path: /mnt/BeepyBoopy/tv-shows/movies
         mountPath: /media
-        readOnly: true
