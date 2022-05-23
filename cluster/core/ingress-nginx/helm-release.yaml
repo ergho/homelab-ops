@@ -40,3 +40,11 @@ spec:
         externalTrafficPolicy: Local
       publishService:
         enabled: true
+      ingressClassResource:
+        default: true
+      config:
+        ssl-procols: "TLSv1.3 TLSv1.2"
+        custom-http-errors: 404,403,500,501,502,503
+        hsts-max-age: "31449600"
+      extraArgs:
+        default-ssl-certificate: "networking/${SECRET_DOMAIN_NAME/./-}-tls"

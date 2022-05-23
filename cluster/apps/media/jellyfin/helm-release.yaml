@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: &app jellyfin
   namespace: media
 spec:
   interval: 15m
@@ -43,6 +43,18 @@ spec:
         externalIPs:
           - 192.168.30.31
         externalTrafficPolicy: Local
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true
