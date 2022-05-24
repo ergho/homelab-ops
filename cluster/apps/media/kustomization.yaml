@@ -5,3 +5,4 @@ resources:
   - jellyfin
   - radarr
   - radarr-uhd
+  - sonarr
