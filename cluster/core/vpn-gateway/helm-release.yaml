@@ -31,35 +31,5 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/pod-gateway
-      tag: v1.5.0
-    securityContext:
-      capabilities:
-        add:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - sysctl net.ipv4.conf.all.src_valid_mark=1
-    updateStrategy: Recreate
-    clusterName: ${SECRET_CLUSTER_DOMAIN}
     routed_namespaces:
       - media
-    settings:
-      VPN_BLOCK_OTHER_TRAFFIC: false
-      VXLAN_ID: 42
-      NOT_ROUTED_TO_GATEWAY_CIDRS: ${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR}
-      VPN_LOCAL_CIDRS: ${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR}
-      VXLAN_IP_NETWORK: "172.16.0"
-    webhook:
-      image:
-        repository: ghcr.io/k8s-at-home/gateway-admision-controller
-        tag: v3.4.0
-      gatewayDefault: false
-      gatewayLabel: setGateway
-      gatewayAnnotation: setGateway
-      namespaceSelector:
-        label: "vpn-routed-gateway"
-      persistance:
-        data:
-          enabled: true
-          existing-claim: pod-gateway-config
