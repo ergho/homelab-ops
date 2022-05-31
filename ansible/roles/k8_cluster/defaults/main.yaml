@@ -5,7 +5,7 @@ k8s_api_port: 6443
 k8s_apt_version: 1.23.3-00
 k8s_cluster_endpoint: k8.ergho.org
 k8s_kubelet_config: /etc/kubernetes/kubelet.conf
-k8s_pod_network: 10.100.0.0/16
+k8s_pod_network: 10.144.0.0/12
 k8s_service_dns: apps.ergho.org
 k8s_token_file_node: join-node-command
 k8s_kubectl_config_file: kube-config
