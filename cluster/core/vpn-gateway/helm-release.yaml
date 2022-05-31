@@ -31,5 +31,6 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
+    clusterName: ${SECRET_CLUSTER_DOMAIN}
     routed_namespaces:
       - media
