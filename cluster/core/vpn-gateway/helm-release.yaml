@@ -42,5 +42,5 @@ spec:
           - sysctl net.ipv4.conf.all.src_valid_mark=1
     updateStrategy: Recreate
     clusterName: ${SECRET_CLUSTER_DOMAIN}
-    routedNamespaces:
+    routed_namespaces:
       - media
