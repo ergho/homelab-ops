@@ -10,3 +10,4 @@ resources:
   - cert-manager.yaml
   - media.yaml
   - networking.yaml
+  - vpn-gateway.yaml
