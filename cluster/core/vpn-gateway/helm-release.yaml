@@ -50,3 +50,16 @@ spec:
       NOT_ROUTED_TO_GATEWAY_CIDRS: ${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR}
       VPN_LOCAL_CIDRS: ${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR}
       VXLAN_IP_NETWORK: "172.16.0"
+    webhook:
+      image:
+        repository: ghcr.io/k8s-at-home/gateway-admission-controller
+        tag: v3.4.0
+      gatewayDefault: false
+      gatewayLabel: setGateway
+      gatewayAnnotation: setGateway
+      namespaceSelector:
+        label: "vpn-routed-gateway"
+      persistance:
+        data:
+          enabled: true
+          existing-claim: pod-gateway-config
