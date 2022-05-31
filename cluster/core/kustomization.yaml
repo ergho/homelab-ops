@@ -4,7 +4,7 @@ resources:
   - calico.yaml
   - metallb-system
   - storage
-  - nextcloud
+    #  - nextcloud
   - namespaces
   - ingress-nginx
   - cert-manager
