@@ -8917,7 +8917,7 @@ spec:
       serviceAccountName: istio-ingressgateway-service-account
       containers:
         - name: istio-proxy
-          image: "istio/proxyv2:1.14.0"
+          image: "istio/proxyv2:1.14.1"
           ports:
             - containerPort: 15021
               protocol: TCP
