@@ -56,11 +56,11 @@ spec:
                 - NET_ADMIN
                 - SYS_ADMIN
                 - sysctl net.ipv4.conf.all.src_valid_mark=1
-      env:
-        TZ: "${CLUSTER_TZ}"
-        IPTABLED_BACKEND: nft
-        KILLSWITCH: "false"
-      configFileSecret: vpn-gateway-vpnconfig
+        env:
+          TZ: "${CLUSTER_TZ}"
+          IPTABLED_BACKEND: nft
+          KILLSWITCH: "false"
+        configFileSecret: vpn-gateway-vpnconfig
 
     routed_namespaces:
       - media
