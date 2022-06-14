@@ -67,6 +67,7 @@ spec:
             - to:
                 - namespaceSelector: {}
 
+    DNS: 172.16.1.1
     routed_namespaces:
       - media
     settings:
