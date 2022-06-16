@@ -69,7 +69,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: qbittorrent-vpn-coonfig-v1
+        existingClaim: qbittorrent-vpn-config-v1
       media:
         enabled: true
         type: nfs
