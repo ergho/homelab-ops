@@ -65,7 +65,7 @@ spec:
               - *host
 
     podAnnotations:
-      setGateway: true
+      setGateway: "true"
     persistence:
       config:
         enabled: true
