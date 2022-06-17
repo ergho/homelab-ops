@@ -71,8 +71,8 @@ spec:
         enabled: true
         existingClaim: qbittorrent-vpn-config-v1
       media:
-        enabled: false
+        enabled: true
         type: nfs
-        server: 192.168.30.191"
+        server: 192.168.30.191
         path: /mnt/BeepyBoopy/tv-shows
         mountPath: /media
