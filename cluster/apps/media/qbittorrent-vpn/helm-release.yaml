@@ -74,6 +74,6 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: 192.168.30.191
+        server: ${NAS_ADDR}
         path: /mnt/BeepyBoopy/tv-shows
         mountPath: /media
