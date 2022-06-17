@@ -6,4 +6,5 @@ resources:
   - radarr
   - radarr-uhd
   - sonarr
+  - sonarr-uhd
   - qbittorrent-vpn
