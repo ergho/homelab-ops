@@ -28,7 +28,7 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    hostname: "qbittorrent"
+    hostname: "qbittorrent-vpn"
     image:
       repository: ghcr.io/k8s-at-home/qbittorrent
       tag: v4.4.1
