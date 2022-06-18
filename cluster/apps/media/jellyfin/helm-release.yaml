@@ -63,6 +63,6 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /mnt/BeepyBoopy/tv-shows
+        path: /mnt/BeepyBoopy/Media
         mountPath: /media
         readOnly: true
