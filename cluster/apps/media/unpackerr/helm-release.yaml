@@ -35,7 +35,7 @@ spec:
       nameOverride: *app
     image:
       repository: docker.io/golift/unpackerr
-      tag: v0.10.0
+      tag: 0.10.0
     env:
       TZ: "${CLUSTER_TZ}"
       UN_SONARR_0_URL: http://sonarr:8989
