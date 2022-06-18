@@ -42,6 +42,9 @@ spec:
         annotations:
           metallb.universe.tf/loadBalancerIPs: ${SVC_PLEX_ADDR}
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 32400
     ingress:
       main:
         enabled: true
@@ -58,13 +61,13 @@ spec:
       config:
         enabled: true
         existingClaim: plex-config-v1
-    media:
-      enabled: true
-      type: nfs
-      server: ${NAS_ADDR}
-      path: /mnt/BeepyBoopy/Media
-      mountPath: /media
-      readOnly: true
-    transcode:
-      enabled: true
-      type: emptyDir
+      media:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /mnt/BeepyBoopy/Media
+        mountPath: /media
+        readOnly: true
+      transcode:
+        enabled: true
+        type: emptyDir
