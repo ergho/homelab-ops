@@ -9,3 +9,4 @@ resources:
   - sonarr-uhd
   - qbittorrent-vpn
   - jackett
+  - unpackerr
