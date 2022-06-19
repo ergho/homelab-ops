@@ -14,12 +14,12 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
-        namesapce: flux-system
+        namespace: flux-system
       interval: 5m
   install:
     timeout: 10m
     remediation:
-      rertries: 3
+      retries: 3
   upgrade:
     timeout: 10m
     remediation:
