@@ -5,7 +5,7 @@ metadata:
   name: &app recyclarr
   namespace: media
 spec:
-  schedule: "55 * * * *"
+  schedule: "20 * * * *"
   concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 5
