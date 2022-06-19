@@ -52,6 +52,7 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
+      fsGroup: 568
       supplementalGroups:
         - 100
     persistence:
