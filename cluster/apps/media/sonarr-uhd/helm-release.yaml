@@ -51,6 +51,9 @@ spec:
         tls:
           - hosts:
               - *host
+    podSecurityContext:
+      supplementalGroups:
+        - 100
     persistence:
       config:
         enabled: true
