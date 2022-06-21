@@ -13,3 +13,4 @@ resources:
   - plex
   - recyclarr
   - bazarr
+  - prowlarr
