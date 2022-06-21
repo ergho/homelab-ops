@@ -27,7 +27,7 @@ spec:
       remediateLastFailure: false
     cleanupOnFail: true
   rollback:
-    tiemout: 10m
+    timeout: 10m
     recreate: true
     cleanupOnFail: true
   values:
