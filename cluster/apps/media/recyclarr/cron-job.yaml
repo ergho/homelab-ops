@@ -5,14 +5,14 @@ metadata:
   name: &app recyclarr
   namespace: media
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "0 3 * * *"
   concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 5
   jobTemplate:
     spec:
       backoffLimit: 3
-        #ttlSecondsAfterFinished: 300
+      ttlSecondsAfterFinished: 300
       template:
         spec:
           automountServiceAccountToken: false
