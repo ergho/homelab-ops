@@ -55,6 +55,15 @@ spec:
           IPTABLED_BACKEND: legacy
           KILLSWITCH: "false"
         configFileSecret: vpn-gateway-vpnconfig
+        livenessProbe:
+          exec:
+            command:
+              - bash
+              - c
+              - if [ $(curl -s https://am.i.mullvad.net/country) = '${VPN_COUNTRY}']; then exit 0; else exit $?; fi
+          initialDelaySeconds: 60
+          periodScans: 120
+          failureThreshold: 1
         networkPolicy:
           enabled: true
           egress:
