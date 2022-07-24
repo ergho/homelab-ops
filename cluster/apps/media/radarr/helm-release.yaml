@@ -39,7 +39,7 @@ spec:
         - 100
     image:
       repository: ghcr.io/k8s-at-home/radarr-nightly
-      tag: v4.2.0.6407@sha256:0f074a865116755ae98ecd5c1a5197503a3d118cc28dffe9579b435f49eec9f0
+      tag: v4.2.1.6448@sha256:31a2572b0db2685fdfac92b63c852a2cc4a1ae3db6aa330020979a1e05e4d21b
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
