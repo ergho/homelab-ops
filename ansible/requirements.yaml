@@ -3,4 +3,4 @@ collections:
   - name: community.sops
     version: 1.4.1
   - name: community.general
-    version: 5.6.0
+    version: 5.7.0
