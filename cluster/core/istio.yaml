@@ -9387,7 +9387,7 @@ subjects:
     name: istiod-service-account
     namespace: istio-system
 ---
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: istio-ingressgateway
@@ -9412,7 +9412,7 @@ spec:
         name: cpu
         targetAverageUtilization: 80
 ---
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: istiod
