@@ -1,8 +1,8 @@
 calico_net_config: calico.yaml
-calico_net_url: https://docs.projectcalico.org/archive/v3.22/manifests/calico.yaml
+calico_net_url: https://docs.projectcalico.org/archive/v3.24/manifests/calico.yaml
 k8s_admin_config: /etc/kubernetes/admin.conf
 k8s_api_port: 6443
-k8s_apt_version: 1.23.3-00
+k8s_apt_version: 1.25.3-00
 k8s_cluster_endpoint: k8.ergho.org
 k8s_kubelet_config: /etc/kubernetes/kubelet.conf
 k8s_pod_network: 10.144.0.0/12
@@ -11,4 +11,4 @@ k8s_token_file_node: join-node-command
 k8s_kubectl_config_file: kube-config
 k8s_user: ubuntu
 k8s_user_dir: '/home/{{ k8s_user }}'
-k8s_version: v1.23.3
+k8s_version: v1.25.3

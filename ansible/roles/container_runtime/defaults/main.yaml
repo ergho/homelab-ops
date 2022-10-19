@@ -1,7 +1,7 @@
 containerd_packages:
-  containerd_download_url: https://github.com/containerd/containerd/releases/download/v1.5.9/containerd-1.5.9-linux-amd64.tar.gz
-  crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.23.0/crictl-v1.23.0-linux-amd64.tar.gz
-  runc_download_url: https://github.com/opencontainers/runc/releases/download/v1.1.0/runc.amd64
+  containerd_download_url: https://github.com/containerd/containerd/releases/download/v1.6.8/containerd-1.6.8-linux-amd64.tar.gz
+  crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.25.0/crictl-v1.25.0-linux-amd64.tar.gz
+  runc_download_url: https://github.com/opencontainers/runc/releases/download/v1.1.4/runc.amd64
 containerd_service: containerd
 sysctl_config:
   - name: net.ipv4.ip_forward
