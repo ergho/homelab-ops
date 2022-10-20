@@ -35,7 +35,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.7.2010@sha256:87f137827b4e9311aa6034d89c404535a034e9397457a99a7e4c734c27adb6f1
+      tag: v0.4.7.2016@sha256:9d5a94a5f3798264cd93bbf4bac9c4ffd66d1fc86c217e23ecf5b692e7d0451b
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
