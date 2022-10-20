@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: project-calico-charts
+  name: rook-ceph-charts
   namespace: flux-system
 spec:
   interval: 1h
   timeout: 3m
-  url: https://projectcalico.docs.tigera.io/charts
+  url: https://charts.rook.io/release

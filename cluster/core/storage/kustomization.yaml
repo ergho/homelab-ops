@@ -6,3 +6,4 @@ resources:
   #  - truenas-secret.sops.yaml
   - truenas-iscsi.yaml
   - truenas-nfs.yaml
+  - rook-ceph
