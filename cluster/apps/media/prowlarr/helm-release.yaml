@@ -8,37 +8,34 @@ spec:
   interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: *app
-      version: 4.5.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 15m
   install:
-    timeout: 10m
+    createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
-    timeout: 10m
     remediation:
-      retries: 3
-      remediateLastFailure: false
-    cleanupOnFail: true
-  rollback:
-    timeout: 10m
-    recreate: true
-    cleanupOnFail: true
+      retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.7.2016@sha256:9d5a94a5f3798264cd93bbf4bac9c4ffd66d1fc86c217e23ecf5b692e7d0451b
+      repository: ghcr.io/onedr0p/prowlarr-nightly
+      tag: v0.4.7.2016@sha256:c745a0711067d707b50ec13deec094104c892d96ddcb75cf8cedb3431ff8cbf7
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
+      PROWLARR__INSTANCE_NAME: Prowlarr
+      PROWLARR__PORT: &port 80
+      PROWLARR__LOG_LEVEL: info
+    service:
+      main:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         enabled: true
@@ -51,7 +48,15 @@ spec:
         tls:
           - hosts:
               - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMisMatch"
     persistence:
       config:
         enabled: true
         existingClaim: prowlarr-config-v1
+    resources:
+      limits:
+        memory: 400Mi
