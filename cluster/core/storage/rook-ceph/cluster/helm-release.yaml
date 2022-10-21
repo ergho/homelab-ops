@@ -79,8 +79,8 @@ spec:
           parameters:
             imageFormat: "2"
             imageFeatures: layering
-            csi.storage.k8s.io/provisoner-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/provisoner-namespace: rook-ceph
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/provisioner-namespace: rook-ceph
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
