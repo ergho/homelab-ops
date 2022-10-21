@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: radarr-config-v1
   namespace: media
-  labsls:
+  labels:
     app.kubernetes.io/name: &name radarr
     app.kubernetes.io/instance: *name
 spec:
