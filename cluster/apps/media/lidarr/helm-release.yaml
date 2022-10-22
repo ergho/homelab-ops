@@ -31,8 +31,8 @@ spec:
     env:
       TZ: "${CLUSTER_TZ}"
       LIDARR__INSTANCE_NAME: Lidarr
-      LIDARR_PORT: &port 8080
-      LIDARR_LOG_LEVEL: info
+      LIDARR__PORT: &port 8080
+      LIDARR__LOG_LEVEL: info
     service:
       main:
         ports:
