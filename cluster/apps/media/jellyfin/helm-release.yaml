@@ -9,34 +9,26 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: jellyfin
-      version: 9.5.3
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
-    timeout: 10m
+    createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
-    timeout: 10m
     remediation:
-      retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
-  rollback:
-    timeout: 10m
-    recreate: true
-    cleanupOnFail: true
+      retries: 5
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
-    podSecurityContext:
-      fsGroup: 568
-      supplementalGroups:
-        - 100
     image:
-      repository: ghcr.io/k8s-at-home/jellyfin
-      tag: v10.8.4
+      repository: ghcr.io/onedr0p/jellyfin
+      tag: v10.8.5@sha256:fc67ca18bd2f4a92c6510219658f1db9b126058fc2dc7dd443c4881f5fd52e29
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
@@ -61,6 +53,13 @@ spec:
         tls:
           - hosts:
               - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
     persistence:
       config:
         enabled: true
