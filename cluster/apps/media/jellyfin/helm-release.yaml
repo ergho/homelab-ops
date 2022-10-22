@@ -39,33 +39,33 @@ spec:
         ports:
           http:
             port: 8096
-              #    ingress:
-              #      main:
-              #        enabled: true
-              #        ingressClassName: "nginx"
-              #        hosts:
-              #          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
-              #            paths:
-              #              - path: /
-              #                pathType: Prefix
-              #        tls:
-              #          - hosts:
-              #              - *host
-              #    podSecurityContext:
-              #      fsGroup: 568
-              #      fsGroupChangePolicy: "OnRootMismatch"
-              #      supplementalGroups:
-              #        - 44
-              #        - 109
-              #        - 100
-              #    persistence:
-              #      config:
-              #        enabled: true
-              #        existingClaim: jellyfin-config-1
-              #      media:
-              #        enabled: true
-              #        type: nfs
-              #        server: ${NAS_ADDR}
-              #        path: /mnt/BeepyBoopy/Media
-              #        mountPath: /media
-              #        readOnly: true
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    podSecurityContext:
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 44
+        - 109
+        - 100
+    persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin-config-1
+      media:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /mnt/BeepyBoopy/Media
+        mountPath: /media
+        readOnly: true
