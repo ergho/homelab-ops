@@ -16,20 +16,15 @@ spec:
         name: metallb-charts
         namespace: flux-system
   install:
-    timeout: 10m
+    createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
-    timeout: 10m
     remediation:
-      retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
-  rollback:
-    timeout: 10m
-    recreate: true
-    cleanupOnFail: true
+      retries: 5
   values:
+    crds:
+      enabled: true
     configInline:
       address-pools:
         - name: default
