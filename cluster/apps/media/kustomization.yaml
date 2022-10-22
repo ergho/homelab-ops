@@ -8,7 +8,6 @@ resources:
   - sonarr
   - sonarr-uhd
   - qbittorrent-vpn
-  - jackett
   - unpackerr
   - plex
   - recyclarr
