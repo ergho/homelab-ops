@@ -34,9 +34,7 @@ spec:
     controller:
       replicaCount: 3
       service:
-        type: LoadBalancer
-        annotations:
-          metallb.universe.tf/LoadBalancer: ${SVC_NGINX_ADDR}
+        externalIPs: ["${SVC_NGINX_ADDR}"]
         externalTrafficPolicy: Local
       publishService:
         enabled: true
