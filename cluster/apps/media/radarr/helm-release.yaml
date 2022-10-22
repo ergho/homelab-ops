@@ -34,9 +34,9 @@ spec:
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 8080
       RADARR__LOG_LEVEL: info
-      envFrom:
-        - secretRef:
-            name: *app
+    envFrom:
+      - secretRef:
+          name: *app
     service:
       main:
         ports:
