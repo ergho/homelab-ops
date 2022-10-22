@@ -11,5 +11,4 @@ resources:
   - unpackerr
   - plex
   - recyclarr
-  - bazarr
   - prowlarr
