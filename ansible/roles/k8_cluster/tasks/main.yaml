@@ -38,10 +38,10 @@
       loop:
         "{{ calico_templates }}"
     - name: 'apply calico templates'
+      become: false
       ansible.builtin.command: 'kubectl apply -f "{{ k8s_user_dir }}/{{ item }}"'
       loop:
         "{{ calico_templates }}"
-
 
     - command: 'kubeadm token create --print-join-command'
       name: 'generate node join command'
