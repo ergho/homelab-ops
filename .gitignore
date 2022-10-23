@@ -3,6 +3,7 @@ ansible/vault-pass.key
 kubeconfig
 .decrypted~*.yaml
 *.agekey
+*.tfvars
 .terraform
 .terraform.tfstate*
 terraform.tfstate*
