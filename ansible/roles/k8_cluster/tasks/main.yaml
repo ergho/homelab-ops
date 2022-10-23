@@ -2,7 +2,7 @@
     - args:
         creates: '{{ k8s_admin_config }}'
       command: 'kubeadm init --kubernetes-version "{{ k8s_version }}" --pod-network-cidr
-        "{{ k8s_pod_network }}" --service-dns-domain "{{ k8s_service_dns }}" --control-plane-endpoint
+        "{{ k8s_pod_network }}" --service-network-cidr "{{ k8s_service_network }}" --control-plane-endpoint
         "{{ k8s_cluster_endpoint }}:{{ k8s_api_port }}" --upload-certs'
       name: 'initialize kubernetes cluster {{ k8s_version }} using kubeadm'
     - file:
@@ -27,14 +27,23 @@
         owner: '{{ k8s_user }}'
         url: '{{ calico_net_url }}'
       name: 'download {{ calico_net_url }}'
-    - name: 'set calico_ipv4pool_cidr to {{ k8s_pod_network }}'
-      replace:
-        path: '{{ k8s_user_dir }}/{{ calico_net_config }}'
-        regexp: 192.168.0.0/16
-        replace: '{{ k8s_pod_network }}'
+        #- name: 'set calico_ipv4pool_cidr to {{ k8s_pod_network }}'
+        #  replace:
+        #    path: '{{ k8s_user_dir }}/{{ calico_net_config }}'
+        #    regexp: 192.168.0.0/16
+        #    replace: '{{ k8s_pod_network }}'
     - become: false
       command: 'kubectl apply -f "{{ k8s_user_dir }}/{{ calico_net_config }}"'
-      name: 'install calico'
+      name: 'install calico operator'
+    - name: 'calico templates'
+      ansible.builtin.template:
+        src: "{{ item }}"
+        dest: "{{ k8s_user_dir }}"
+      loop:
+        "{{ calico_templates }}"
+        #- name: 'apply calico templates'
+
+
     - command: 'kubeadm token create --print-join-command'
       name: 'generate node join command'
       register: join_node_command

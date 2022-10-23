@@ -37,12 +37,6 @@
     dest: /etc/multipath.conf
     mode: 384
     src: multipath.conf
-- loop: '{{ iscsi_services }}'
-  name: start and enable iscsi services
-  service:
-    enabled: true
-    name: '{{ item }}'
-    state: started
 - name: install k8 tools
   package:
     name:

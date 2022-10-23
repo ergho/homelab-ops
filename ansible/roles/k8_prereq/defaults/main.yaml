@@ -1,8 +1,8 @@
 kubelet_file: /etc/sysconfig/kubelet
 kubernetes:
-  apt_version: 1.23.3-00
+  apt_version: 1.25.3-00
   name: ergho-home
-  version: v1.23.3
+  version: v1.25.3
 packages:
   - apt-transport-https
   - curl
@@ -13,9 +13,6 @@ packages:
   - multipath-tools
   - scsitools
   - nfs-commons
-iscsi_services:
-  - multipath-tools
-  - open-iscsi
 sysctl_config:
   - name: net.ipv4.ip_forward
     value: 1

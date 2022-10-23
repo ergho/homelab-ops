@@ -1,12 +1,21 @@
-calico_net_config: calico.yaml
-calico_net_url: https://docs.projectcalico.org/archive/v3.24/manifests/calico.yaml
+calico_net_config: tigera-operator.yaml
+calico_net_url: https://docs.projectcalico.org/archive/v3.24/manifests/tigera-operator.yaml
+calico_encapsulation: "None"
+calico_bgp_peer_ip: 192.168.30.1
+calico_bgp_as_number: 64512
+calico_bgp_external_ips: 192.168.100.0/24
+calico_node_cidr: 192.168.90.0.24
+calico_templates:
+  - "calico-installation.yaml.j2"
+  - "calico-bgpconfiguration.yaml.j2"
+  - "calico-bgppeer.yaml.j2"
 k8s_admin_config: /etc/kubernetes/admin.conf
 k8s_api_port: 6443
 k8s_apt_version: 1.25.3-00
 k8s_cluster_endpoint: k8.ergho.org
 k8s_kubelet_config: /etc/kubernetes/kubelet.conf
-k8s_pod_network: 10.144.0.0/12
-k8s_service_dns: apps.ergho.org
+k8s_pod_network: 10.60.0.0/16
+k8s_service_network: 10.40.0.0/16
 k8s_token_file_node: join-node-command
 k8s_kubectl_config_file: kube-config
 k8s_user: ubuntu
