@@ -7,12 +7,11 @@ packages:
   - apt-transport-https
   - curl
   - libnfs-utils
-  - open-iscsi
   - lsscsi
   - sg3-utils
   - multipath-tools
   - scsitools
-  - nfs-commons
+  - nfs-common
 sysctl_config:
   - name: net.ipv4.ip_forward
     value: 1

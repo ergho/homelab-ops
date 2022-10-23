@@ -2,48 +2,37 @@ variable "vm" {
   description = "Homelab Machines"
   type        = map(any)
   default = {
-    test1 = {
-      name      = "test-1"
+    controller = {
+      name      = "k8controller-1.ergho.org"
+      mem       = 4096
       ip        = "192.168.90.100/24"
       gateway   = "192.168.90.1"
-      disk_size = "30G"
+      disk_size = "50G"
     }
-    test2 = {
-      name      = "test-2"
+    k8w1 = {
+      name      = "k8worker-1.ergho.org"
+      mem       = 8192
       ip        = "192.168.90.110/24"
       gateway   = "192.168.90.1"
-      disk_size = "30G"
+      disk_size = "50G"
     }
-    #controller = {
-    #controller = {
-    #  name : "controller-1.ergho.org"
-    #  ipconfig : "ip=192.168.30.100/24,gw=192.168.30.1"
-    #  disk_size = "30G"
-
-    #}
-    #worker1 = {
-    #  name : "worker-1.ergho.org"
-    #  ipconfig : "ip=192.168.30.110/24,gw=192.168.30.1"
-    #  disk_size = "30G"
-    #}
-    #worker2 = {
-    #  name : "worker-2.ergho.org"
-    #  ipconfig : "ip=192.168.30.111/24,gw=192.168.30.1"
-    #  disk_size = "30G"
-    #}
-    #worker3 = {
-    #  name : "worker-3.ergho.org"
-    #  ipconfig : "ip=192.168.30.112/24,gw=192.168.30.1"
-    #  disk_size = "30G"
-    #}
-    #vpn = {
-    #  name : "vpn.ergho.org"
-    #  ipconfig : "ip=192.168.30.240/24,gw=192.168.30.1"
-    #  disk_size = "20G"
-    #}
+    k8w2= {
+      name      = "k8worker-2.ergho.org"
+      mem       = 8192
+      ip        = "192.168.90.111/24"
+      gateway   = "192.168.90.1"
+      disk_size = "50G"
+    }
+    k8w3= {
+      name      = "k8worker-3.ergho.org"
+      mem       = 8192
+      ip        = "192.168.90.112/24"
+      gateway   = "192.168.90.1"
+      disk_size = "50G"
+    }
   }
-
 }
+
 variable "pm_api_url" {
   type = string
 }

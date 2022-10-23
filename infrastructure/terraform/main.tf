@@ -8,7 +8,7 @@ resource "proxmox_vm_qemu" "vm" {
   cores       = 4
   sockets     = 1
   cpu         = "host"
-  memory      = 2048
+  memory      = each.value.mem
   scsihw      = "virtio-scsi-pci"
   bootdisk    = "scsi0"
 

@@ -1,16 +1,17 @@
+---
 all:
   children:
     controller:
       hosts:
         controller-1.ergho.org:
-          ansible_host: 192.168.30.100
+          ansible_host: 192.168.90.100
     worker:
       hosts:
         worker-1.ergho.org:
-          ansible_host: 192.168.30.110
+          ansible_host: 192.168.90.110
         worker-2.ergho.org:
-          ansible_host: 192.168.30.111
+          ansible_host: 192.168.90.111
         worker-3.ergho.org:
-          ansible_host: 192.168.30.112
+          ansible_host: 192.168.90.112
   vars:
     ansible_ssh_user: ubuntu
