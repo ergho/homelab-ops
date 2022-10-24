@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: downloaders
+  labels:
+    vpn-routed-gateway: "true"

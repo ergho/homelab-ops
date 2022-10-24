@@ -9,8 +9,6 @@ spec:
   dependsOn:
     - name: config
     - name: charts
-    - name: core
-    - name: core-vpn-gateway
   path: ./cluster/apps
   prune: true
   decryption:
