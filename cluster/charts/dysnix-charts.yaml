@@ -2,9 +2,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: nextcloud-charts
+  name: dysnix-charts
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://nextcloud.github.io/helm
-  timeout: 3m
+  url: https://dysnix.github.io/charts
