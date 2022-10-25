@@ -55,13 +55,13 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: worker-1
+          - name: k8worker-1
             devices:
               - name: "/dev/disk/by-id/nvme-KINGSTON_SKC3000S1024G_50026B7685F93BDD"
-          - name: worker-2
+          - name: k8worker-2
             devices:
               - name: "/dev/disk/by-id/nvme-KINGSTON_SKC3000S1024G_50026B7685F93BFF"
-          - name: worker-3
+          - name: k8worker-3
             devices:
               - name: "/dev/disk/by-id/nvme-KINGSTON_SKC3000S1024G_50026B7685F93BBA"
     cephBlockPools:
