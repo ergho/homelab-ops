@@ -5,7 +5,7 @@ resource "proxmox_vm_qemu" "vm" {
   clone       = var.template_name
   agent       = 1
   os_type     = "cloud-init"
-  cores       = 4
+  cores       = each.value.cpu
   sockets     = 1
   cpu         = "host"
   memory      = each.value.mem
