@@ -3,25 +3,25 @@ homelab:
   children:
     kubernetes:
       children:
-        master:
+        controller:
           hosts:
             controller-1:
-              ansible_host: 192.168.30.100
+              ansible_host: 192.168.90.100
           vars:
             ansible_user: ubuntu
             ansible_ssh_port: 22
         worker:
           hosts:
             worker-1:
-              ansible_host: 192.168.30.110
+              ansible_host: 192.168.90.110
               rook_devices:
                 - /dev/nvme0n1
             worker-2:
-              ansible_host: 192.168.30.111
+              ansible_host: 192.168.90.111
               rook_devices:
                 - /dev/nvme0n1
             worker-3:
-              ansible_host: 192.168.30.112
+              ansible_host: 192.168.90.112
               rook_devices:
                 - /dev/nvme0n1
           vars:

@@ -7,3 +7,4 @@ kubeconfig
 .terraform
 .terraform.tfstate*
 terraform.tfstate*
+homelab

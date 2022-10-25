@@ -12,7 +12,7 @@ variable "vm" {
     }
     k8w1 = {
       name      = "k8worker-1.ergho.org"
-      mem       = 8192
+      mem       = 12288
       cpu       = 8
       ip        = "192.168.90.110/24"
       gateway   = "192.168.90.1"
@@ -20,7 +20,7 @@ variable "vm" {
     }
     k8w2 = {
       name      = "k8worker-2.ergho.org"
-      mem       = 8192
+      mem       = 12288
       cpu       = 8
       ip        = "192.168.90.111/24"
       gateway   = "192.168.90.1"
@@ -28,7 +28,7 @@ variable "vm" {
     }
     k8w3 = {
       name      = "k8worker-3.ergho.org"
-      mem       = 8192
+      mem       = 12288
       cpu       = 8
       ip        = "192.168.90.112/24"
       gateway   = "192.168.90.1"
