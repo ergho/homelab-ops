@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - issuers
   - helm-release.yaml
+  - wildcard-certificate
