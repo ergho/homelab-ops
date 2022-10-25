@@ -10,4 +10,4 @@ spec:
   resources:
     requests:
       storage: 500Mi
-  storageClassName: truenas-nfs-csi
+  storageClassName: ceph-block
