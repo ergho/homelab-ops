@@ -72,7 +72,7 @@ spec:
 
     DNS: 172.16.1.1
     routed_namespaces:
-      - media
+      - downloaders
     settings:
       VPN_INTERFACE: wg0
       VPN_BLOCK_OTHER_TRAFFIC: true
