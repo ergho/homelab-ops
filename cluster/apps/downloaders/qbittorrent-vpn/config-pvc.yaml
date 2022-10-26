@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: qbittorrent-vpn-config-v1
-  namespace: media
+  namespace: downloaders
 spec:
   accessModes:
     - ReadWriteOnce
