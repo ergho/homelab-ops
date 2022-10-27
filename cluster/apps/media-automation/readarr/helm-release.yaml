@@ -35,7 +35,7 @@ spec:
       READARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
-        name: *app
+          name: *app
     service:
       main:
         ports:
