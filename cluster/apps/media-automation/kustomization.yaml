@@ -6,6 +6,7 @@ resources:
   - prowlarr
   - radarr
   - radarr-uhd
+  - readarr
   - recyclarr
   - sonarr
   - sonarr-uhd
