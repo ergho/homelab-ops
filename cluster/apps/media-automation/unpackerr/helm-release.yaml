@@ -5,53 +5,52 @@ metadata:
   name: &app unpackerr
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: *app
-      version: 5.4.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
-    timeout: 10m
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
-    timeout: 10m
     remediation:
-      retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
-  rollback:
-    timeout: 10m
-    recreate: true
-    cleanupOnFail: true
+      retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
-      repository: docker.io/golift/unpackerr
-      tag: 0.10.1
+      repository: ghcr.io/onedr0p/unpackerr
+      tag: 0.10.1@sha256:f3fbc60e563e91a1103ecd87d0689a0d60853fd892f193187d43e91aa2a9ec84
     env:
       TZ: "${CLUSTER_TZ}"
-      UN_SONARR_0_URL: http://sonarr:8989
+      UN_SONARR_0_URL: http://sonarr:8080
       UN_SONARR_0_PATHS_0: /complete/sonarr
-      UN_SONARR_1_URL: http://sonarr-uhd:8989
+      UN_SONARR_1_URL: http://sonarr-uhd:8080
       UN_SONARR_1_PATHS_0: /complete/sonarr-uhd
-      UN_RADARR_0_URL: http://radarr:7878
+      UN_RADARR_0_URL: http://radarr:8080
       UN_RADARR_0_PATHS_0: /complete/radarr
-      UN_RADARR_1_URL: http://radarr-uhd:7878
+      UN_RADARR_1_URL: http://radarr-uhd:8080
       UN_RADARR_1_PATHS_0: /complete/radarr-uhd
+      UN_LIDARR_0_URL: http://lidarr:8080
+      UN_LIDARR_0_PATHS_0: /complete/lidarr
+      UN_READARR_0_URL: http://readarr:8080
+      UN_READARR_0_PATHS_0: /complete/readarr
     envFrom:
       - secretRef:
           name: *app
     service:
       main:
         enabled: false
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
     persistence:
       complete:
         enabled: true

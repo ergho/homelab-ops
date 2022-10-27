@@ -1,0 +1,72 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app readarr
+  namespace: media
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 0.2.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    images:
+      repository: ghcr.io/onedr0p/readarr-nightly
+      tag: 0.1.1.1426@sha256:f7513a7aea80362daecb3ba543092a87d436e0bb7ed6d3a2df3f8d31d093c9a2
+    env:
+      TZ: "${CLUSTER_TZ}"
+      READARR__INSTANCE_NAME: Readarr (Audio)
+      READARR__PORT: &port 8080
+      READARR__LOG_LEVEL: info
+    envFrom:
+      - secretRef:
+        name: *app
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
+            paths:
+              - path: /
+                pathType: prefix
+        tls:
+          - hosts:
+              - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
+    persistence:
+      config:
+        enabled: true
+        existingClaim: readarr-config-v1
+    media:
+      enabled: true
+      type: nfs
+      server: "${NAS_ADDR}"
+      path: /mnt/BeepyBoopy/Media/
+      mountPath: /media
