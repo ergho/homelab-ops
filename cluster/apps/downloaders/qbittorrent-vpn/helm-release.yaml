@@ -30,8 +30,8 @@ spec:
   values:
     hostname: "qbittorrent-vpn"
     image:
-      repository: ghcr.io/k8s-at-home/qbittorrent
-      tag: v4.4.2
+      repository: ghcr.io/onedr0p/qbittorrent
+      tag: v4.4.5@sha256:f78bda4a40b8c8734fba09e65b4553a8be89e88f746db614fe04a83ece1b817e
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
