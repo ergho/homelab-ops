@@ -1,6 +1,6 @@
 - become: true
   gather_facts: true
   hosts: all
-  name: 'hardening'
+  name: "hardening"
   roles:
     - hardening

@@ -20,4 +20,4 @@ sysctl_config:
   - name: net.bridge.bridge-nf-call-ip6tables
     value: 1
 ubuntu_k8_gpg_key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-ubuntu_k8_repo: 'deb https://apt.kubernetes.io/ kubernetes-xenial main'
+ubuntu_k8_repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"

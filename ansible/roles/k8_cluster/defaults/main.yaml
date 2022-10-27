@@ -20,5 +20,5 @@ k8s_service_network: 10.40.0.0/16
 k8s_token_file_node: join-node-command
 k8s_kubectl_config_file: kube-config
 k8s_user: ubuntu
-k8s_user_dir: '/home/{{ k8s_user }}'
+k8s_user_dir: "/home/{{ k8s_user }}"
 k8s_version: v1.25.3

@@ -1,18 +1,18 @@
 - group:
-    name: '{{ prometheus_user }}'
+    name: "{{ prometheus_user }}"
     state: present
     system: true
-  name: 'ensure group {{ prometheus_user }} exists'
-- name: 'create user {{ prometheus_user }}'
+  name: "ensure group {{ prometheus_user }} exists"
+- name: "create user {{ prometheus_user }}"
   user:
-    groups: '{{ prometheus_user }}'
-    name: '{{ prometheus_user }}'
+    groups: "{{ prometheus_user }}"
+    name: "{{ prometheus_user }}"
     shell: /sbin/nologin
     state: present
     system: true
-- name: 'download node exporter and unarchive it'
+- name: "download node exporter and unarchive it"
   unarchive:
-    creates: '/usr/local/bin/{{ node_exporter_binary }}'
+    creates: "/usr/local/bin/{{ node_exporter_binary }}"
     dest: /usr/local/bin
     extra_opts:
       - --strip-components
@@ -20,19 +20,19 @@
     group: root
     owner: root
     remote_src: true
-    src: '{{ node_exporter_url }}'
-- name: 'copy {{ node_exporter_systemd_service }}'
+    src: "{{ node_exporter_url }}"
+- name: "copy {{ node_exporter_systemd_service }}"
   template:
-    dest: '/etc/systemd/system/{{ node_exporter_systemd_service }}'
+    dest: "/etc/systemd/system/{{ node_exporter_systemd_service }}"
     group: root
     mode: 0640
     owner: root
-    src: 'templates/{{ node_exporter_systemd_service }}.j2'
-- name: 'systemctl daemon-reload'
+    src: "templates/{{ node_exporter_systemd_service }}.j2"
+- name: "systemctl daemon-reload"
   systemd:
     daemon_reload: true
-- name: 'start and enable service {{ node_exporter_systemd_service }}'
+- name: "start and enable service {{ node_exporter_systemd_service }}"
   service:
     enabled: true
-    name: '{{ node_exporter_systemd_service }}'
+    name: "{{ node_exporter_systemd_service }}"
     state: restarted

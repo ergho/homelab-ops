@@ -1,6 +1,6 @@
 - become: true
   gather_facts: true
   hosts: all
-  name: 'configure container runtime'
+  name: "configure container runtime"
   roles:
     - container_runtime

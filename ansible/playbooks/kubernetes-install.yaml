@@ -1,6 +1,6 @@
 - become: true
   gather_facts: true
   hosts: all
-  name: 'kubernetes install'
+  name: "kubernetes install"
   roles:
     - k8_prereq
