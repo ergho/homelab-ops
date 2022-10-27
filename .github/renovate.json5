@@ -19,7 +19,7 @@
   "repositories": ["ergho/homelab-ops"],
   "onboarding": false,
   "requireConfig": false,
-  "gitAuthor": "ergho-bot <ergho-bot[bot]@users.noreply.github.com>",
+  "gitAuthor": "ergho-bot <116787855+ergho-bot[bot]@users.noreply.github.com>",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
