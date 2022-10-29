@@ -6,10 +6,11 @@ resources:
   - democratic-csi.yaml
   - dysnix-charts.yaml
   - ingress-nginx.yaml
+  - jetstack-charts.yaml
   - k8s-at-home-charts.yaml
+  - k8s-gateway-charts.yaml
   - kyverno-charts.yaml
   - project-calico-charts.yaml
-  - jetstack-charts.yaml
-  - k8s-gateway-charts.yaml
-  - rook-ceph-charts.yaml
   - prometheus-community-charts.yaml
+  - rook-ceph-charts.yaml
+  - stakater-charts.yaml
