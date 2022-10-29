@@ -7,6 +7,7 @@ resources:
   - kube-tools
   - media-automation
   - media-servers
+  - monitoring
   - namespace.yaml
   - networking
   - storage
