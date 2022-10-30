@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: metrics-server-charts
+      chart: metrics-server
       version: 3.8.2
       sourceRef:
         kind: HelmRepository
-        name: metrics-server
+        name: metrics-server-charts
         namespace: flux-system
   install:
     remediation:
