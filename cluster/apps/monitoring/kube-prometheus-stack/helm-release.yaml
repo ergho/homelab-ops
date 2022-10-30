@@ -120,7 +120,7 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         hosts:
-          - &host "promethus.${SECRET_DOMAIN_NAME}"
+          - &host "prometheus.${SECRET_DOMAIN_NAME}"
         tls:
           - hosts:
               - *host
