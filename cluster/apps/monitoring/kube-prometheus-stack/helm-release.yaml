@@ -14,3 +14,60 @@ spec:
         kind: HelmRepository
         name: prometheus-community-charts
         namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    alertmanager:
+      config:
+        global:
+          resolve_timeout: 5m
+        receivers:
+          - name: "null"
+          - name: "discord"
+            webhook_configs:
+              - url: http://alertmanager-discord:9094
+        route:
+          group_by: ["alertname", "job"]
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 6h
+          receiver: "discord"
+          routes:
+            - receiver: "null"
+              matchers:
+                - alertname =~ "InfoInhibitor|Watchdgog"
+            - receiver: "discord"
+              matchers:
+                - severity = "critical"
+              continue: true
+        inhibit_rules:
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "nginx"
+        hosts:
+          - &host "alert-manager.${SECRET_DOMAIN_NAME}"
+        tls:
+          - hosts:
+              - *host
+      alertmanagerSpec:
+        replicas: 1
+        podAntiAffinity: hard
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClass: "ceph-block"
+              resources:
+                requests:
+                  storage: 1Gi
