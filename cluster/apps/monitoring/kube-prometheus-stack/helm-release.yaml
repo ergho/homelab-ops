@@ -33,6 +33,7 @@ spec:
           - name: "discord"
             webhook_configs:
               - url: http://alertmanager-discord:9094
+                send_resolved: true
         route:
           group_by: ["alertname", "job"]
           group_wait: 30s
@@ -42,7 +43,7 @@ spec:
           routes:
             - receiver: "null"
               matchers:
-                - alertname =~ "InfoInhibitor|Watchdgog"
+                - alertname =~ "InfoInhibitor|Watchdog"
             - receiver: "discord"
               matchers:
                 - severity = "critical"

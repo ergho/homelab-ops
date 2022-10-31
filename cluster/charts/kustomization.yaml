@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - bitnami-charts.yaml
   - bjw-s-charts.yaml
-  - democratic-csi.yaml
+  - descheduler.yaml
   - dysnix-charts.yaml
   - ingress-nginx.yaml
   - jetstack-charts.yaml
