@@ -25,7 +25,7 @@
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": ["renovatebot/github-action"]
+      "matchPackageNames": ["lycheeverse/lychee-action", "renovatebot/github-action"]
     }
   ]
 }
