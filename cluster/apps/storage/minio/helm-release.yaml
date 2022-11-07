@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRelease
         name: bjw-s-charts
-        namesapce: flux-system
+        namespace: flux-system
   install:
     createNamespace: true
     remediation:
