@@ -67,14 +67,16 @@ spec:
         hosts:
           - host: &host-console "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
             paths:
-              pathType: Prefix
-              service:
-                port: *port-console
+              - path: /
+                pathType: Prefix
+                service:
+                  port: *port-console
           - host: &host-api "s3.${SECRET_DOMAIN_NAME}"
             paths:
-              pathType: Prefix
-              service:
-                port: *port-api
+              - path: /
+                pathType: Prefix
+                service:
+                  port: *port-api
         tls:
           - hosts:
               - *host-console
