@@ -51,7 +51,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingress_class_name: "nginx"
+        ingressClassName: "nginx"
         hosts:
           - host: &host "bitwarden.${SECRET_DOMAIN_NAME}"
             paths:
@@ -71,7 +71,7 @@ spec:
               - *host
     admin:
       enabled: true
-      ingress_class_name: "nginx"
+      ingressClassName: "nginx"
       hosts:
         - host: *host
           paths:
