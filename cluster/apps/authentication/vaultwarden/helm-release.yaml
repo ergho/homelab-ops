@@ -61,7 +61,8 @@ spec:
                   port: 8080
               - path: /notifications/hub
                 pathType: Prefix
-                service: 3012
+                service:
+                  port: 3012
               - path: /notifications/hub/negotiate
                 pathType: Prefix
                 service:
