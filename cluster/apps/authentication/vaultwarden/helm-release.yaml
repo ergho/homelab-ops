@@ -69,23 +69,19 @@ spec:
         tls:
           - hosts:
               - *host
-    admin:
-      enabled: true
-      ingressClassName: "nginx"
-      hosts:
-        - host: *host
-          paths:
-            - path: /admin
-              pathType: Prefix
-              service:
-                port: 8080
-      tls:
-        - hosts:
-            - *host
-    persistence:
-      config:
+      admin:
         enabled: true
-        existingClaim: vaultwarden-config-v1
+        ingressClassName: "nginx"
+        hosts:
+          - host: *host
+            paths:
+              - path: /admin
+                pathType: Prefix
+                service:
+                  port: 8080
+        tls:
+          - hosts:
+              - *host
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -93,3 +89,7 @@ spec:
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100
+    persistence:
+      config:
+        enabled: true
+        existingClaim: vaultwarden-config-v1
