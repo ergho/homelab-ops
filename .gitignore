@@ -8,3 +8,4 @@ kubeconfig
 .terraform.tfstate*
 terraform.tfstate*
 homelab
+cluster/local
