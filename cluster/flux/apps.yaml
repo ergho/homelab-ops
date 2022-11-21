@@ -7,8 +7,8 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
-    - name: config
-    - name: charts
+    - name: flux-installation
+    - name: flux-cluster
   path: ./cluster/apps
   prune: true
   decryption:
