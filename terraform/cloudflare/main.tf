@@ -1,6 +1,16 @@
 terraform {
   required_version = ">= 1.3.0"
 
+  cloud {
+    hostname     = "app.terraform.io"
+    organization = "ergho"
+
+    workspaces {
+      name = "home-cloudflare"
+    }
+
+  }
+
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -15,9 +25,9 @@ terraform {
 
 # obtain home ip
 data "http" "ipv4" {
-    url = "http://ipv4.icanhazip.com"
+  url = "http://ipv4.icanhazip.com"
 }
 
 output "thing" {
-    value = chomp(data.http.ipv4.response_body)
+  value = chomp(data.http.ipv4.response_body)
 }

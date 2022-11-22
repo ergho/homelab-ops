@@ -1,4 +1,13 @@
 terraform {
+  cloud {
+    hostname     = "app.terraform.io"
+    organization = "ergho"
+
+    workspaces {
+      name = "home-proxmox"
+    }
+  }
+
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
