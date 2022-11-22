@@ -33,7 +33,3 @@ data "cloudflare_zones" "domain_org" {
         name = var.cloudflare_domain_org
     }
 }
-
-output "thing" {
-  value = chomp(data.http.ipv4.response_body)
-}
