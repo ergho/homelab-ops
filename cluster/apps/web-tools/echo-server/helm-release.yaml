@@ -38,14 +38,13 @@ spec:
         enabled: true
         custom: true
         spec:
-          spec:
-            httpGet:
-              path: /health
-              port: *port
-            initialDelaySeconds: 0
-            periodSeconds: 10
-            timeoutSeconds: 1
-            failureThreshold: 3
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
       readiness: *probes
       startup:
         enabled: false
@@ -63,4 +62,4 @@ spec:
                 pathType: Prefix
         tls:
           - hosts:
-              - host: *host
+              - *host
