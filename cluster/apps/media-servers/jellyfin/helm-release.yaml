@@ -43,6 +43,10 @@ spec:
       main:
         enabled: true
         ingressClassName: "nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_NAME}"
+          external-dns.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
             paths:
