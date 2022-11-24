@@ -11,4 +11,4 @@ resources:
   - ./namespace.yaml
   - ./networking
   - ./storage
-  - ./web-toools
+  - ./web-tools
