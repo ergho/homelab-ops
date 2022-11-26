@@ -1,0 +1,71 @@
+---
+- name: Linux | Include Secure Vars
+  include_vars:
+    file: ../defaults/secure.yaml
+
+- name: Linux | Create Users
+  become: true
+  block:
+    - name: RedHat | Create Users
+      ansible.builtin.user:
+        state: present
+        name: "{{ item.name }}"
+        groups: "{{ sudo_group_redhat }}"
+        shell: "/bin/bash"
+        password: "{{ user_password | password_hash('sha512') }}"
+        update_password: always
+      loop: "{{ users }}"
+
+    - name: RedHat | Configure sudo Rules
+      ansible.builtin.lineinfile:
+        state: present
+        path: "/etc/sudoers"
+        regex: "^%{{ sudo_group_redhat }}"
+        line: "%{{ sudo_group_redhat}} ALL=(ALL) NOPASSWD: ALL"
+        validate: "/usr/bin/visudo -cf %s"
+  when: (ansible_os_family == "RedHat") or (ansible_os_family == "Rocky")
+
+- name: Linux | Create Users
+  become: true
+  block:
+    - name: Debian | Create Users
+      ansible.builtin.user:
+        state: present
+        name: "{{ item.name }}"
+        groups: "{{ sudo_group_debian }}"
+        shell: "/bin/bash"
+        password: "{{ user_password | password_hash('sha512') }}"
+        update_password: always
+      loop: "{{ users }}"
+
+    - name: Debian | Configure sudo Rules
+      ansible.builtin.lineinfile:
+        state: present
+        path: "/etc/sudoers"
+        regexp: "^%{{ sudo_group_debian }}"
+        line: "%{{ sudo_group_debian }} ALL=(ALL) NOPASSWD: ALL"
+        validate: "/usr/bin/visudo -cf %s"
+  when: ansible_os_family == "Debian"
+
+- name: Linux | Set root User Password
+  become: true
+  ansible.builtin.user:
+    state: present
+    name: root
+    password: "{{ user_password | password_hash('sha512') }}"
+    update_password: always
+
+- name: Linux | Create Authorized Keys
+  become: true
+  ansible.posix.authorized_key:
+    state: present
+    ansible.builtin.user: "{{ item.name }}"
+    key: "{{ lookup('file', 'files/id_ed25519_' + item.name + '.pub') }}"
+  loop: "{{ users }}"
+
+- name: Linux | Create Authorized Keys for root
+  become: true
+  ansible.posix.authorized_key:
+    state: present
+    ansible.builtin.user: root
+    key: "{{ lookup('file', 'files/id_ed25519_' + 'root' + '.pub') }}"

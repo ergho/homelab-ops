@@ -10,7 +10,7 @@ env:
   KUBECONFIG: "{{.CLUSTER_DIR}}/local/kubeconfig"
 
 includes:
-  #  cluster: .taskfiles/ClusterTasks.yaml
+  cluster: .taskfiles/ClusterTasks.yaml
   #  debug: .taskfiles/DebugTasks.yaml
   #  precommiit: .taskfiles/PreCommitTasks.yaml
   terraform: .taskfiles/TerraformTasks.yaml

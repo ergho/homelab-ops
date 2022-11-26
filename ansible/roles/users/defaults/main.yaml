@@ -1,2 +1,8 @@
 users:
-  - name: ubuntu
+  - name: ansible
+    password: "defined in secure.yaml"
+  - name: ergho
+    password: "defined in secure.yaml"
+
+sudo_group_redhat: "wheel"
+sudo_group_debian: "sudo"

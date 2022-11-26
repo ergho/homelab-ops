@@ -1,36 +1,3 @@
-- include_vars:
-    file: ../defaults/secure.yaml
-  name: "load user password"
-- include_vars: ../vars/Ubuntu.yaml
-  name: "load ubuntu group"
-- loop: "{{ users }}"
-  name: "create users"
-  user:
-    groups: "{{ sudo_group }}"
-    name: "{{ item.name }}"
-    password: "{{ user_password | password_hash('sha512') }}"
-    shell: /bin/bash
-    state: present
-    update_password: always
-- authorized_key:
-    key: "{{ lookup('file', 'files/id_ed25519_' + item.name + '.pub') }}"
-    state: present
-    user: "{{ item.name }}"
-  loop: "{{ users }}"
-  name: "setup ssh keys for root"
-- authorized_key:
-    key: "{{ lookup('file', 'files/id_ed25519_' + 'root' + '.pub') }}"
-    state: present
-    user: root
-  name: "setup ssh keys for root"
-- lineinfile:
-    line: "%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL"
-    path: /etc/sudoers
-    regex: "^%{{ sudo_group }}"
-    state: present
-    validate: "/usr/sbin/visudo -cf %s"
-  name: "configure sudo rules"
-- file:
-    path: /etc/sudoers.d/90-cloud-init-users
-    state: absent
-  name: "remove cloud sudoers file"
+---
+- include: setup-Linux.yaml
+  when: ansible_system == "Linux"
