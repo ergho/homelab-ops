@@ -1,0 +1,60 @@
+---
+- name: Debian | Configure openssh server
+  become: true
+  vars:
+    - sshd_subsystem: "/usr/lib/openssh/sftp-server"
+  block:
+    - name: Debian | Install Packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ packages }}"
+
+    - name: "check if ssh_host_ecdsa_key exists"
+      register: ecdsa_key
+      stat:
+        path: "/etc/ssh/ssh_host_ecdsa_key"
+
+    - block:
+        - name: "mark ssh host keys for deletion"
+          find:
+            paths: /etc/ssh
+            patterns: ssh_host_*
+          register: files_to_delete
+
+        - name: "delete ssh host keys"
+          file:
+            path: "{{ item.path }}"
+            state: absent
+          with_items: "{{ files_to_delete.files }}"
+
+        - name: "generate ed25519 host key"
+          command: 'ssh-keygen -t ed25519 -q -N "" -f /etc/ssh/ssh_host_ed25519_key'
+
+        - name: "generate rsa4096 host key"
+          command: 'ssh-keygen -t rsa -b 4096 -q -N "" -f /etc/ssh/ssh_host_rsa_key'
+
+      when: ecdsa_key.stat.exists
+
+    - name: "check if {{ sshd_moduli_file }} contains primes below {{ sshd_moduli_minimum }}"
+      shell: "awk '$5 < {{ sshd_moduli_minimum }}'  {{ sshd_moduli_file }}"
+      changed_when: false
+      check_mode: false
+      register: sshd_register_moduli
+
+    - name: "remove moduli with value below {{ sshd_moduli_minimum }}"
+      shell:
+        "awk '$5 >= {{ sshd_moduli_minimum }}' /etc/ssh/moduli > /etc/ssh/moduli.safe;
+        [ -r  {{ sshd_moduli_file }}.safe -a -s {{ sshd_moduli_file }}.safe ] && mv
+        {{ sshd_moduli_file }}.new {{ sshd_moduli_file }} || true"
+      when: sshd_register_moduli.stdout
+
+    - name: "configure sshd_config"
+      template:
+        src: "{{ sshd_config_file }}.j2"
+        dest: "/etc/ssh/{{ sshd_config_file }}"
+        owner: root
+        group: root
+        mode: 0600
+      notify:
+        - restart sshd

@@ -1,5 +1,6 @@
-- become: true
-  name: sshd
+---
+- name: restart sshd
+  become: true
   service:
-    name: sshd
+    name: "{{ systemd_service }}"
     state: restarted
