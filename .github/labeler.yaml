@@ -6,4 +6,4 @@ area/github:
 area/cluster:
   - "cluster/**/*"
 area/terraform:
-  - "intrastructure/terraform/*"
+  - "terraform/**/*"
