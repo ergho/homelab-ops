@@ -26,7 +26,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 4.0.0.178@sha256:371b722e647d82a6543fa1e30d9c62c053ffefac876d1ab9b05a33bc387f9337
+      tag: 4.0.0.189@sha256:cc9bbc6a256cfff6761a3187665c17fb178930c1dd8734903b101fb6b70c4455
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
