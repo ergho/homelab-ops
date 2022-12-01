@@ -1,3 +1,6 @@
+---
+packages:
+  - tar
 node_exporter_binary: node_exporter
 node_exporter_port: 9100
 node_exporter_systemd_service: node_exporter.service
