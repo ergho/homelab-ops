@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: docker.io/vaultwarden/server
-      tag: "1.26.0"
+      tag: "1.27.0"
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
