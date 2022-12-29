@@ -7,9 +7,9 @@ calico_bgp_as_number: 64512
 calico_bgp_external_ips: 192.168.100.0/24
 calico_node_cidr: 192.168.90.0/24
 calico_templates:
-  - "calico-installation.yaml.j2"
-  - "calico-bgpconfiguration.yaml.j2"
-  - "calico-bgppeer.yaml.j2"
+  - "calico-installation.yaml"
+  - "calico-bgpconfiguration.yaml"
+  - "calico-bgppeer.yaml"
 k8s_admin_config: /etc/kubernetes/admin.conf
 k8s_api_port: 6443
 k8s_apt_version: 1.25.3-00

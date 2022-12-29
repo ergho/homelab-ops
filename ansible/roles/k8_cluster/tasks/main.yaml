@@ -1,59 +1,66 @@
 ---
 - block:
-    - args:
+    - name: Kubernetes | Configure first control plane node
+      become: true
+      args:
         creates: "{{ k8s_admin_config }}"
-      command:
+      ansible.builtin.command:
         'kubeadm init --kubernetes-version "{{ k8s_version }}" --pod-network-cidr
         "{{ k8s_pod_network }}" --service-cidr "{{ k8s_service_network }}" --control-plane-endpoint
         "{{ k8s_cluster_endpoint }}:{{ k8s_api_port }}" --upload-certs'
-      name: "initialize kubernetes cluster {{ k8s_version }} using kubeadm"
-    - file:
-        group: "{{ k8s_user }}"
-        mode: 488
-        owner: "{{ k8s_user }}"
+
+    - name: Kubernetes | Setup Kubeconfig for {{ k8s_user }} User
+      ansible.builtin.file:
         path: "{{ k8s_user_dir }}/.kube"
         state: directory
-      name: "setup kubeconfig for {{ k8s_user }} user"
-    - copy:
+        group: "{{ k8s_user }}"
+        owner: "{{ k8s_user }}"
+        mode: 0750
+
+    - name: Kubernetes | Copy {{ k8s_admin_config }}
+      become: true
+      ansible.builtin.copy:
+        src: "{{ k8s_admin_config }}"
         dest: "{{ k8s_user_dir }}/.kube/config"
         group: "{{ k8s_user }}"
-        mode: 416
         owner: "{{ k8s_user }}"
+        mode: 0640
         remote_src: true
-        src: "{{ k8s_admin_config }}"
-      name: "copy {{ k8s_admin_config }}"
-    - get_url:
+
+    - name: Kubernetes | Download {{ calico_net_url}}
+      ansible.builtin.get_url:
+        url: "{{ calico_net_url }}"
         dest: "{{ k8s_user_dir }}/{{ calico_net_config }}"
         group: "{{ k8s_user }}"
-        mode: 416
         owner: "{{ k8s_user }}"
-        url: "{{ calico_net_url }}"
-      name: "download {{ calico_net_url }}"
-    - become: false
+        mode: 0640
+
+    - name: Calico | Install Operator
       command: 'kubectl create -f "{{ k8s_user_dir }}/{{ calico_net_config }}"'
-      name: "install calico operator"
-    - name: "calico templates"
+
+    - name: Calico | Templates
       ansible.builtin.template:
-        src: "{{ item }}"
+        src: "{{ item }}.j2"
         dest: "{{ k8s_user_dir }}"
       loop: "{{ calico_templates }}"
-    - name: "apply calico templates"
-      become: false
+
+    - name: Calico | Apply Templates
       ansible.builtin.command: 'kubectl apply -f "{{ k8s_user_dir }}/{{ item }}"'
       loop: "{{ calico_templates }}"
 
-    - command: "kubeadm token create --print-join-command"
-      name: "generate node join command"
+    - name: Kubernetes | Generate node join command
+      command: "kubeadm token create --print-join-command"
       register: join_node_command
-    - become: false
+
+    - name: Kubernetes | Copy node join command to local file
       copy:
         content: "{{ join_node_command.stdout_lines[0] }}"
         dest: "../{{ k8s_token_file_node }}"
         mode: 420
       delegate_to: localhost
-      name: "copy node join command to local file"
   name: "configure control plane"
   when: "'controller' in group_names"
+
 - block:
     - copy:
         dest: "{{ k8s_user_dir }}/{{ k8s_token_file_node }}.sh"
