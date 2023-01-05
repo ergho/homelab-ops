@@ -14,17 +14,24 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
       retries: 5
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 5
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: quay.io/minio/minio
-      tag: RELEASE.2022-10-29T06-21-33Z
+      tag: RELEASE.2023-01-02T09-40-09Z
     env:
       TZ: "${CLUSTER_TZ}"
       MINIO_UPDATE: "off"
@@ -54,16 +61,25 @@ spec:
             path: /minio/v2/metrics/cluster
             interval: 1m
             scrapeTimeout: 10s
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /minio/health/live
+            port: *api-port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
-        annotations:
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
-          nginx.ingress.kubernetes.io/proxy-body-size: 5000m
-          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            chunked_transfer_encoding off;
+        ingressClassName: nginx
         hosts:
           - host: &host-console "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
             paths:
@@ -71,6 +87,20 @@ spec:
                 pathType: Prefix
                 service:
                   port: *port-console
+        tls:
+          - hosts:
+              - *host-console
+      s3:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            chunked_transfer_encoding off;
+        hosts:
           - host: &host-api "s3.${SECRET_DOMAIN_NAME}"
             paths:
               - path: /
@@ -79,8 +109,8 @@ spec:
                   port: *port-api
         tls:
           - hosts:
-              - *host-console
               - *host-api
+
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
