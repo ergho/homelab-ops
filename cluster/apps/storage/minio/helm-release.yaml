@@ -68,7 +68,7 @@ spec:
         spec:
           httpGet:
             path: /minio/health/live
-            port: *api-port
+            port: *port-api
           initialDelaySeconds: 0
           periodSeconds: 10
           timeoutSeconds: 1
