@@ -49,6 +49,7 @@ spec:
       ROCKET_PORT: 8080
       SMTP_SECURITY: starttls
       SMTP_PORT: 587
+      DISABLE_ADMIN_TOKEN: true
     envFrom:
       - secretRef:
           name: *app
