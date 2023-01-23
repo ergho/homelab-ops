@@ -4,8 +4,8 @@ kind: Kustomization
 resources:
   - helm-release.yaml
 configMapGenerator:
-  - name: cloudlfare-proxied-networks
+  - name: cloudflare-proxied-networks
     files:
-      - ./cloudlfare-proxied-networks.txt
+      - ./cloudflare-proxied-networks.txt
 generatorOptions:
-  diableNameSuffixHash: true
+  disableNameSuffixHash: true
