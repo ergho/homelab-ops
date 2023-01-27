@@ -22,7 +22,7 @@
         path: "/etc/sudoers"
         regex: "^%{{ sudo_group_redhat }}"
         line: "%{{ sudo_group_redhat}} ALL=(ALL) NOPASSWD: ALL"
-        validate: "/usr/bin/visudo -cf %s"
+        validate: "/usr/sbin/visudo -cf %s"
   when: (ansible_os_family == "RedHat") or (ansible_os_family == "Rocky")
 
 - name: Linux | Create Users
@@ -44,7 +44,7 @@
         path: "/etc/sudoers"
         regexp: "^%{{ sudo_group_debian }}"
         line: "%{{ sudo_group_debian }} ALL=(ALL) NOPASSWD: ALL"
-        validate: "/usr/bin/visudo -cf %s"
+        validate: "/usr/sbin/visudo -cf %s"
   when: ansible_os_family == "Debian"
 
 - name: Linux | Set root User Password
@@ -59,7 +59,7 @@
   become: true
   ansible.posix.authorized_key:
     state: present
-    ansible.builtin.user: "{{ item.name }}"
+    user: "{{ item.name }}"
     key: "{{ lookup('file', 'files/id_ed25519_' + item.name + '.pub') }}"
   loop: "{{ users }}"
 
@@ -67,5 +67,5 @@
   become: true
   ansible.posix.authorized_key:
     state: present
-    ansible.builtin.user: root
+    user: root
     key: "{{ lookup('file', 'files/id_ed25519_' + 'root' + '.pub') }}"

@@ -1,6 +1,7 @@
 ---
-- block:
-    - name: Kubernetes | Configure first control plane node
+- name: Kubernetes | Configure first control plane node
+  block:
+    - name: Kubernetes | Initialize cluster {{ k8s_version }} with kubeadm
       become: true
       args:
         creates: "{{ k8s_admin_config }}"
@@ -35,16 +36,18 @@
         owner: "{{ k8s_user }}"
         mode: 0640
 
-    - name: Calico | Install Operator
-      command: 'kubectl create -f "{{ k8s_user_dir }}/{{ calico_net_config }}"'
-
     - name: Calico | Templates
       ansible.builtin.template:
         src: "{{ item }}.j2"
-        dest: "{{ k8s_user_dir }}"
+        dest: "{{ k8s_user_dir }}/{{ item }}"
       loop: "{{ calico_templates }}"
 
+    - name: Calico | Install Operator
+      become: false
+      command: 'kubectl create -f "{{ k8s_user_dir }}/{{ calico_net_config }}"'
+
     - name: Calico | Apply Templates
+      become: false
       ansible.builtin.command: 'kubectl apply -f "{{ k8s_user_dir }}/{{ item }}"'
       loop: "{{ calico_templates }}"
 
@@ -53,12 +56,12 @@
       register: join_node_command
 
     - name: Kubernetes | Copy node join command to local file
+      become: false
       copy:
         content: "{{ join_node_command.stdout_lines[0] }}"
         dest: "../{{ k8s_token_file_node }}"
         mode: 420
       delegate_to: localhost
-  name: "configure control plane"
   when: "'controller' in group_names"
 
 - block:

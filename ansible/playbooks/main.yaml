@@ -5,4 +5,4 @@
 - import_playbook: container-runtime.yaml
 - import_playbook: kubernetes-install.yaml
 - import_playbook: kubernetes-cluster.yaml
-- import_playbook: node-exporter.yaml
+  #- import_playbook: node-exporter.yaml

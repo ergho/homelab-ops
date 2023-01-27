@@ -24,6 +24,8 @@ homelab:
               ansible_host: 192.168.90.112
               rook_devices:
                 - /dev/nvme0n1
+            worker-4:
+              ansible_host: 192.168.90.113
           vars:
             ansible_user: ubuntu
             ansible_ssh_port: 22

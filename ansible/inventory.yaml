@@ -1,17 +1,31 @@
 ---
-all:
+homelab:
   children:
-    controller:
-      hosts:
-        controller-1.ergho.org:
-          ansible_host: 192.168.90.100
-    worker:
-      hosts:
-        worker-1.ergho.org:
-          ansible_host: 192.168.90.110
-        worker-2.ergho.org:
-          ansible_host: 192.168.90.111
-        worker-3.ergho.org:
-          ansible_host: 192.168.90.112
-  vars:
-    ansible_ssh_user: ubuntu
+    kubernetes:
+      children:
+        controller:
+          hosts:
+            controller-1:
+              ansible_host: 192.168.90.100
+          vars:
+            ansible_user: ubuntu
+            ansible_ssh_port: 22
+        worker:
+          hosts:
+            worker-1:
+              ansible_host: 192.168.90.110
+              rook_devices:
+                - /dev/nvme0n1
+            worker-2:
+              ansible_host: 192.168.90.111
+              rook_devices:
+                - /dev/nvme0n1
+            worker-3:
+              ansible_host: 192.168.90.112
+              rook_devices:
+                - /dev/nvme0n1
+            worker-4:
+              ansible_host: 192.168.90.113
+          vars:
+            ansible_user: ubuntu
+            ansible_ssh_port: 22
