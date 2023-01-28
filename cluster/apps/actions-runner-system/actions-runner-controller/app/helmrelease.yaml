@@ -67,5 +67,5 @@ spec:
         name: *secret
     actionsMetrics:
       port: 8080
-      proxty:
+      proxy:
         enabled: false
