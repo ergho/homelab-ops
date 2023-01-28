@@ -29,10 +29,10 @@ spec:
       - apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
-          name: "${SECRET_DOMAIN_NAME/./-}"
+          name: "ergho-org"
           namespace: networking
         spec:
-          secretName: "${SECRET_DOMAIN_NAME/./-}-tls"
+          secretName: "ergho-org-tls"
           issuerRef:
             name: letsencrypt-production
             kind: ClusterIssuer

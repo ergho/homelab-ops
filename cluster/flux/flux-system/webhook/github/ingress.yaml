@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: "flux-webhook.${SECRET_DOMAIN_NAME}"
+    - host: "flux-webhook.ergho.org"
       http:
         paths:
           - path: /hook/
@@ -21,4 +21,4 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - "flux-webhook.${SECRET_DOMAIN_NAME}"
+        - "flux-webhook.ergho.org"
