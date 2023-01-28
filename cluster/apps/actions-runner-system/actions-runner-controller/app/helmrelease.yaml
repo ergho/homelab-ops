@@ -28,9 +28,9 @@ spec:
   values:
     image:
       repository: ghcr.io/actions-runner-controller/actions-runner-controller
-      envFrom:
-        - secretRef:
-            name: &secret actions-runner-controller-secret
+    authSecret:
+      create: false
+      name: &secret actions-runner-controller-secret
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
     githubWebhookServer:
