@@ -27,4 +27,4 @@ spec:
           metadata:
             annotations:
               +(external-dns.alpha.kubernetes.io/target): |-
-                ipv4.${SECRET_DOMAIN_NAME}
+                ipv4.ergho.org

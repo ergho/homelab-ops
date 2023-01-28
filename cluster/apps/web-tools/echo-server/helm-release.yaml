@@ -55,7 +55,7 @@ spec:
         annotations:
           external-dns.home.arpa/enabled: "true"
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_NAME}"
+          - host: &host "{{ .Release.Name }}.ergho.org"
             paths:
               - path: /
                 pathType: Prefix

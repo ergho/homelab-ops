@@ -25,7 +25,7 @@ spec:
     env:
       TZ: ${CLUSTER_TZ}
     fullnameOverride: *app
-    domain: ${SECRET_DOMAIN_NAME}
+    domain: ergho.org
     ttl: 1
     service:
       type: LoadBalancer

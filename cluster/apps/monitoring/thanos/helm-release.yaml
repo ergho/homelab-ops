@@ -36,7 +36,7 @@ spec:
         sidecarsNamespace: monitoring
       ingress:
         enabled: true
-        hostname: &host "thanos-query.${SECRET_DOMAIN_NAME}"
+        hostname: &host "thanos-query.ergho.org"
         ingressClassName: "nginx"
         tls: true
         extraTls:

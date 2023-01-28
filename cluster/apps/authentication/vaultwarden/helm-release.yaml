@@ -31,7 +31,7 @@ spec:
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
-      DOMAIN: https://bitwarden.${SECRET_DOMAIN_NAME}
+      DOMAIN: https://bitwarden.ergho.org
       DATA_FOLDER: "config"
       ICON_CACHE_FOLDER: "config/icon_cache"
       ATTACHMENTS_FOLDER: "config/attachments"
@@ -67,7 +67,7 @@ spec:
         annotations:
           external-dns.home.arpa/enabled: "true"
         hosts:
-          - host: &host "bitwarden.${SECRET_DOMAIN_NAME}"
+          - host: &host "bitwarden.ergho.org"
             paths:
               - path: /
                 pathType: Prefix

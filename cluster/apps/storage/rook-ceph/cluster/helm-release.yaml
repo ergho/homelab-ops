@@ -32,7 +32,7 @@ spec:
       dashboard:
         ingressClassName: "nginx"
         host:
-          name: &host "rook.${SECRET_DOMAIN_NAME}"
+          name: &host "rook.ergho.org"
           path: /
         tls:
           - hosts:

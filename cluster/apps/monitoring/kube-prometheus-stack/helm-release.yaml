@@ -58,7 +58,7 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         hosts:
-          - &host "alert-manager.${SECRET_DOMAIN_NAME}"
+          - &host "alert-manager.ergho.org"
         tls:
           - hosts:
               - *host
@@ -121,7 +121,7 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         hosts:
-          - &host "prometheus.${SECRET_DOMAIN_NAME}"
+          - &host "prometheus.ergho.org"
         tls:
           - hosts:
               - *host
@@ -137,7 +137,7 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
         hosts:
-          - &host "thanos-sidecar.${SECRET_DOMAIN_NAME}"
+          - &host "thanos-sidecar.ergho.org"
         tls:
           - hosts:
               - *host

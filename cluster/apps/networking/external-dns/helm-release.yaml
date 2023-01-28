@@ -44,7 +44,7 @@ spec:
     txtPrefix: "k8s."
     txtOwnerId: "default"
     domainFilters:
-      - "${SECRET_DOMAIN_NAME}"
+      - "ergho.org"
     serviceMonitor:
       enabled: true
     podAnnotations:

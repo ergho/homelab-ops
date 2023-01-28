@@ -47,7 +47,7 @@ spec:
           external-dns.home.arpa/enabled: "true"
         ingressClassName: nginx
         hosts:
-          - host: &host "arc-webhook.${SECRET_DOMAIN_NAME}"
+          - host: &host "arc-webhook.ergho.org"
             paths:
               - path: /
                 pathType: Prefix
