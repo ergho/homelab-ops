@@ -9,7 +9,7 @@ spec:
     spec:
       image: ghcr.io/actions/actions-runner-controller/actions-runner-dind:v2.299.1-ubuntu-22.04
       imagePullPolicy: IfNotPresent
-      dockerWithinRunnerContainer: true
+      dockerdWithinRunnerContainer: true
       ephemeral: true
       repository: ergho/homelab-ops
       labels: ["self-hosted"]
