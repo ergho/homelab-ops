@@ -22,6 +22,9 @@ spec:
     remediation:
       retries: 5
   values:
+    controller:
+      annotations:
+        reloader.stakater.com.secret: radarr-uhd
     image:
       repository: ghcr.io/onedr0p/radarr-develop
       tag: 4.4.0.6882@sha256:2aff920f979d0137c8e2e7de497c90bbe5ca079c3c1aff44872c8e867acc81e5
