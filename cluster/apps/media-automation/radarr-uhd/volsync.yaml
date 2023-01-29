@@ -8,7 +8,7 @@ metadata:
 spec:
   sourcePVC: radarr-uhd-config-v1
   trigger:
-    schedule: "15 * * * *"
+    schedule: "0 0 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 10
