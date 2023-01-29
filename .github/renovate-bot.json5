@@ -1,0 +1,6 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "username": "ergho-bot[bot]",
+    "gitAuthor": "ergho-bot <116787855+ergho-bot[bot]@users.noreply.github.com>",
+    "repositories": ["ergho/homelab-ops"],
+}

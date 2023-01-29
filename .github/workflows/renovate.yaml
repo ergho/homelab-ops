@@ -18,13 +18,14 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - ".github/renovate.json5"
-      - ".github/renovate/**.json5"
+      - .github/renovate-bot.json5
+      - .github/renovate.json5
+      - .github/renovate/**.json5
 
 env:
   LOG_LEVEL: debug
   RENOVATE_DRY_RUN: false
-  RENOVATE_CONFIG_FILE: .github/renovate.json5
+  RENOVATE_CONFIG_FILE: .github/renovate-bot.json5
 
 jobs:
   renovate:
@@ -40,6 +41,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+        with:
+          token: "${{ steps.generate-token.output.token }}"
 
       - name: Override default config from dispatch variables
         run: |
