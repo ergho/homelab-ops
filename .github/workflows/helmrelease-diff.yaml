@@ -1,10 +1,9 @@
 ---
-name: "Helm Release Differ"
+name: "HelmRelease Diff"
 
 on: # yamllint disable-line rule:truthy
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
     paths:
       - ["cluster/**/helmrelease.yaml", "cluster/**/helm-release.yaml"]
 
@@ -13,7 +12,7 @@ env:
   KUBERNETES_DIR: cluster/
 
 jobs:
-  changed-file-changes:
+  changed-files:
     name: Detect File Changes
     runs-on: ubuntu-latest
     outputs:
@@ -47,8 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [changed-files]
     strategy:
-      matrix:
-        file: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
     steps:
       - name: Generate Token
         uses: tibdex/github-app-token@b62528385c34dbc9f38e5f4225ac829252d1ea92 # v1.8.0
@@ -75,6 +73,17 @@ jobs:
       - name: Setup Tools
         run: |
           brew install helm homeport/tap/dyff kustomize yq
+
+      - name: Diff
+        id: diff
+        run: |
+          diff=$(npx zx ./.github/scripts/helmReleaseDiff.mjs \
+            --current-release "default/${{ matrix.file }}" \
+            --incoming-release "${{ matrix.file }}" \
+            --kubernetes-dir ${{ env.KUBERNETES_DIR }})
+          echo "diff<<EOF" >> "${GITHUB_OUTPUT}"
+          echo "${diff}" >> "${GITHUB_OUTPUT}"
+          echo "EOF" >> "${GITHUB_OUTPUT}"
 
       - name: Find Comment
         if: ${{ always() && steps.diff.outputs.diff != '' }}
