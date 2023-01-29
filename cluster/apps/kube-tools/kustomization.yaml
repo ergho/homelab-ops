@@ -7,3 +7,4 @@ resources:
   - ./kyverno
   - ./metrics-server
   - ./reloader
+  - ./snapshot-controller
