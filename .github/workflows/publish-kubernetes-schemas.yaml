@@ -53,7 +53,7 @@ jobs:
 
       - name: Extract crd-extractor
         run: |
-          unzip -j $GITHUB_WORKSPACE/crd-extractor.zip -d $GITHUB_WORKSPACE
+          unzip -j "$GITHUB_WORKSPACE/crd-extractor.zip -d $GITHUB_WORKSPACE"
 
       - name: Write kubeconfig
         id: kubeconfig
@@ -66,7 +66,7 @@ jobs:
         env:
           KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
         run: |
-          bash $GITHUB_WORKSPACE/crd-extractor.sh
+          bash "$GITHUB_WORKSPACE/crd-extractor.sh"
 
       - name: Publish schemas as OCI
         run: |
