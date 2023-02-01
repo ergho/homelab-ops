@@ -61,7 +61,7 @@ spec:
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100
-    volumeClaimTemplate:
+    volumeClaimTemplates:
       - name: config
         mountPath: /config
         accessMode: ReadWriteOnce
