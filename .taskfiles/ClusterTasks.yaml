@@ -1,9 +1,0 @@
----
-version: "3"
-
-tasks:
-  hr-reset:
-    desc: Restart all helm releases in namespace
-    cmds:
-      - kubectl get hr --all-namespaces | grep $NS | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
-      - kubectl get hr --all-namespaces | grep $NS | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'

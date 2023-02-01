@@ -1,0 +1,11 @@
+---
+version: "3"
+
+tasks:
+  deps:
+    desc: Install/upgrade ansible collections
+    dir: "{{.ANSIBLE_DIR}}"
+    cmds:
+      - ansible-galaxy collection install -r requirements.yaml --collections-path ~/.ansible/collections --force
+    preconditions:
+      - test -f "{{.ANSIBLE_DIR}}"/requirements.yaml

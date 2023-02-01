@@ -2,32 +2,19 @@
 version: "3"
 
 vars:
-  PROJECT_DIR:
-    sh: "git rev-parse --show-toplevel"
-  CLUSTER_DIR: "{{.PROJECT_DIR}}/cluster"
+  CLUSTER_DIR: "{{.ROOT_DIR}}/cluster"
+  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
 
 env:
   KUBECONFIG: "{{.CLUSTER_DIR}}/local/kubeconfig"
 
 includes:
-  cluster: .taskfiles/ClusterTasks.yaml
-  #  debug: .taskfiles/DebugTasks.yaml
-  #  precommiit: .taskfiles/PreCommitTasks.yaml
-  terraform: .taskfiles/TerraformTasks.yaml
-  #  rook: .taskfiles/RookTasks.yaml
+  an: .taskfiles/ansible/tasks.yaml
+  fx: .taskfiles/flux/tasks.yaml
+  ku: .taskfiles/kubernetes/tasks.yaml
+  vs: .taskfiles/volsync/tasks.yaml
 
 tasks:
-  kubeconfig:
-    desc: Fetch kubeconfig from Kubernetes
-    cmds:
-      - rsync --verbose --progress --partial --rsync-path="sudo rsync" {{.K8S_MASTER_NODE_USERNAME}}@{{.K8S_MASTER_NODE_ADDR}}:/home/{{.K8S_MASTER_NODE_USERNAME}}/.kube/config "${KUBECONFIG}"
-      - chmod go-r "${KUBECONFIG}"
-    vars:
-      K8S_MASTER_NODE_USERNAME: ubuntu
-      K8S_MASTER_NODE_ADDR: 192.168.90.100
-
-  ansible:
-    desc: Install/Upgrade Ansible deps
-    dir: ansible
-    cmds:
-      - ansible-galaxy collection install -r requirements.yaml --collections-path ~/.ansible/collections --force
+  default:
+    silent: true
+    cmds: ["go-task -l"]

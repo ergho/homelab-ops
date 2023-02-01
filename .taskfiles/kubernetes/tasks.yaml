@@ -1,0 +1,21 @@
+---
+version: "3"
+
+tasks:
+
+  kubeconfig:
+    desc: Download kubeconfig from a remote k8s master node
+    vars:
+      MASTER_USERNAME: '{{.MASTER_USERNAME | default "ansible"}}'
+      MASTER_HOST: '{{.MASTER_HOST | default "192.168.90.100"}}'
+    cmds:
+      - rsync --verbose --progress --partial --rsync-path="sudo rsync" {{.MASTER_USERNAME}}@{{.MASTER_HOST}}:/etc/kubernetes/admin.conf "${KUBECONFIG}"
+      - chmod go-r "${KUBECONFIG}"
+
+  schemas:
+    desc: Pull the latest CRD schemas for this cluster
+    cmds:
+      - |
+        mkdir -p {{.CLUSTER_DIR}}/schemas
+        flux pull artifact oci://ghcr.io/ergho/kubernetes-schemas-oci:latest \
+            --output={{.CLUSTER_DIR}}/schemas
