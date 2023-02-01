@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app readarr
+  name: readarr
   namespace: media
 spec:
   interval: 15m
@@ -14,17 +14,24 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/readarr-nightly
       tag: 0.1.2.1544@sha256:a8e38d1cf51bb7cba7483630cfeb0a97ecce91b970249575073fcdde97638ee4
@@ -35,7 +42,7 @@ spec:
       READARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
-          name: *app
+          name: readarr-secret
     service:
       main:
         ports:

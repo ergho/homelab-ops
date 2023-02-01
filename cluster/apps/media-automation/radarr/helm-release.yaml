@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app radarr
+  name: radarr
   namespace: media
 spec:
   interval: 15m
@@ -14,17 +14,24 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/radarr-develop
       tag: 4.4.0.6882@sha256:2aff920f979d0137c8e2e7de497c90bbe5ca079c3c1aff44872c8e867acc81e5
@@ -36,7 +43,7 @@ spec:
       RADARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
-          name: *app
+          name: radarr-secret
     service:
       main:
         ports:

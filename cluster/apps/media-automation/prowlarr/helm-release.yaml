@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app prowlarr
+  name: prowlarr
   namespace: media
 spec:
   interval: 15m
@@ -14,14 +14,21 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/prowlarr-nightly
       tag: 1.1.3.2464@sha256:990932de9d6338842f10b8ac00041d02257b5593c151c019072a297e6f6991f4
@@ -31,6 +38,9 @@ spec:
       PROWLARR__INSTANCE_NAME: Prowlarr
       PROWLARR__PORT: &port 8080
       PROWLARR__LOG_LEVEL: info
+    envFrom:
+      - secretRef:
+          name: prowlarr-secret
     service:
       main:
         ports:
