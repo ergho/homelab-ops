@@ -40,7 +40,7 @@ spec:
       RADARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
-          name: *app
+          name: radarr-uhd-secret
     service:
       main:
         ports:
