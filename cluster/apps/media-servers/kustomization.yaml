@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - ./jellyfin
   - ./media-browser
-  - ./plex
