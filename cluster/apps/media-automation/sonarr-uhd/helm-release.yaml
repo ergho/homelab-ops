@@ -44,7 +44,7 @@ spec:
       SONARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
-          name: sonar-uhd-secret
+          name: sonarr-uhd-secret
     service:
       main:
         ports:
