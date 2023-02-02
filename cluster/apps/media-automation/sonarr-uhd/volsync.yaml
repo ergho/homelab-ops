@@ -6,7 +6,7 @@ metadata:
   name: sonarr-uhd
   namespace: media
 spec:
-  sourcePVC: config-radarr-uhd-0
+  sourcePVC: config-sonarr-uhd-0
   trigger:
     schedule: "0 0 * * *"
   restic:
