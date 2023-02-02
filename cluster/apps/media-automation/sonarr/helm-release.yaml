@@ -31,6 +31,7 @@ spec:
       namespace: rook-ceph
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
@@ -68,10 +69,13 @@ spec:
       fsGroup: 568
       supplementalGroups:
         - 100
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: ceph-block
     persistence:
-      config:
-        enabled: true
-        existingClaim: sonarr-config-v1
       media:
         enabled: true
         type: nfs
