@@ -28,6 +28,7 @@ spec:
     keepHistory: false
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
@@ -64,7 +65,9 @@ spec:
       runAsGroup: 568
       fsGroup: 568
       fsGroupChangePolicy: "OnRootMismatch"
-    persistence:
-      config:
-        enabled: true
-        existingClaim: prowlarr-config-v1
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: ceph-block
