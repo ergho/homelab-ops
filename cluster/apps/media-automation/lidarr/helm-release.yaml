@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app lidarr
+  name: lidarr
   namespace: media
 spec:
   interval: 15m
@@ -26,6 +26,10 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/lidarr-develop
       tag: 1.1.2.2935@sha256:a8a29571129d60e2c948c07d01e5be5dedbf99cd130c625d3af6fa48dbf83cc9
@@ -36,7 +40,7 @@ spec:
       LIDARR__LOG_LEVEL: info
     envFrom:
       - secretRef:
-          name: *app
+          name: lidarr-secret
     service:
       main:
         ports:
@@ -61,10 +65,13 @@ spec:
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: ceph-block
     persistence:
-      config:
-        enabled: true
-        existingClaim: lidarr-config-v1
       media:
         enabled: true
         type: nfs
