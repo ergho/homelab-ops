@@ -31,6 +31,7 @@ spec:
       namespace: rook-ceph
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
@@ -68,13 +69,16 @@ spec:
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: ceph-block
     persistence:
-      config:
+      media:
         enabled: true
-        existingClaim: readarr-config-v1
-    media:
-      enabled: true
-      type: nfs
-      server: "${NAS_ADDR}"
-      path: /mnt/BeepyBoopy/Media/
-      mountPath: /media
+        type: nfs
+        server: "${NAS_ADDR}"
+        path: /mnt/BeepyBoopy/Media/
+        mountPath: /media
