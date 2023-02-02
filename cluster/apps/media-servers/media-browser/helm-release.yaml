@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app media-browser
+  name: media-browser
   namespace: media
 spec:
   interval: 15m
@@ -14,19 +15,25 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
+    controller:
+      type: statefulset
     image:
-      repository: docker.io/filebrowser/filebrowser
+      repository: ghcr.io/onedr0p/filebrowser
       tag: v2.23.0
     env:
       TZ: "${CLUSTER_TZ}"
@@ -66,14 +73,16 @@ spec:
         tls:
           - hosts:
               - *host
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
     persistence:
-      config:
-        enabled: true
-        existingClaim: media-browser-config-v1
       media:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
         path: /mnt/BeepyBoopy/Media
         mountPath: /media
-        readOnly: true
