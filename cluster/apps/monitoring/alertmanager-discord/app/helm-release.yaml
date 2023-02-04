@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,14 +15,21 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        secret.reloader.stakater.com/auto: "true"
     global:
       nameOverride: *app
     image:
@@ -34,4 +42,4 @@ spec:
             port: 9094
     envFrom:
       - secretRef:
-          name: *app
+          name: alertmanager-discord-secret
