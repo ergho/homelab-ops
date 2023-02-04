@@ -1,45 +1,51 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app qbittorrent-vpn
+  name: qbittorrent-vpn
   namespace: downloaders
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: qbittorrent
-      version: 13.5.2
+      chart: app-template
+      version: 1.3.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  maxHistory: 3
   install:
+    createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: vpn-gateway
       namespace: vpn-gateway
   values:
-    hostname: "qbittorrent-vpn"
+    controller:
+      type: statefulset
     image:
       repository: ghcr.io/onedr0p/qbittorrent
       tag: 4.5.0@sha256:5ff2064d788100f54770dc5e477f32d41be7e71ee36923a22236053576e39d5d
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
+      QBITTORRENT__PORT: &port 8080
     service:
       main:
         ports:
           http:
-            port: 8080
+            port: *port
       bittorrent:
         enabled: true
         type: LoadBalancer
@@ -70,12 +76,16 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
     persistence:
-      config:
-        enabled: true
-        existingClaim: qbittorrent-vpn-config-v1
       media:
         enabled: true
         type: nfs

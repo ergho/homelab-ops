@@ -1,6 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/replicationsource_v1alpha1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - config-pvc.yaml
-  - helm-release.yaml
+  - ./config-pvc.yaml
+  - ./helm-release.yaml
+  - ./secret.sops.yaml
+  - ./volsync.yaml
