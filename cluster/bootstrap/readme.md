@@ -3,7 +3,7 @@
 ## 1. Install the Flux manifests into the cluster
 
 ```bash
-kubectl apply --kustomize ./cluster/bootstrap
+kubectl apply --server-side --kustomize ./cluster/bootstrap/flux
 ```
 
 ## 2. Apply the Age, Github and cluster variable secrets
@@ -19,5 +19,5 @@ kubectl apply -f cluster/flux/vars/cluster-settings.yaml
 ##
 
 ```bash
-kubectl apply --kustomize ./cluster/flux/config
+kubectl apply --server-side --kustomize ./cluster/flux/config
 ```

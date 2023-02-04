@@ -1,6 +1,10 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: actions-runner-system
 resources:
-  - ./actions-runner-controller
+  # Pre Flux-kustomizations
+  - ./namespace.yaml
+  # Flux-kustomizations
+  - ./actions-runner-controller/ks.yaml
