@@ -9,4 +9,4 @@ resources:
   - ./k8s-gateway
   - ./pod-gateway/
   - ./tigera-operator
-  - ./vpn-gateway
+  #- ./vpn-gateway
