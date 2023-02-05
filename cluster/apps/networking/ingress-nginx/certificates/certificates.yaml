@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "ergho-org"
+  namespace: networking
+spec:
+  secretName: "ergho-org-tls"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "ergho.org"
+  dnsNames:
+    - "ergho.org"
+    - "*.ergho.org"
