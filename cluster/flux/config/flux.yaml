@@ -19,7 +19,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  path: ./manifests/install
+  path: ./
   prune: true
   wait: true
   sourceRef:

@@ -10,7 +10,7 @@ spec:
   path: ./cluster/apps
   sourceRef:
     kind: GitRepository
-    name: flux-cluster
+    name: homelab-cluster
   prune: true
   decryption:
     provider: sops
