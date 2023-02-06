@@ -29,7 +29,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-kyverno
-  path: ./kubernetes/apps/kyverno/kyverno/policies
+  path: ./cluster/apps/kyverno/kyverno/policies
   prune: true
   sourceRef:
     kind: GitRepository
