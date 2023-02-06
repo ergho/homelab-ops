@@ -6,13 +6,13 @@ metadata:
   name: qbittorrent-vpn
   namespace: downloaders
 spec:
-  sourcePVC: config-qbittorrent-0
+  sourcePVC: config-qbittorrent-vpn-0
   trigger:
     schedule: "0 0 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    repository: qbittorrent-restic-secret
+    repository: qbittorrent-vpn-restic-secret
     cacheCapacity: 2Gi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
