@@ -1,22 +1,26 @@
-- file:
+---
+- name: "create config and data dirs"
+  file:
     mode: 384
     path: "{{ item }}"
     state: directory
-  name: "create config and data dirs"
   with_items:
     - /etc/containerd
     - /tmp/containerd
-- get_url:
+
+- name: "download and install runc"
+  get_url:
     dest: /usr/local/bin/runc
     mode: 448
     url: "{{ containerd_packages.runc_download_url }}"
-  name: "download and install runc"
+
 - name: "download crictl"
   unarchive:
     dest: /usr/local/bin
     mode: 448
     remote_src: true
     src: "{{ containerd_packages.crictl_download_url }}"
+
 - name: "download containerd"
   unarchive:
     dest: /tmp/containerd
@@ -24,34 +28,46 @@
       - --strip-components=1
     remote_src: true
     src: "{{ containerd_packages.containerd_download_url }}"
-- args:
-    executable: /usr/bin/bash
-  changed_when: false
-  name: "copy containerd stuff"
+
+- name: "copy containerd stuff"
   shell: |
     set -e -o pipefail
     find /tmp/containerd -type f | xargs -I {} mv {} /bin/
-- loop: "{{ sysctl_config }}"
-  name: "configure sysctl values"
+  args:
+    executable: /usr/bin/bash
+  changed_when: false
+
+- name: "configure sysctl values"
+  loop: "{{ sysctl_config }}"
   sysctl:
     name: "{{ item.name }}"
     state: present
     value: "{{ item.value }}"
+
 - name: "containerd config"
   template:
     dest: /etc/containerd/config.toml
     mode: 384
-    src: containerd-config.toml
+    src: config.toml
+
+- name: Kubernetes | Generate Containerd Config
+  shell: containerd config default > /etc/containerd/config.toml
+  become: true
+  args:
+    creates: /etc/containerd/config.toml
+
 - name: "containerd systemd service"
   template:
     dest: /etc/systemd/system/containerd.service
     mode: 384
     src: containerd.service
+
 - name: "reload systemd services"
   notify:
     - "start containerd"
   systemd:
     daemon_reload: true
+
 - name: "start and enable containerd service"
   service:
     enabled: true

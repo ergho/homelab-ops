@@ -28,27 +28,29 @@
         mode: 0640
         remote_src: true
 
-    - name: Kubernetes | Download {{ calico_net_url}}
+    - name: Kubernetes | Download Manifests
       ansible.builtin.get_url:
-        url: "{{ calico_net_url }}"
-        dest: "{{ k8s_user_dir }}/{{ calico_net_config }}"
-        group: "{{ k8s_user }}"
+        url: "{{ item.url }}"
+        dest: "{{ k8s_user_dir }}/{{ item.filename }}"
         owner: "{{ k8s_user }}"
-        mode: 0640
+        group: "{{ k8s_user }}"
+        mode: "0640"
+      loop: "{{ manifest_urls }}"
 
-    - name: Calico | Templates
+    - name: Calico | Copy Calico Templates
       ansible.builtin.template:
         src: "{{ item }}.j2"
         dest: "{{ k8s_user_dir }}/{{ item }}"
       loop: "{{ calico_templates }}"
 
-    - name: Calico | Install Operator
+    - name: Kubernetes | Create Calico
       become: false
-      command: 'kubectl create -f "{{ k8s_user_dir }}/{{ calico_net_config }}"'
+      ansible.builtin.command: kubectl create -f {{ k8s_user_dir }}/{{ item.filename }}
+      loop: "{{ manifest_urls }}"
 
-    - name: Calico | Apply Templates
+    - name: Calico | Apply Calico Templates
       become: false
-      ansible.builtin.command: 'kubectl apply -f "{{ k8s_user_dir }}/{{ item }}"'
+      ansible.builtin.command: kubectl apply -f {{ k8s_user_dir }}/{{ item }}
       loop: "{{ calico_templates }}"
 
     - name: Kubernetes | Generate node join command
@@ -64,17 +66,18 @@
       delegate_to: localhost
   when: "'controller' in group_names"
 
-- block:
-    - copy:
+- name: "configure worker nodes"
+  block:
+    - name: "copy {{ k8s_token_file_node }} to worker nodes"
+      copy:
         dest: "{{ k8s_user_dir }}/{{ k8s_token_file_node }}.sh"
         group: "{{ k8s_user }}"
         mode: 488
         owner: "{{ k8s_user }}"
         src: "../{{ k8s_token_file_node }}"
-      name: "copy {{ k8s_token_file_node }} to worker nodes"
-    - args:
-        creates: "{{ k8s_kubelet_config }}"
+
+    - name: "join worker node to cluster unless file {{ k8s_kubelet_config }} exists"
       command: 'sh "{{ k8s_user_dir }}/{{ k8s_token_file_node }}.sh"'
-      name: "join worker node to cluster unless file {{ k8s_kubelet_config }} exists"
-  name: "configure worker nodes"
+      args:
+        creates: "{{ k8s_kubelet_config }}"
   when: "'worker' in group_names"

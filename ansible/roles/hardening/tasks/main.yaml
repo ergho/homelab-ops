@@ -1,9 +1,29 @@
-- apt:
+---
+- name: "uninstall unneeded packages"
+  ansible.builtin.apt:
     name: "{{ item }}"
-    purge: true
     state: absent
+    autoremove: true
   loop: "{{ packages_to_remove_ubuntu }}"
-  name: "uninstall unneeded packages"
+- name: Gather installed packages
+  ansible.builtin.package_facts:
+    manager: auto
+- name: Packages | Uninstall Snap
+  block:
+    - name: Packages | Uninstall Snap | Check if snap is installed
+      ansible.builtin.debug:
+        msg: "snapd is installed"
+      register: snapd_check
+    - name: Packages | Uninstall Snap | Remove snap packages
+      ansible.builtin.command: snap remove {{ item }}
+      loop: ["lxd", "core20", "snapd"]
+      when: snapd_check.failed is defined
+    - name: Packages | Uninstall Snap | Remove snap from packages
+      ansible.builtin.apt:
+        name: snapd
+        state: absent
+        autoremove: true
+  when: "'snapd' in ansible_facts.packages"
 - name: "install libpam-pwquality"
   package:
     name: libpam-pwquality

@@ -8,7 +8,7 @@
       package:
         name: "{{ item }}"
         state: present
-      loop: "{{ packages }}"
+      loop: "{{ packages_install }}"
 
     - name: "check if ssh_host_ecdsa_key exists"
       register: ecdsa_key

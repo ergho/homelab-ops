@@ -1,14 +1,14 @@
 ---
-- name: Debian | Configure openssh server
+- name: Red Hat | Configure openssh server
   become: true
   vars:
     - sshd_subsystem: "/usr/libexec/openssh/sftp-server"
   block:
-    - name: Debian | Install Packages
+    - name: Red Hat | Install Packages
       package:
         name: "{{ item }}"
         state: present
-      loop: "{{ packages }}"
+      loop: "{{ packages_install }}"
 
     - name: "check if ssh_host_ecdsa_key exists"
       register: ecdsa_key
