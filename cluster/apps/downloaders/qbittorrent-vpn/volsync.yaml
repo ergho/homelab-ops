@@ -6,7 +6,7 @@ metadata:
   name: qbittorrent-vpn
   namespace: downloaders
 spec:
-  sourcePVC: config-qbittorrent-0
+  sourcePVC: config-qbittorrent-vpn-0
   trigger:
     schedule: "0 0 * * *"
   restic:
