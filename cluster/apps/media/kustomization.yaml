@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomization_v1beta2.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Pre Flux Kustomization
+  - ./namespace.yaml
+  # Flux Kustomization
+  - ./jellyfin/ks.yaml
+  - ./lidarr/ks.yaml
+  - ./media-browser/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./radarr-uhd/ks.yaml
+  - ./readarr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./sonarr-uhd/ks.yaml
+  - ./unpackerr/ks.yaml
