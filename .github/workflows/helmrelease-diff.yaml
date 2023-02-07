@@ -4,7 +4,7 @@ name: "HelmRelease Diff"
 on: # yamllint disable-line rule:truthy
   pull_request:
     branches: ["main"]
-    paths: ["cluster/**/helmrelease.yaml", "cluster/**/helm-release.yaml"]
+    paths: ["cluster/**/helm-release.yaml"]
 
 env:
   BOT_USERNAME: "ergho-bot[bot]"
@@ -36,7 +36,6 @@ jobs:
           json: true
           files: |
             cluster/**/helm-release.yaml
-            cluster/**/helmrelease.yaml
       - id: set-matrix
         run: echo "matrix={\"file\":${{ steps.changed-files.outputs.all_changed_files }}}" >> "${GITHUB_OUTPUT}"
 
