@@ -22,9 +22,6 @@ spec:
   upgrade:
     remediation:
       retries: 5
-  dependsOn:
-    - name: kube-prometheus-stack
-      namespace: monitoring
   values:
     query:
       enabled: true
