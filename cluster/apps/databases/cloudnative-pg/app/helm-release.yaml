@@ -9,7 +9,7 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: cloudnative-pg
+      chart: cloudnative-pg-charts
       version: 0.16.1
       sourceRef:
         kind: HelmRepository
