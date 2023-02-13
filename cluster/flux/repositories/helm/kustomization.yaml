@@ -14,7 +14,7 @@ resources:
   - ./external-dns-charts.yaml
   - ./ingress-nginx.yaml
   - ./jetstack-charts.yaml
-  - ./k8s-gateway-charts.yaml
+  - ./k8s-gateway.yaml
   - ./kyverno-charts.yaml
   - ./metrics-server-charts.yaml
   - ./piraeus.yaml
