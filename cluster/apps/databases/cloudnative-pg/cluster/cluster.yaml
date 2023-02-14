@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: databases
+  annotations:
+    kyverno.io/ignore: "true"
+spec:
+  instances: 3
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.2@sha256:c91768a61283fdff99735945f3d8122fe563d0819810dc61c5d6a8834d0a7c37
+
+  primaryUpdateStrategy: unsupervised
+
+  storage:
+    size: 20Gi
+    storageClass: ceph-block
+
+  monitoring:
+    enablePodMonitor: true
+
+  superuserSecret:
+    name: postgres-superuser
+
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: gzip
+      destinationPath: s3://postgresql/v15/
+      endpointURL: http://truenas.ergho.org:9000
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-s3
+          key: S3_ACCESS_KEY
+        secretAccessKey:
+          name: cloudnative-pg-s3
+          key: S3_SECRET_KEY
+
+  externalClusters: []
