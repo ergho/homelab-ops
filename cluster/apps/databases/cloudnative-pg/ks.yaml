@@ -29,7 +29,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-app
-  path: ./cluster/apps/default/cloudnative-pg/cluster
+  path: ./cluster/apps/databases/cloudnative-pg/cluster
   prune: true
   sourceRef:
     kind: GitRepository
