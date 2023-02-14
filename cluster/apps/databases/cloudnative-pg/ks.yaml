@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: cluster-apps-cloudnative-pg
+  name: cluster-apps-cloudnative-pg-app
   namespace: flux-system
 spec:
   path: ./cluster/apps/databases/cloudnative-pg/app
@@ -29,7 +29,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-app
-  path: ./kubernetes/apps/default/cloudnative-pg/cluster
+  path: ./cluster/apps/default/cloudnative-pg/cluster
   prune: true
   sourceRef:
     kind: GitRepository
