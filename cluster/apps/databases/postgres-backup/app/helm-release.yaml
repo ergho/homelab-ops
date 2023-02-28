@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: postgres-pgdump
+  namespace: databases
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: raw
+      version: v0.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: dysnix-charts
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    resources:
+      - apiVersion: batch/v1
+        kind: CronJob
+        metadata:
+          name: postgres-dump
+        spec:
+          schedule: "0 23 * * *"
+          jobTemplate:
+            spec:
+              backoffLimit: 0
+              template:
+                spec:
+                  containers:
+                    - name: dump
+                      image: postgres:15.2-alpine@sha256:53a02ecbe9d18ff6476e6651c34811da39f054424c725fc15d2b480fc3fab877
+                      volumeMounts:
+                        - name: data
+                          mountPath: /backup
+                      args:
+                        - pg_dumpall
+                        - "-f"
+                        - "/backup/postgres.pgdump"
+                        - "-v"
+                        - "-h"
+                        - "postgres-ro"
+                        - "-U"
+                        - "postgres"
+                      env:
+                        - name: PGPASSWORD
+                          valueFrom:
+                            secretKeyRef:
+                              name: postgres-superuser
+                              key: password
+                  restartPolicy: Never
+                  volumes:
+                    - name: data
+                      persistentVolumeClaim:
+                        claimName: postgres-backup
