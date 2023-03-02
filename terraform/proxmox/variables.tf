@@ -94,7 +94,7 @@ variable "dns" {
   description = "Homelab DNS Machines"
   type        = map(any)
   default = {
-    controller1 = {
+    dns = {
       node      = "pve2"
       name      = "dns.ergho.org"
       mem       = 4096
