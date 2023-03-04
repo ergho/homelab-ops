@@ -6,5 +6,6 @@ resources:
   # Pre Flux Kustomizations
   - ./namespace.yaml
   # Flux Kustomization
+  - ./authelia/ks.yaml
   - ./glauth/ks.yaml
   - ./vaultwarden/ks.yaml
