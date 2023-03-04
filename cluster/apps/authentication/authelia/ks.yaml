@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-cloudnative-pg
+    - name: cluster-apps-cloudnative-pg-app
     - name: cluster-apps-glauth
     - name: cluster-apps-redis
   path: ./cluster/apps/authentication/authelia/app
