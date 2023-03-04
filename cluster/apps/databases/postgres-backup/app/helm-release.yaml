@@ -52,9 +52,12 @@ spec:
                         - "-v"
                         - "-h"
                         - "postgres-ro"
-                        - "-U"
-                        - "postgres"
                       env:
+                        - name: PGUSER
+                          valueFrom:
+                            secretKeyRef:
+                              name: postgres-superuser
+                              key: username
                         - name: PGPASSWORD
                           valueFrom:
                             secretKeyRef:
