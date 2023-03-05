@@ -108,7 +108,7 @@ spec:
         type: configMap
         name: authelia-configmap
         subPath: configuration.yaml
-        mountPath: /config/configuration.yaml
+        mountPath: /config/configuration.yml
         readOnly: false
     topologySpreadConstraints:
       - maxSkew: 1
