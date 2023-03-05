@@ -21,8 +21,8 @@ access_control:
     - domain: ["radarr-uhd.ergho.org"]
       policy: bypass
 
-identity_providers:
-  oidc:
-    cors:
-      endpoints: ["authorization", "token", "revocation", "introspection"]
-      allowed_origins_from_client_redirect_uris: true
+#identity_providers:
+#  oidc:
+#    cors:
+#      endpoints: ["authorization", "token", "revocation", "introspection"]
+#      allowed_origins_from_client_redirect_uris: true
