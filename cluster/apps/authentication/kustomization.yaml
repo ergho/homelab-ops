@@ -8,4 +8,5 @@ resources:
   # Flux Kustomization
   - ./authelia/ks.yaml
   - ./glauth/ks.yaml
+  - ./lldap/ks.yaml
   - ./vaultwarden/ks.yaml
