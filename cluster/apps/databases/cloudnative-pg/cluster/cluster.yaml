@@ -30,7 +30,7 @@ spec:
       wal:
         compression: gzip
       destinationPath: s3://postgresql/v15/
-      endpointURL: http://truenas.ergho.org:9000
+      endpointURL: https://truenas.ergho.org:9000
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-s3
