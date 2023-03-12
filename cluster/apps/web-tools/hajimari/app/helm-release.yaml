@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: hajimari
-  namespace: default
+  namespace: web-tools
 spec:
   interval: 15m
   chart:
@@ -45,11 +45,13 @@ spec:
           - authentication
           - databases
           - default
-          - media
+          - downloaders
           - flux-system
+          - media
           - monitoring
           - networking
           - rook-ceph
+          - web-tools
     ingress:
       main:
         enabled: true
