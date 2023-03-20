@@ -39,7 +39,7 @@ spec:
       type: statefulset
     image:
       repository: nitnelave/lldap
-      tag: latest-alpine@sha256:c2c776cf2951aa5d40a8cc778ce26555bc72f28d1ffecde58b09f52244590c86
+      tag: latest-alpine@sha256:bce655d5b16f3fd306fcb3ba51f97948ef929d2e81f942d38f253d029f5f47b5
     service:
       main:
         ports:
