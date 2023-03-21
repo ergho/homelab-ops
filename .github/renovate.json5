@@ -21,8 +21,6 @@
   "requireConfig": "optional",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
-  "rebaseWhen": "conflicted",
-  "commitBodyTable": true,
   "flux": {
     "fileMatch": ["cluster/.+\\.ya?ml$"]
   },
@@ -33,17 +31,6 @@
     "fileMatch": ["cluster/.+\\.ya?ml$"]
   },
   "regexManagers": [
-    {
-      "description": "Process CRD dependencies",
-      "fileMatch": ["cluster/.+\\.ya?ml$"],
-      "matchStrings": [
-        // GitRepository where 'Git release/tag' matches 'Helm' version
-        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
-        // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
-        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)\/(?<currentValue>[^/]+)\/[^/]+\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
-    },
     {
       "description": "Process various dependencies",
       "fileMatch": [
