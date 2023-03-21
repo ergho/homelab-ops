@@ -15,6 +15,7 @@ resource "proxmox_vm_qemu" "K8S" {
   startup     = each.value.order
 
   disk {
+    backup   = false
     size     = each.value.disk_size
     type     = each.value.disk_type
     storage  = var.storage_name
@@ -55,6 +56,7 @@ resource "proxmox_vm_qemu" "DNS" {
   startup     = each.value.order
 
   disk {
+    backup   = false
     size     = each.value.disk_size
     type     = each.value.disk_type
     storage  = var.storage_name

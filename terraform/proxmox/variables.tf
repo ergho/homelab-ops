@@ -87,6 +87,20 @@ variable "vm" {
       interface = "vmbr0"
       vlan      = 90
     }
+    k8w5 = {
+      node      = "pve2"
+      name      = "k8worker-5.ergho.org"
+      mem       = 12288
+      cpu       = 8
+      ip        = "192.168.90.114/24"
+      gateway   = "192.168.90.1"
+      disk_size = "50G"
+      disk_type = "scsi"
+      boot      = true
+      order     = "order=110"
+      interface = "vmbr0"
+      vlan      = 90
+    }
   }
 }
 
