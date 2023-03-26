@@ -33,7 +33,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: docker.io/vaultwarden/server
-      tag: "1.27.0"
+      tag: "1.28.0"
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
