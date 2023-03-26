@@ -32,8 +32,8 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: docker.io/vaultwarden/server
-      tag: "1.28.0"
+      repository: ghcr.io/dani-garcia/vaultwarden
+      tag: 1.28.0@sha256:3c3fbac57ec6162b5e6240f199277934d8e1f01eb67d46d944405c5e820f37c5
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
