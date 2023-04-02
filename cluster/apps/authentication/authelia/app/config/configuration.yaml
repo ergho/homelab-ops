@@ -46,5 +46,5 @@ identity_providers:
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
-        redirect_uris: ["https://miniflux.devbu.io/oauth2/oidc/callback"]
+        redirect_uris: ["https://miniflux.ergho.org/oauth2/oidc/callback"]
         userinfo_signing_algorithm: none
