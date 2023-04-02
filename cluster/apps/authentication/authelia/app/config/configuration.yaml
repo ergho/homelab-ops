@@ -36,3 +36,4 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris:
           ["https://grafana.ergho.org/login/generic_oauth"]
+        userinfo_signing_algorithm: none
