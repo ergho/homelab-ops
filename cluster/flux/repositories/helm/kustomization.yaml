@@ -13,6 +13,7 @@ resources:
   - ./descheduler-charts.yaml
   - ./dysnix-charts.yaml
   - ./external-dns-charts.yaml
+  - ./grafana.yaml
   - ./hajimari.yaml
   - ./ingress-nginx.yaml
   - ./jetstack-charts.yaml
