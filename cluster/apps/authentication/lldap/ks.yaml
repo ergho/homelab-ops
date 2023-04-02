@@ -8,6 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-cloudnative-pg-app
   path: ./cluster/apps/authentication/lldap/app
   prune: true
   sourceRef:
