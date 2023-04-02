@@ -39,7 +39,6 @@ spec:
       GF_AUTH_GENERIC_OAUTH_API_URL: https://auth.ergho.org/api/oidc/userinfo
       GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://auth.ergho.org/api/oidc/authorization
       GF_AUTH_GENERIC_OAUTH_CLIENT_ID: grafana
-      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ${GRAFANA_OAUTH_CLIENT_SECRET}
       GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://auth.ergho.org/api/oidc/token
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
@@ -51,8 +50,8 @@ spec:
       GF_SECURITY_ALLOW_EMBEDDING: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.ergho.org
-    #    envFromSecrets:
-    #      - name: grafana-secret
+    envFromSecrets:
+      - name: grafana-secret
     grafana.ini:
       auth:
         signout_redirect_url: https://auth.ergho.org/logout
