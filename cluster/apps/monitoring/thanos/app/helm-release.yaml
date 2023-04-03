@@ -99,23 +99,23 @@ spec:
       serviceMonitor:
         enabled: true
   valuesFrom:
-    - kind: Secret
+    - kind: ConfigMap
       name: thanos-bucket-v1
-      valuesKey: S3_BUCKET_NAME
+      valuesKey: BUCKET_NAME
       targetPath: objstoreConfig.config.bucket
-    - kind: Secret
+    - kind: ConfigMap
       name: thanos-bucket-v1
-      valuesKey: S3_BUCKET_HOST
+      valuesKey: BUCKET_HOST
       targetPath: objstoreConfig.config.endpoint
-    - kind: Secret
+    - kind: ConfigMap
       name: thanos-bucket-v1
-      valuesKey: S3_BUCKET_REGION
+      valuesKey: BUCKET_REGION
       targetPath: objstoreConfig.config.region
     - kind: Secret
       name: thanos-bucket-v1
-      valuesKey: S3_ACCESS_KEY
+      valuesKey: AWS_ACCESS_KEY_ID
       targetPath: objstoreConfig.config.access_key
     - kind: Secret
       name: thanos-bucket-v1
-      valuesKey: S3_SECRET_KEY
+      valuesKey: AWS_SECRET_KEY_ID
       targetPath: objstoreConfig.config.secret_key
