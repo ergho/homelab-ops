@@ -39,7 +39,7 @@ spec:
         annotations:
           hajimari.io/enable: "false"
         ingressClassName: "nginx"
-        hostname: &host "thanos-query.ergho.org"
+        hostname: &host "thanos-query-frontend.ergho.org"
         tls: true
         extraTls:
           - hosts:
