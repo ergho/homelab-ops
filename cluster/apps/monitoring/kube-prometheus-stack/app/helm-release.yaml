@@ -123,8 +123,11 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        pathType: Prefix
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/appName: Prometheus
+          hajimari.io/icon: simple-icons:prometheus
+        pathType: Prefix
         hosts:
           - &host "prometheus.ergho.org"
         tls:
@@ -134,40 +137,27 @@ spec:
         enabled: true
       thanosServiceMonitor:
         enabled: true
-      thanosIngress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: "nginx"
-        annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-        hosts:
-          - &host "thanos-sidecar.ergho.org"
-        tls:
-          - hosts:
-              - *host
       promethusSpec:
         replicas: 3
         replicaExternalLabelName: __replica__
-        externalLabels:
-          cluster: homelab-ops
-        thanos:
-          image: quay.io/thanos/thanos:v0.31.0
-          # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "v0.31.0"
-        podAntiAffinity: hard
+        scrapeInterval: 1m
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        retention: 14d
-        retentionSize: 45GB
         enableAdminAPI: true
         walCompression: true
+        thanos:
+          image: quay.io/thanos/thanos:v0.31.0
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
+        retention: 2d
+        retentionSize: 15GB
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: "ceph-block"
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 20Gi
