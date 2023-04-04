@@ -136,7 +136,7 @@ spec:
         enabled: true
       thanosServiceMonitor:
         enabled: true
-      promethusSpec:
+      prometheusSpec:
         replicas: 3
         replicaExternalLabelName: __replica__
         scrapeInterval: 1m
