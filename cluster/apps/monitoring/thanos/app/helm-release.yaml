@@ -33,7 +33,6 @@ spec:
         insecure: true
     queryFrontend:
       enabled: true
-      replicaCout: 3
       ingress:
         enabled: true
         annotations:
@@ -46,14 +45,12 @@ spec:
               - *host
     query:
       enabled: true
-      replicaCount: 3
-      replicaLabel: ["__replica__"]
+      replicaLabels: ["__replica__"]
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
     bucketweb:
       enabled: true
-      replicaCount: 3
     compactor:
       enabled: true
       extraFlags:
@@ -68,28 +65,19 @@ spec:
         size: 20Gi
     storegateway:
       enabled: true
-      replicaCount: 3
       persistence:
         enabled: true
         storageClass: "ceph-block"
         size: 20Gi
     ruler:
       enabled: true
-      replicaCount: 3
-      replicaLabel: __replica__
       alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"]
-      extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:
-          - name: PrometheusWatcher
+          - name: "PrometheusWatcher"
             rules:
-              - alert: PrometheusDown
-                annotations:
-                  summary: A Prometheus has disappeared from Prometheus target discovery
-                expr: absent(up{job="kube-prometheus-stack-prometheus"})
-                for: 5m
-                labels:
-                  severity: critical
+              - alert: "PrometheusDown"
+                expr: absent(up{job="kube-prometheus-stack-prometheus"}
       dnsDiscovery:
         enabled: true
       persistence:
