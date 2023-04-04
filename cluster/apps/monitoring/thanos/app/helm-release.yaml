@@ -33,7 +33,7 @@ spec:
         insecure: true
     queryFrontend:
       enabled: true
-      replicaCout: 3
+      replicaCount: 3
       ingress:
         enabled: true
         annotations:
