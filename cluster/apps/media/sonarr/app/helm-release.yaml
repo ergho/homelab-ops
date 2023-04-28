@@ -33,7 +33,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 4.0.0.449@sha256:2ff4c7bcdcdef53d95f43fb0aa601040e415d9314a1b8ee85b9485890efd4df5
+      tag: 4.0.0.466@sha256:7fb835105feaea7fecc8806d0547e6bd6e0cb38b3f5d824dcda208ef528baf85
     updateStrategy: Recreate
     env:
       TZ: "${CLUSTER_TZ}"
