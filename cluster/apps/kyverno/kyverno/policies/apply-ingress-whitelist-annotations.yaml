@@ -13,7 +13,6 @@ metadata:
       set it applies the nginx annotations for use with only
       RFC-1918 addresses.
 spec:
-  mutateExistingOnPolicyUpdate: true
   generateExistingOnPolicyUpdate: true
   rules:
     - name: whitelist

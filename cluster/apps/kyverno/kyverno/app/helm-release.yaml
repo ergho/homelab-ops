@@ -34,9 +34,30 @@ spec:
     backgroundController:
       serviceMonitor:
         enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
     cleanupController:
       serviceMonitor:
         enabled: true
     reportsController:
       serviceMonitor:
         enabled: true
+    admissionController:
+      serviceMonitor:
+        enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+              verbs:
+                - create
+                - update
+                - delete
