@@ -51,10 +51,6 @@ jobs:
           latest: true
           fileName: crd-extractor.zip
 
-      - name: Extract crd-extractor
-        run: |
-          unzip -j "$GITHUB_WORKSPACE/crd-extractor.zip" -d "$GITHUB_WORKSPACE"
-
       - name: Write kubeconfig
         id: kubeconfig
         uses: timheuer/base64-to-file@ca9e30baf83f7f26708fb0059af9a0973fe5f27e # v1.2
@@ -66,34 +62,69 @@ jobs:
         env:
           KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
         run: |
+          unzip -j "$GITHUB_WORKSPACE/crd-extractor.zip" -d "$GITHUB_WORKSPACE"
           bash "$GITHUB_WORKSPACE/crd-extractor.sh"
 
+      - name: Generate tag
+        id: generate-tag
+        run: echo "tag=ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:$(git rev-parse --short HEAD)" >> "${GITHUB_OUTPUT}"
       - name: Publish schemas as OCI
         run: |
-          flux push artifact oci://ghcr.io/ergho/kubernetes-schemas-oci:latest \
+          flux push artifact oci://${{ steps.generate-tag.outputs.tag }} \
             --path="/home/runner/.datree/crdSchemas" \
             --source="${{ github.repositoryUrl }}" \
-            --revision="main"
+            --revision="${{ github.ref_name }}@sha1:$(git rev-parse HEAD)"
+      - name: Tag schemas
+        run: |
+          flux tag artifact oci://${{ steps.generate-tag.outputs.tag }} --tag main
+
+
+  public-web:
+    name: Publish web
+    runs-on: ubuntu-latest
+    needs: "publish-kubernetes-schemas"
+    steps:
+      - name: Setup Flux
+        uses: fluxcd/flux2/action@dbda8fbdb8b58ed1ee69343025a6091eae0d1828 # v0.41.2
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7 # v2.2.0
+
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@6a58db7e0d21ca03e6c44877909e80e45217eed2 # v2.6.0
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc # v2.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull manifests
+        run: |
+          mkdir -p /home/runner/crdSchemas
+          flux pull artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:$(git rev-parse --short HEAD) --output /home/runner/crdSchemas
 
       - name: Write nginx-unprivileged Dockerfile
         run: |
-          cat <<EOF > /home/runner/.datree/crdSchemas/Dockerfile
+          cat <<EOF > /home/runner/crdSchemas/Dockerfile
           FROM docker.io/nginxinc/nginx-unprivileged:latest
           COPY --chown=nginx:nginx --chmod=755 . /usr/share/nginx/html
           USER nginx
           EOF
 
-      - name: Publish schemas as web container
+      - name: Publish web container
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
         with:
-          context: /home/runner/.datree/crdSchemas
+          context: /home/runner/crdSchemas
           platforms: linux/amd64, linux/arm64
-          file: /home/runner/.datree/crdSchemas/Dockerfile
+          file: /home/runner/crdSchemas/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_REGISTRY}}/${{ github.repository_owner}}/kubernetes-schemas-web:latest
+            ghcr.io/${{ github.repository_owner }}/kubernetes-schemas:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           labels: |
-            org.opencontainers.image.source="https://github.com/ergho/homelab-ops"
+            org.opencontainers.image.source="${{ github.repositoryUrl }}"
             org.opencontainers.image.authors="Alexander Stenmark <alexstenmark92@gmail.com>"
