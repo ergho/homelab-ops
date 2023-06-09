@@ -46,7 +46,7 @@
     {
       "description": "Process imageName values",
       "fileMatch": [
-        "kubernetes/.+\\.ya?ml$"
+        "cluster/.+\\.ya?ml$"
       ],
       "matchStrings": [
         "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
