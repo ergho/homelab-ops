@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        path: ["kubernetes"]
+        path: ["cluster"]
         resource: ["helmrelease", "kustomization"]
     steps:
       - name: Generate Token

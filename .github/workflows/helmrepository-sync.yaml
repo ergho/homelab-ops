@@ -46,7 +46,7 @@ jobs:
         uses: tj-actions/changed-files@fb20f4d24890fadc539505b1746d260504b213d0 # v36.1.0
         with:
           files: |
-            kubernetes/**/helmrelease.yaml
+            cluster/**/helmrelease.yaml
 
       - name: Sync HelmRepository
         env:
