@@ -29,7 +29,7 @@ spec:
   values:
     crds:
       install: true
-    serviceMonitor:
+    grafana:
       enabled: true
     backgroundController:
       serviceMonitor:
