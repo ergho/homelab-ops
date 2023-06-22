@@ -18,10 +18,7 @@ spec:
       match:
         any:
           - resources:
-              kinds:
-                - Pod
-              namespaces:
-                - "*"
+              kinds: ["Pod"]
       mutate:
         foreach:
           - list: "request.object.spec.containers"
@@ -32,8 +29,7 @@ spec:
       match:
         any:
           - resources:
-              kinds:
-                - Pod
+              kinds: ["Pod"]
       preconditions:
         all:
           - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
