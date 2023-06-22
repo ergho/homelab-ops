@@ -20,6 +20,8 @@ spec:
           - resources:
               kinds:
                 - Pod
+              namespaces:
+                - "*"
       mutate:
         foreach:
           - list: "request.object.spec.containers"
