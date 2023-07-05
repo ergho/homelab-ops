@@ -33,7 +33,7 @@ spec:
         - name: TZ
           value: "${CLUSTER_TZ}"
       service:
-        externalIPs: ["${SVC_NGINX_ADDR}"]
+        externalIPs: ["192.168.100.30"]
         externalTrafficPolicy: Local
       ingressClassResource:
         default: true

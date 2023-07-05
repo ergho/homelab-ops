@@ -44,14 +44,14 @@ spec:
       bittorrent:
         enabled: true
         type: LoadBalancer
-        externalIPs: ["${SVC_QBITTORRENT_ADDR}"]
+        externalIPs: ["192.168.100.32"]
         externalTrafficPolicy: Local
         ports:
           bittorrent:
             enabled: true
-            port: ${VPN_FORWARDED_PORT}
+            port: 57683
             protocol: TCP
-            targetPort: ${VPN_FORWARDED_PORT}
+            targetPort: 57683
     ingress:
       main:
         enabled: true
