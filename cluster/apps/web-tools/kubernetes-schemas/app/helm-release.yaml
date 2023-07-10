@@ -31,7 +31,7 @@ spec:
       strategy: RollingUpdate
     image:
       repository: ghcr.io/ergho/kubernetes-schemas
-      tag: latest@sha256:40eb65ab0f51c33a76d1a609ca80fac987b84d66270b4e8faaffcd89b1e6cda9
+      tag: latest@sha256:494daba3d219c1ff57428b7d1d21e2f5d4ee4dd381cef984dde99c3d16f4fe40
     service:
       main:
         ports:
