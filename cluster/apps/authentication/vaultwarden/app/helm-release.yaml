@@ -71,7 +71,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          external-dns.home.arpa/enabled: "true"
+          external-dns.alpha.kubernetes.io/target: ingress.ergho.org
         hosts:
           - host: &host "bitwarden.ergho.org"
             paths:
