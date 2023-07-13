@@ -1,0 +1,14 @@
+---
+originRequest:
+  http2Origin: true
+
+ingress:
+  - hostname: ergho.org
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress.ergho.org
+  - hostname: "*.ergho.org"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress.ergho.org
+  - service: http_status:404
