@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack
-  path: "./cluster/apps/monitoring/grafana"
+  path: ./cluster/apps/monitoring/grafana/app
   prune: true
   sourceRef:
     kind: GitRepository
