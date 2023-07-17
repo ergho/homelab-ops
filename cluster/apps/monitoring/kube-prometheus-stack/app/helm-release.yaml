@@ -61,7 +61,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "nginx"
+        ingressClassName: internal
         hosts:
           - &host "alert-manager.ergho.org"
         tls:
@@ -122,7 +122,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: internal
         annotations:
           hajimari.io/appName: Prometheus
           hajimari.io/icon: simple-icons:prometheus

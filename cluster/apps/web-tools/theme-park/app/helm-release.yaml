@@ -41,8 +41,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: external
         annotations:
+          external-dns.alpha.kubernetes.io/target: external.ergho.org
           hajimari.io/enable: "false"
         hosts:
           - host: &host "{{ .Release.Name }}.ergho.org"

@@ -69,9 +69,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.ergho.org
+          external-dns.alpha.kubernetes.io/target: external.ergho.org
         hosts:
           - host: &host "bitwarden.ergho.org"
             paths:
@@ -92,7 +92,7 @@ spec:
               - *host
       admin:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: internal
         hosts:
           - host: *host
             paths:

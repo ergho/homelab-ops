@@ -5,10 +5,10 @@ metadata:
   name: webhook-receiver
   namespace: flux-system
   annotations:
-    external-dns.alpha.kubernetes.io/target: ingress.ergho.org
+    external-dns.alpha.kubernetes.io/target: external.ergho.org
     hajimari.io/enable: "false"
 spec:
-  ingressClassName: "nginx"
+  ingressClassName: external
   rules:
     - host: &host "flux-webhook.ergho.org"
       http:
