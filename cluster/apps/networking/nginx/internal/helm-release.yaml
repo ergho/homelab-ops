@@ -27,12 +27,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    fullnameOverride: nginx-internal
     controller:
       replicaCount: 2
       extraEnvs:
         - name: TZ
           value: "${CLUSTER_TZ}"
       service:
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: internal.ergho.org
         externalIPs: ["192.168.100.30"]
         externalTrafficPolicy: Local
       ingressClassResource:

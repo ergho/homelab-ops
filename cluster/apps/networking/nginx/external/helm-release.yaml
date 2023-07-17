@@ -27,6 +27,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    fullnameOverride: nginx-external
     controller:
       replicaCount: 2
       extraEnvs:
@@ -35,7 +36,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: external.ergho.org
-        externalIPs: ["192.168.100.39"]
+        externalIPs: ["192.168.100.30"]
         externalTrafficPolicy: Local
       ingressClassResource:
         name: external
@@ -67,7 +68,7 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              app.kubernetes.io/name: nginx-external1
+              app.kubernetes.io/name: nginx-external
               app.kubernetes.io/component: controller
       resources:
         requests:
