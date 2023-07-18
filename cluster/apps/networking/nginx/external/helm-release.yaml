@@ -37,7 +37,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: external.ergho.org
         externalIPs: ["192.168.100.39"]
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
         default: false
