@@ -41,6 +41,7 @@ spec:
       ingressClassResource:
         name: external
         default: false
+        controllerValue: "k8s.io/nginx-external"
       config:
         client-body-buffer-size: "100M"
         client-body-timeout: 120
