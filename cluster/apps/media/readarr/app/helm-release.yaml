@@ -33,7 +33,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/readarr-nightly
-      tag: 0.2.4.1990@sha256:94752e4153c841912334f17652062bfc036b0d3fbdb0460851a0fc03e4f713bd
+      tag: 0.2.4.1995@sha256:55e3b73ac61d9c054b977e6507eac41dcaee5da8b9747cba6656b6968ae0d0cc
     env:
       TZ: "${CLUSTER_TZ}"
       READARR__INSTANCE_NAME: Readarr (Audio)
