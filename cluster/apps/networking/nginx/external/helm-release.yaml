@@ -36,7 +36,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: external.ergho.org
-        externalIPs: ["192.168.100.30"]
+        externalIPs: ["192.168.100.39"]
         externalTrafficPolicy: Local
       ingressClassResource:
         name: external
