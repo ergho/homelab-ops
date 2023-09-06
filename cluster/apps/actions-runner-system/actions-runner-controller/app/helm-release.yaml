@@ -56,7 +56,8 @@ spec:
           - hosts:
               - *host
     metrics:
-      serviceMonitor: true
+      serviceMonitor:
+        enabled: true
       port: 8080
       proxy:
         enabled: false
