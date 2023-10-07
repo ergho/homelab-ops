@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/unpackerr
-      tag: 0.12.0@sha256:b2838a40b8c892a371f7d3ccdf72a983ff666cf9f0fa4e72f4c34c431559980d
+      tag: 0.12.0@sha256:afe7ca577594da8d966cf32da0562c47689a8eac6481b0c1780b6633ea508206
     env:
       TZ: "${CLUSTER_TZ}"
       UN_SONARR_0_URL: http://sonarr:8080
