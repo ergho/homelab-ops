@@ -29,7 +29,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/lidarr-develop
-      tag: 1.4.3.3586@sha256:410e1068c3b38ba0f5fe0fa9eb7205404efed1fc5fc812e4613f29c7754b5d14
+      tag: 1.4.3.3586@sha256:83fed21bebd7d11740deb3d556cc7b43f8efa0eecfce4b1e55bbaefa3f905887
     env:
       TZ: "${CLUSTER_TZ}"
       LIDARR__INSTANCE_NAME: Lidarr
