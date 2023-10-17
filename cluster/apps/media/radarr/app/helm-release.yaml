@@ -75,32 +75,32 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups: [10000]
-        service:
-          main:
-            ports:
-              http:
-                port: *port
-        ingress:
-          main:
-            enabled: true
-            ingressClassName: internal
-            hosts:
-              - host: &host "{{ .Release.Name }}.ergho.org"
-                paths:
-                  - path: /
-                    service:
-                      name: main
-                      port: http
-            tls:
-              - hosts:
-                  - *host
-        persistence:
-          config:
-            enabled: true
-            existingClaim: radarr-config
-          media:
-            enabled: true
-            type: nfs
-            server: ${NAS_ADDR}
-            path: /mnt/BeepyBoopy/Media
-            mountPath: /media
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - host: &host "{{ .Release.Name }}.ergho.org"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: radarr-config
+      media:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /mnt/BeepyBoopy/Media
+        mountPath: /media
