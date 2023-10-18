@@ -38,7 +38,7 @@ spec:
             imagePullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
-                  name: radarr-secret
+                  name: radarr-uhd-secret
         containers:
           main:
             image:
