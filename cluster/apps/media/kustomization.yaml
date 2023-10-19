@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux Kustomization
   - ./namespace.yaml
+  - ./media-pvc.yaml
   # Flux Kustomization
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml

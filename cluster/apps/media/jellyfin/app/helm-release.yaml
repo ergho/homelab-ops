@@ -10,14 +10,13 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
   maxHistory: 3
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -26,23 +25,75 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/jellyfin
-      tag: 10.8.11@sha256:041977cb09d964ed4e00dec2bd0af3208f0121b8385a69617d30657596ffa292
-    env:
-      TZ: "${CLUSTER_TZ}"
-      JELLYFIN_CACHE_DIR: "/config/cache"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 50Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: [ 44, 105, 10000]
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/jellyfin
+              tag: 10.8.11@sha256:041977cb09d964ed4e00dec2bd0af3208f0121b8385a69617d30657596ffa292
+            env:
+              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+              JELLYFIN_FFmpeg__probesize: 50000000
+              JELLYFIN_FFmpeg__analyzeduration: 50000000
+              JELLYFIN_PublishedServerUrl: &loadBalancerIP 192.168.100.31
+              TZ: "${CLUSTER_TZ}"
+            probes:
+              liveness:: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8096
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 100m
+                memory: 500Mi
+              limits:
+                memory: 4000Mi
+
     service:
       main:
         type: LoadBalancer
-        externalIPs: ["192.168.100.31"]
-        externalTrafficPolicy: Local
+        externalIPs: [*loadBalancerIP]
+        externalTrafficPolicy: Cluster
         ports:
           http:
-            port: 8096
+            port: *port
     ingress:
       main:
         enabled: true
@@ -51,33 +102,20 @@ spec:
           - host: &host "{{ .Release.Name }}.ergho.org"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 44
-        - 109
-        - 100
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 50Gi
-        storageClass: ceph-block
     persistence:
-      media:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/BeepyBoopy/Media
-        mountPath: /media
-        readOnly: true
       transcode:
-        enabled: true
         type: emptyDir
+        globalMounts:
+          - path: /transcode
+      media:
+        type: persistentVolumeClaim
+        existingClaim: media
+        globalMounts:
+          - path: /media
+            readOnly: true
