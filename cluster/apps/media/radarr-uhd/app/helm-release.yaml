@@ -99,8 +99,4 @@ spec:
         enabled: true
         existingClaim: radarr-uhd-config
       media:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/BeepyBoopy/Media
-        mountPath: /media
+        existingClaim: media
