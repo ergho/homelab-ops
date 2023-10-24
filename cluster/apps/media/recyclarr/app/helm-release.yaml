@@ -35,8 +35,6 @@ spec:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
-            args:
-              - sync
             env:
               TZ: ${CLUSTER_TZ}
             envFrom:
