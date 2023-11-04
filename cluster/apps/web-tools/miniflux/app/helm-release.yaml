@@ -61,7 +61,7 @@ spec:
               OAUTH2_REDIRECT_URL: https://miniflux.ergho.org/oauth2/oidc/callback
               POLLING_SCHEDULER: entry_frequency
               POLLING_FREQUENCY: "15"
-              PORT: &port 80
+              PORT: &port 8080
               RUN_MIGRATIONS: "1"
             envFrom:
               - secretRef:
