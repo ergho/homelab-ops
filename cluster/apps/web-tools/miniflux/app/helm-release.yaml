@@ -102,7 +102,7 @@ spec:
       main:
         ports:
           http:
-            port: 8080
+            port: *port
     serviceMonitor:
       main:
         enabled: true
