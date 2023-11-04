@@ -15,9 +15,8 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,59 +26,64 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/filebrowser
-      tag: v2.26.0
-    env:
-      TZ: "${CLUSTER_TZ}"
-      FB_DATABASE: "/config/filebrowser.db"
-      FB_ROOT: "/media"
-      FB_LOG: "stdout"
-      FB_NOAUTH: "true"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: docker.io/filebrowser/filebrowser
+              tag: v2.26.0
+            env:
+              TZ: "${CLUSTER_TZ}"
+              FB_DATABASE: /config/filebrowser.db
+              FB_ROOT: /media
+              FB_LOG: stdout
+              FB_NOAUTH: true
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
     service:
       main:
         ports:
           http:
-            port: &port 80
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
             port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.ergho.org"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
     persistence:
       media:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/BeepyBoopy/Media
-        mountPath: /media
+        existingClaim: media
