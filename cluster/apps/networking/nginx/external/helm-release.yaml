@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 3
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -42,6 +41,13 @@ spec:
         name: external
         default: false
         controllerValue: "k8s.io/nginx-external"
+      admissionWebhooks:
+        objectSelector:
+          matchExpression:
+            - key: ingress-class
+              operator: In
+              values: ["external"]
+      allowSnipperAnnotations: true
       config:
         client-body-buffer-size: "100M"
         client-body-timeout: 120
@@ -74,6 +80,7 @@ spec:
       resources:
         requests:
           cpu: 100m
+          memory: 250Mi
         limits:
           memory: 500Mi
     defaultBackend:
