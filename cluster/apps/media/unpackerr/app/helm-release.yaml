@@ -10,52 +10,63 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    image:
-      repository: ghcr.io/onedr0p/unpackerr
-      tag: 0.12.0@sha256:8bbf35be449b89041f07fc069812f79b4eadf56e1c7c7720935fe166016376ef
-    env:
-      TZ: "${CLUSTER_TZ}"
-      UN_SONARR_0_URL: http://sonarr:8080
-      UN_SONARR_0_PATHS_0: /complete/sonarr
-      UN_SONARR_1_URL: http://sonarr-uhd:8080
-      UN_SONARR_1_PATHS_0: /complete/sonarr-uhd
-      UN_RADARR_0_URL: http://radarr:8080
-      UN_RADARR_0_PATHS_0: /complete/radarr
-      UN_RADARR_1_URL: http://radarr-uhd:8080
-      UN_RADARR_1_PATHS_0: /complete/radarr-uhd
-      UN_LIDARR_0_URL: http://lidarr:8080
-      UN_LIDARR_0_PATHS_0: /complete/lidarr
-      UN_READARR_0_URL: http://readarr:8080
-      UN_READARR_0_PATHS_0: /complete/readarr
-    envFrom:
-      - secretRef:
-          name: *app
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/unpackerr
+              tag: 0.12.0@sha256:8bbf35be449b89041f07fc069812f79b4eadf56e1c7c7720935fe166016376ef
+            env:
+              TZ: "${CLUSTER_TZ}"
+              UN_SONARR_0_URL: http://sonarr:8080
+              UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/sonarr
+              UN_SONARR_1_URL: http://sonarr-uhd:8080
+              UN_SONARR_1_PATHS_0: /media/Downloads/qbittorrrent/complete/sonarr-uhd
+              UN_RADARR_0_URL: http://radarr:8080
+              UN_RADARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/radarr
+              UN_RADARR_1_URL: http://radarr-uhd:8080
+              UN_RADARR_1_PATHS_0: /media/Downloads/qbittorrrent/complete/radarr-uhd
+              UN_LIDARR_0_URL: http://lidarr:8080
+              UN_LIDARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/lidarr
+              UN_READARR_0_URL: http://readarr:8080
+              UN_READARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/readarr
+            envFrom:
+              - secretRef:
+                  name: *app
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: [10000]
     service:
       main:
-        enabled: false
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
-    persistence:
-      complete:
+        ports:
+          http:
+            port: 5656
+    serviceMonitor:
+      main:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/BeepyBoopy/Media/Downloads/qbittorrent/complete
-        mountPath: /complete
+    persistence:
+      media:
+        existingClaim: media
