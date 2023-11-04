@@ -52,12 +52,12 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-          resources:
-            requests:
-              cpu: 5m
-              memory: 10Mi
-            limits:
-              memory: 50Mi
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 50Mi
         pod:
           securityContext:
             runAsUser: 568
