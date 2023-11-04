@@ -75,12 +75,10 @@ spec:
             supplementalGroups: [10000]
     service:
       main:
-        ports:
-          http:
-            port: 5656
+        enabled: false
     serviceMonitor:
       main:
-        enabled: true
+        enabled: false
     persistence:
       media:
         existingClaim: media
