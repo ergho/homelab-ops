@@ -42,7 +42,7 @@ spec:
               pullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
-                  name: readarr-config
+                  name: readarr-secret
         containers:
           main:
             image:
