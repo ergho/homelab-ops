@@ -35,39 +35,40 @@ spec:
             image:
               repository: docker.io/jmalloc/echo-server
               tag: 0.3.6
-          env: &port 8080
-          probes:
-            liveness: &probes
-              enabled: true
-              custom: true
-              spec:
-                httpGet:
-                  path: /health
-                  port: *port
-                initialDelaySeconds: 0
-                periodSeconds: 10
-                timeoutSeconds: 1
-                failureThreshold: 3
-            readiness: *probes
-            startup:
-              enabled: false
-        resources:
-          requests:
-            cpu: 5m
-            memory: 10Mi
-          limits:
-            memory: 50Mi
-      pod:
-        securityContext:
-          runAsUser: 568
-          runAsGroup: 568
-        topologySpreadConstraints:
-          - maxSkew: 1
-            topologyKey: kubernetes.io/hostname
-            whenUnsatisfiable: DoNotSchedule
-            labelSelector:
-              matchLabels:
-                app.kubernetes.io/name: *app
+            env:
+              PORT: &port 8080
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+            limits:
+              memory: 50Mi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
     service:
       main:
         ports:
