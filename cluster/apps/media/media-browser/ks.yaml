@@ -6,18 +6,11 @@ metadata:
   name: cluster-apps-media-browser
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
   path: ./cluster/apps/media/media-browser/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: media-browser
-      namespace: media
   interval: 30m
   retryInterval: 1m
   timeout: 3m
