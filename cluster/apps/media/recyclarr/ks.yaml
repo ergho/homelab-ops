@@ -1,16 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/kustomization_v1beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: cluster-apps-recyclarr
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-radarr
-    - name: cluster-apps-sonarr
-    - name: cluster-apps-radarr-uhd
-    - name: cluster-apps-sonarr-uhd
   path: ./cluster/apps/media/recyclarr/app
   prune: true
   sourceRef:
