@@ -83,11 +83,14 @@ spec:
                 enabled: false
             resources:
               requests:
-                cpu: 10m
-                memory: 100Mi
+                cpu: 5m
+                memory: 10Mi
               limits:
-                memory: 750Mi
+                memory: 65Mi
         pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
           topologySpreadConstraints:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname
@@ -99,7 +102,7 @@ spec:
       main:
         ports:
           http:
-            port: *port
+            port: 8080
     serviceMonitor:
       main:
         enabled: true
@@ -114,7 +117,9 @@ spec:
           - host: &host "{{ .Release.Name }}.ergho.org"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
