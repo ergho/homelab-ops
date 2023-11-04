@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 3
   install:
-    createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
@@ -37,6 +36,15 @@ spec:
         parameters:
           clusterID: rook-ceph
           csi.storage.k8s.io/snapshotter-secret-name: rook-csi-rbd-provisioner
+          csi.storage.k8s.io/snapshotter-secret-namespace: rook-ceph
+        deletionPolicy: Delete
+      - name: csi-ceph-filesystem
+        driver: rook-ceph.cephfs.csi.ceph.com
+        annotations:
+          snapshot.storage.kubernetes.io/is-default-class: "false"
+        parameters:
+          clusterID: rook-ceph
+          csi.storage.k8s.io/snapshotter-secret-name: rook-csi-cephfs-provisioner
           csi.storage.k8s.io/snapshotter-secret-namespace: rook-ceph
         deletionPolicy: Delete
     serviceMonitor:
