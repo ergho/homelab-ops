@@ -6,13 +6,9 @@ namespace: authentication
 resources:
   - ./secret.sops.yaml
   - ./helm-release.yaml
-patchesStrategicMerge:
-  - ./patches/env.yaml
 configMapGenerator:
   - name: authelia-configmap
     files:
-      - ./config/configuration.yaml
+      - configuration.yaml=./config/configuration.yaml
 generatorOptions:
   disableNameSuffixHash: true
-  #  annotations:
-  #    kustomize.toolkit.fluxcd.io/substitute: disabled
