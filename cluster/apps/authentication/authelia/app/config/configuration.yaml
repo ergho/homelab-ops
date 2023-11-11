@@ -82,7 +82,6 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris:
           ["https://grafana.ergho.org/login/generic_oauth"]
-        userinfo_signing_algorithm: none
       - id: miniflux
         description: Miniflux
         secret: "${MINIFLUX_OAUTH_CLIENT_SECRET}"
@@ -91,4 +90,3 @@ identity_providers:
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ["https://miniflux.ergho.org/oauth2/oidc/callback"]
-        userinfo_signing_algorithm: none
