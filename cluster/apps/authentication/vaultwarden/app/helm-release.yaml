@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 3
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,92 +26,72 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/dani-garcia/vaultwarden
-      tag: 1.30.0@sha256:27638a2ae977d66d99891c06562ff9ba78a60869d2e5a94cf2953f1d03fde12f
-    updateStrategy: Recreate
-    env:
-      TZ: "${CLUSTER_TZ}"
-      DOMAIN: https://bitwarden.ergho.org
-      DATA_FOLDER: "config"
-      ICON_CACHE_FOLDER: "config/icon_cache"
-      ATTACHMENTS_FOLDER: "config/attachments"
-      SENDS_FOLDER: "config/sends"
-      SIGNUPS_ALLOWED: false
-      INVITATIONS_ALLOWED: true
-      SENDS_ALLOWED: true
-      EMERGENCY_ACCESS_ALLOWED: true
-      DISABLE_ICON_DOWNLOAD: false
-      DISABLE_2FA_REMEMBER: false
-      PASSWORD_HINTS_ALLOWED: false
-      WEBSOCKET_ENABLED: true
-      WEBSOCKET_ADDRESS: 0.0.0.0
-      WEBSOCKET_PORT: 3012
-      ROCKET_PORT: 8080
-      SMTP_SECURITY: starttls
-      SMTP_PORT: 587
-    envFrom:
-      - secretRef:
-          name: vaultwarden-secret
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/dani-garcia/vaultwarden
+              tag: 1.30.0@sha256:27638a2ae977d66d99891c06562ff9ba78a60869d2e5a94cf2953f1d03fde12f
+            env:
+              TZ: "${CLUSTER_TZ}"
+              DOMAIN: https://bitwarden.ergho.org
+              DATA_FOLDER: "config"
+              ICON_CACHE_FOLDER: "config/icon_cache"
+              ATTACHMENTS_FOLDER: "config/attachments"
+              SENDS_FOLDER: "config/sends"
+              SIGNUPS_ALLOWED: false
+              INVITATIONS_ALLOWED: true
+              SENDS_ALLOWED: true
+              EMERGENCY_ACCESS_ALLOWED: true
+              DISABLE_ICON_DOWNLOAD: false
+              DISABLE_2FA_REMEMBER: false
+              PASSWORD_HINTS_ALLOWED: false
+              WEBSOCKET_ENABLED: true
+              WEBSOCKET_ADDRESS: 0.0.0.0
+              WEBSOCKET_PORT: 3012
+              ROCKET_PORT: &port 8080
+              SMTP_SECURITY: starttls
+              SMTP_PORT: 587
+            envFrom:
+              - secretRef:
+                  name: vaultwarden-secret
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 15Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: [100]
     service:
       main:
         ports:
           http:
-            port: 8080
-          websocket:
-            enabled: true
-            port: 3012
+            port: *port
     ingress:
       main:
         enabled: true
-        ingressClassName: external
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.ergho.org
         hosts:
           - host: &host "bitwarden.ergho.org"
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  port: 8080
-              - path: /notifications/hub
-                pathType: Prefix
-                service:
-                  port: 3012
-              - path: /notifications/hub/negotiate
-                pathType: Prefix
-                service:
-                  port: 8080
+                  name: main
+                  port: *port
         tls:
           - hosts:
               - *host
-      admin:
-        enabled: true
-        ingressClassName: internal
-        hosts:
-          - host: *host
-            paths:
-              - path: /admin
-                pathType: Prefix
-                service:
-                  port: 8080
-        tls:
-          - hosts:
-              - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 15Gi
-        storageClass: ceph-block
