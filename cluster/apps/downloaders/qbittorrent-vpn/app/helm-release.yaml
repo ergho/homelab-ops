@@ -10,14 +10,13 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
   maxHistory: 3
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,72 +26,71 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.6.0@sha256:cb6259df3be61a5108bc4f85b09a523fc4b250589ca9b315ef927cbdf779afb6
-    updateStrategy: Recreate
-    env:
-      TZ: "${CLUSTER_TZ}"
-      QBITTORRENT__PORT: &port 8080
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.0@sha256:cb6259df3be61a5108bc4f85b09a523fc4b250589ca9b315ef927cbdf779afb6
+            env:
+              TZ: "${CLUSTER_TZ}"
+              QBITTORRENT__PORT: &port 8080
+              QBITTORRENT__BT_PORT: &bittorentPort 57683
+              QBT_PREFERENCES_WebUI__AlternativeUIEnabled: false
+              QBT_PREFERENCES_WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_PREFERENCES_WebUI__AuthSubnetWhitelist: 192.168.0.0/16
+              QBT_PREFERENCES_WebUI__LocalHostAuth: false
+              QBT_BitTorrent__Session__Interface: eth0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: eth0
+
+        pod:
+          annotations:
+            setGateway: "true"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: *port
       bittorrent:
-        enabled: true
+        controller: main
         type: LoadBalancer
         externalIPs: ["192.168.100.32"]
         externalTrafficPolicy: Local
         ports:
           bittorrent:
             enabled: true
-            port: 57683
+            port: *bittorentPort
             protocol: TCP
-            targetPort: 57683
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
-        annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_hide_header "x-webkit-csp";
-            proxy_hide_header "content-security-policy";
-            proxy_hide_header "X-Frame-Options";
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.ergho.org/css/base/qbittorrent/nord.css"></head>';
-            sub_filter_once on;
-          hajimager.io/icon: mdi:download
+        className: internal
         hosts:
           - host: &host "qb-vpn.ergho.org"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    podAnnotations:
-      setGateway: "true"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
     persistence:
-      media:
+      config:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/BeepyBoopy/Media
-        mountPath: /media
+        existingClaim: qbittorent-config
+      media:
+        existingClaim: media

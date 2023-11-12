@@ -1,12 +1,12 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/replicationsource_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: qbittorrent-vpn
   namespace: downloaders
 spec:
-  sourcePVC: config-qbittorrent-vpn-0
+  sourcePVC: qbittorrent-config
   trigger:
     schedule: "0 0 * * *"
   restic:
