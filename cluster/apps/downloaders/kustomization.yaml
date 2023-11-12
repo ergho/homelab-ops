@@ -6,5 +6,5 @@ resources:
   # Pre Flux-kustomization
   - ./namespace.yaml
   # Flux-kustomization
-  - ./media-pvc.yaml
+  - ./downloaders-pvc.yaml.yaml
   - ./qbittorrent-vpn/ks.yaml
