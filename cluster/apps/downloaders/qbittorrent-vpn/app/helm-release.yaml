@@ -93,4 +93,4 @@ spec:
         enabled: true
         existingClaim: qbittorrent-config
       media:
-        existingClaim: media
+        existingClaim: downloaders
