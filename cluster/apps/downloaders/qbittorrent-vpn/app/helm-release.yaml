@@ -43,12 +43,8 @@ spec:
               QBT_PREFERENCES_WebUI__AuthSubnetWhitelistEnabled: true
               QBT_PREFERENCES_WebUI__AuthSubnetWhitelist: 192.168.0.0/16
               QBT_PREFERENCES_WebUI__LocalHostAuth: false
-              QBT_BitTorrent__Session__Interface: eth0
-              QBT_BitTorrent__Session__InterfaceAddress:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              QBT_BitTorrent__Session__InterfaceName: eth0
+              QBT_BitTorrent__Session__Interface: vxlan0
+              QBT_BitTorrent__Session__InterfaceName: vxlan0
 
         pod:
           annotations:
