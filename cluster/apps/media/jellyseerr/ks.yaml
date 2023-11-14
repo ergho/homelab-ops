@@ -8,7 +8,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
   path: ./cluster/apps/media/jellyseerr/app
   prune: true
   sourceRef:
