@@ -27,8 +27,11 @@ spec:
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
+      data:
+        compression: gzip
       wal:
         compression: gzip
+        maxParallel: 8
       destinationPath: s3://postgresql/v15/
       endpointURL: https://truenas.ergho.org:9000
       s3Credentials:
