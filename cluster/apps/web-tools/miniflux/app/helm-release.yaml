@@ -37,7 +37,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: 15.5
+              tag: 15
               imagePullPolicy: IfNotPresent
             envFrom:
               - secretRef:
@@ -46,7 +46,7 @@ spec:
           main:
             image:
               repository: ghcr.io/miniflux/miniflux
-              tag: 2.0.50
+              tag: 2.0.50-distroless
             env:
               BASE_URL: https://miniflux.ergho.org
               CREATE_ADMIN: "1"
