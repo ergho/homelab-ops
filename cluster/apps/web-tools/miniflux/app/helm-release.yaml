@@ -103,9 +103,6 @@ spec:
         ports:
           http:
             port: *port
-    serviceMonitor:
-      main:
-        enabled: disabled
     ingress:
       main:
         enabled: true
