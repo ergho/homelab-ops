@@ -1,9 +1,9 @@
 ---
 kubelet_file: /etc/sysconfig/kubelet
 kubernetes:
-  apt_version: 1.26.1-00
+  apt_version: 1.27.6-00
   name: ergho-home
-  version: v1.26.1
+  version: v1.27.6
 
 packages_install:
   - apt-transport-https

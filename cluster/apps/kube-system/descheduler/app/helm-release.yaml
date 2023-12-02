@@ -10,14 +10,13 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 0.28.0
+      version: 0.28.1
       sourceRef:
         kind: HelmRepository
         name: descheduler-charts
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,50 +26,71 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    replicas: 2
     kind: Deployment
+    deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
-      strategies:
-        RemoveDuplicates:
-          enabled: true
-        RemovePodsViolatingNodeTaints:
-          enabled: true
-        RemovePodsViolatingNodeAffinity:
-          enabled: true
-          params:
-            nodeAffinityType: ["requiredDuringSchedulingIgnoredDuringExecution"]
-        RemovePodsViolatingTopologySpreadConstraint:
-          enabled: true
-          params:
-            includeSoftConstraints: true
-        RemovePodsViolatingInterPodAntiAffinity:
-          enabled: true
-          params:
-            nodeFit: true
-        LowNodeUtilization:
-          enabled: false
-        RemoveFailedPods:
-          enabled: true
-          params:
-            failedPods:
+      profiles:
+        - name: ProfileName
+          pluginConfig:
+          - name: DefaultEvictor
+            args:
+              evictSystemCriticalPods: true
+              evictFailedBarePods: true
+              evictLocalStoragePods: true
+          - name: RemovePodsHavingTooManyRestarts
+            args:
+              podRestartThreshold: 5
               includingInitContainers: true
-              excludeOwnerKinds: ["Job"]
-              minPodLifetimeSeconds: 3600
-        RemovePodsHavingTooManyRestarts:
-          enabled: false
+          - name: RemovePodsViolatingTopologySpreadConstraint
+            args:
+              constraints:
+                - DoNotSchedule
+          - name: PodLifeTime
+            args:
+              states:
+                - Pending
+                - PodInitializing
+                - ContainerCreating
+              maxPodLifeTimeSeconds: 300
+          - name: RemoveFailedPods
+            args:
+              excludeOwnerKinds:
+                - Job
+              includingInitContainers: true
+              minPodLifetimeSeconds: 300
+          - name: RemoveDuplicates
+          - name: RemovePodsViolatingNodeTaints
+          - name: RemovePodsViolatingNodeAffinity
+            args:
+              nodeAffinityType:
+                - requiredDuringSchedulingIgnoredDuringExecution
+          - name: RemovePodsViolatingInterPodAntiAffinity
+          - name: LowNodeUtilization
+            args:
+              thresholds:
+                cpu: 40
+                pods: 30
+              targetThresholds:
+                cpu: 45
+                pods: 45
+          plugins:
+            balance:
+              enabled:
+                - RemoveDuplicates
+                - LowNodeUtilization
+                - RemovePodsViolatingTopologySpreadConstraint
+            deschedule:
+              enabled:
+                - PodLifeTime
+                - RemoveFailedPods
+                - RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsHavingTooManyRestarts
+                - RemovePodsViolatingInterPodAntiAffinity
     service:
       enabled: true
     serviceMonitor:
       enabled: true
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: *app
-    affinity:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values: [*app]
-              topologyKey: kubernetes.io/hostname
+    leaderElection:
+      enabled: true
