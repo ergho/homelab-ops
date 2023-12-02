@@ -39,11 +39,17 @@ spec:
     sentinel:
       enabled: true
       masterSet: redis-master
-      getMasterTimeout: 30
+      getMasterTimeout: 10
       startupProbe:
-        failureThreshold: 5
+        failureThreshold: 2
       persistence:
         enabled: false
+      resources:
+        requests:
+          cpu: 10m
+          memory: 10m
+        limits:
+          memory: 20m
     metrics:
       enabled: true
       serviceMonitor:
