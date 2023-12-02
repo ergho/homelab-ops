@@ -36,16 +36,17 @@ spec:
       calicoNetwork:
         bgp: Enabled
         hostPorts: Disabled
-      ipPools:
-        - blockSize: 26
-          cidr: "${NET_POD_CIDR}"
-          encapsulation: None
-          natOutgoing: Enabled
-          nodeSelector: all()
-      linuxDataplane: Iptables
-      multiInterfaceMode: None
-      nodeAddressAutodetectionV4:
-        cidrs:
-          - "${NET_NODE_CIDR}"
+        linuxDataplane: Iptables
+        ipPools:
+          - blockSize: 26
+            cidr: "${NET_POD_CIDR}"
+            encapsulation: None
+            natOutgoing: Enabled
+            nodeSelector: all()
+        multiInterfaceMode: None
+        containerIPForwarding: "Enabled"
+        nodeAddressAutodetectionV4:
+          cidrs:
+            - "${NET_NODE_CIDR}"
       nodeMetricsPort: 9091
       typhaMetricsPort: 9093
