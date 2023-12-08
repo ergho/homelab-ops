@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: ghcr.io/ergho/kubernetes-schemas
-              tag: latest@sha256:61dd44ebfdefee25662f3e72ba69552f096d8d3a1ccf1ff1480e21aeb18dc08c
+              tag: latest@sha256:d9191c0ef534c1c82ac1c74c41544c489b1cc35f46e84d5fb2a052b7728e718b
             resources:
               requests:
                 cpu: 5m
