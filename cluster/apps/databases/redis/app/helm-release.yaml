@@ -41,6 +41,7 @@ spec:
       masterSet: redis-master
       getMasterTimeout: 10
       startupProbe:
+        initialDelaySeconds: 60
         failureThreshold: 2
       persistence:
         enabled: false
