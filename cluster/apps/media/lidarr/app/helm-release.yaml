@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/lidarr-develop
-              tag: 2.1.0.3856@sha256:a804847dc155618645974f5576ffbfb6e90bb44a1add221ccc672e4641cc979e
+              tag: 2.1.4.3941@sha256:de7dac090ba6250853146dca5e06cc5be3638631c8b2a47843b0a2434f5f0035
             env:
               TZ: "${CLUSTER_TZ}"
               LIDARR__AUTHENTICATION_METHOD: External
