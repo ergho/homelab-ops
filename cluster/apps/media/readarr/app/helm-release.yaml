@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/readarr-develop
-              tag: 0.3.17.2409@sha256:3d8be41d033ca5d912adc7b1d2650e768ea51ec1cabb4fac0d672ac039bd05ae
+              tag: 0.3.18.2411@sha256:a1d9eb2001d499322e00876106a675c36b6f750cd253843595bb8e022a54f37a
             env:
               TZ: "${CLUSTER_TZ}"
               READARR__AUTHENTICATION_METHOD: External
