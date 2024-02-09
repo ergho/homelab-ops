@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./secret.sops.yaml
-  - ./volsync.yaml
+  #- ./volsync.yaml

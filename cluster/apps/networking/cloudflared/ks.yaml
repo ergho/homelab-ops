@@ -3,9 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-cloudflared
+  name: &app cluster-apps-cloudflared
   namespace: flux-system
 spec:
+  targetNamespace: networking
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: cluster-apps-external-dns
   path: ./cluster/apps/networking/cloudflared/app
@@ -13,7 +17,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
-  wait: true
+  wait: false
   interval: 30m
   retryInterval: 1m
   timeout: 5m
