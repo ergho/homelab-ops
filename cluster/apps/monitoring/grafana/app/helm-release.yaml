@@ -205,7 +205,5 @@ spec:
       tls:
         - hosts:
             - *host
-    imageRenderer:
-      enabled: true
     persistence:
       enabled: false
