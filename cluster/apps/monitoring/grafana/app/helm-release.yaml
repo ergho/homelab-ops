@@ -294,7 +294,7 @@ spec:
         folderAnnotation: grafana_folder
         provider:
           disableDelete: true
-          foldersFromFileStructure: true
+          foldersFromFilesStructure: true
       datasources:
         enabled: true
         searchNamespace: ALL
