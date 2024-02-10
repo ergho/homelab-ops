@@ -330,6 +330,8 @@ spec:
       tls:
         - hosts:
             - *host
+    imageRenderer:
+      enabled: false
     persistence:
       enabled: false
     testFramework:
