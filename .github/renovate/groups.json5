@@ -2,10 +2,24 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "description": ["Actions Runner Controller Group"],
+      "groupName": "Actions Runner Controller",
+      "matchPackagePatterns": [
+        "gha-runner-scale-set-controller",
+        "gha-runner-scale-set"
+      ],
+      "matchDatasources": ["helm", "docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
       "description": "Flux images and tags",
       "groupName": "Flux",
-      "matchPackagePatterns": ["flux"],
+      "matchPackagePatterns": ["fluxcd"],
       "matchDatasources": ["docker", "github-tags"],
+      "versioning": "semver",
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
@@ -17,16 +31,6 @@
       "matchPackagePatterns": ["rook.ceph"],
       "matchDatasources": ["docker", "helm"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "External Snapshotter charts",
-      "groupName": "External Snapshotter",
-      "matchPackageNames": ["snapshot-controller", "snapshot-validation-webhook"],
-      "matchDatasources": ["helm"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
       "separateMinorPatch": true
     },
   ]

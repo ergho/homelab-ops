@@ -10,7 +10,11 @@ on: # yamllint disable-line rule:truthy
         required: false
       logLevel:
         description: "Log-Level"
-        default: "debug"
+        default: debug
+        required: false
+      version:
+        description: Renovate version
+        default: latest
         required: false
   schedule:
     - cron: "0 * * * *"
@@ -22,12 +26,18 @@ on: # yamllint disable-line rule:truthy
       - .github/renovate.json5
       - .github/renovate/**.json5
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
 env:
-  LOG_LEVEL: debug
-  RENOVATE_DRY_RUN: false
-  RENOVATE_CONFIG_FILE: .github/renovate-bot.json5
+  LOG_LEVEL: "${{ inputs.logLevel || 'debug' }}"
   RENOVATE_AUTODISCOVER: true
   RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
+  RENOVATE_PLATFORM: github
+  RENOVATE_PLATFORM_COMMIT: true
+  RENOVATE_DRY_RUN: "${{ inputs.dryRun == true }}"
+  RENOVATE_CONFIG_FILE: .github/renovate-bot.json5
 
 jobs:
   renovate:
@@ -46,10 +56,6 @@ jobs:
         with:
           token: "${{ steps.generate-token.outputs.token }}"
 
-      - name: Override default config from dispatch variables
-        run: |
-          echo "RENOVATE_DRY_RUN=${{ github.event.inputs.dryRun || env.RENOVATE_DRY_RUN }}" >> "${GITHUB_ENV}"
-          echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "${GITHUB_ENV}"
       - name: Renovate
         uses: renovatebot/github-action@7bfea4459bd634791b0d5b02bfa0080b8123b776 # v40.0.3
         with:
