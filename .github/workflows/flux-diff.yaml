@@ -18,8 +18,8 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        path: ["cluster"]
-        resource: ["helmrelease", "kustomization"]
+        paths: ["cluster"]
+        resources: ["helmrelease", "kustomization"]
       max-parallel: 4
       fail-fast: false
     steps:
