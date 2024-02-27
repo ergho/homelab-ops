@@ -46,7 +46,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
-              tag: 5.3.4.8567@sha256:9b317a8933a338f285d9c785ac8ea2e6be3705c3bf34c31c8d1a250a97095847
+              tag: 5.4.0.8636@sha256:6676ffdf020e239ce8ebb4876edca828af34d718c589de25957cae9c218c07b7
             env:
               TZ: "${CLUSTER_TZ}"
               RADARR__AUTHENCTICATION: External
