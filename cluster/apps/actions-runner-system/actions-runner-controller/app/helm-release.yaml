@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,65 +9,19 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: actions-runner-controller
-      version: 0.23.7
+      chart: gha-runner-scale-set-controller
+      version: 0.8.3
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
   maxHistory: 3
   install:
-    createNamespace: true
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
-  values:
-    image:
-      repository: ghcr.io/actions-runner-controller/actions-runner-controller
-    authSecret:
-      create: false
-      name: &secret actions-runner-controller-secret
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
-    githubWebhookServer:
-      enabled: true
-      syncPeriod: 10m
-      secret:
-        create: false
-        name: *secret
-      podAnnotations:
-        secret.reloader.stakater.com/reload: *secret
-      ingress:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.ergho.org
-        ingressClassName: external
-        hosts:
-          - host: &host "arc-webhook.ergho.org"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-    metrics:
-      serviceMonitor:
-        enabled: true
-      port: 8080
-      proxy:
-        enabled: false
-    actionsMetricsServer:
-      enabled: true
-      secret:
-        enabled: true
-        create: false
-        name: *secret
-    actionsMetrics:
-      port: 8080
-      proxy:
-        enabled: false
