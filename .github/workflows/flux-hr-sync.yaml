@@ -22,7 +22,7 @@ on:
 jobs:
   sync:
     name: Flux Helm Repository Sync
-    runs-on: ["self-hosted"]
+    runs-on: ["arc-runner-set-homelab"]
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1
