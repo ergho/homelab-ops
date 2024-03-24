@@ -6,7 +6,4 @@ resources:
   - ./namespace.yaml
   # Flux-kustomizations
   - ./echo-server/ks.yaml
-  - ./hajimari/ks.yaml
-  - ./kubernetes-schemas/ks.yaml
   - ./miniflux/ks.yaml
-  - ./theme-park/ks.yaml

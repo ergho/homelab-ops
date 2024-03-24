@@ -9,12 +9,9 @@ resources:
   # Flux Kustomization
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
-  - ./lidarr/ks.yaml
-  - ./media-browser/ks.yaml
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml
   - ./radarr-uhd/ks.yaml
-  - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./sonarr-uhd/ks.yaml

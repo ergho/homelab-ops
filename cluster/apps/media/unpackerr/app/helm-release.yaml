@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,16 +27,19 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      unpackerr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/unpackerr
-              tag: 0.12.0@sha256:8bbf35be449b89041f07fc069812f79b4eadf56e1c7c7720935fe166016376ef
+              repository: ghcr.io/unpackerr/unpackerr
+              tag: 0.13.1@sha256:04fcb43fa70e6db88331962760607842cdf19889e6d35d9d2fde0cf6a1550eaf
             env:
               TZ: "${CLUSTER_TZ}"
+              UN_WEBSERVER_METRICS: true
+              UN_WEBSERVER_LOG_FILE: /logs
+              UN_ACTIVITY: true
               UN_SONARR_0_URL: http://sonarr:8080
               UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/sonarr
               UN_SONARR_1_URL: http://sonarr-uhd:8080
@@ -45,40 +48,48 @@ spec:
               UN_RADARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/radarr
               UN_RADARR_1_URL: http://radarr-uhd:8080
               UN_RADARR_1_PATHS_0: /media/Downloads/qbittorrrent/complete/radarr-uhd
-              UN_LIDARR_0_URL: http://lidarr:8080
-              UN_LIDARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/lidarr
-              UN_READARR_0_URL: http://readarr:8080
-              UN_READARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/readarr
             envFrom:
               - secretRef:
                   name: *app
             probes:
-              startup:
-                enabled: false
               liveness:
-                enabled: false
+                enabled: true
               readiness:
-                enabled: false
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
                 memory: 100Mi
               limits:
-                memory: 150Mi
+                memory: 1Gi
 
         pod:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups: [10000]
     service:
-      main:
-        enabled: false
+      app:
+        controller: unpackerr
+        ports:
+          http:
+            port: 5656
     serviceMonitor:
-      main:
-        enabled: false
+      app:
+        serviceName: unpackerr
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
       media:
         existingClaim: media
