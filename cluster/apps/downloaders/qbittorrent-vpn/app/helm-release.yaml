@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      qbittorrent-vpn:
+      qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -57,12 +57,12 @@ spec:
             supplementalGroups: [10000]
     service:
       app:
-        controller: qbittorrent-vpn
+        controller: qbittorrent
         ports:
           http:
             port: *port
       bittorrent:
-        controller: qbittorrent-vpn
+        controller: qbittorrent
         type: LoadBalancer
         externalIPs: ["192.168.100.32"]
         externalTrafficPolicy: Local
