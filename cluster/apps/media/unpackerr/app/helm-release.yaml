@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/unpackerr/unpackerr
-              tag: 0.12.0@sha256:8bbf35be449b89041f07fc069812f79b4eadf56e1c7c7720935fe166016376ef
+              tag: 0.13.1@sha256:04fcb43fa70e6db88331962760607842cdf19889e6d35d9d2fde0cf6a1550eaf
             env:
               TZ: "${CLUSTER_TZ}"
               UN_WEBSERVER_METRICS: true
@@ -48,10 +48,6 @@ spec:
               UN_RADARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/radarr
               UN_RADARR_1_URL: http://radarr-uhd:8080
               UN_RADARR_1_PATHS_0: /media/Downloads/qbittorrrent/complete/radarr-uhd
-              UN_LIDARR_0_URL: http://lidarr:8080
-              UN_LIDARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/lidarr
-              UN_READARR_0_URL: http://readarr:8080
-              UN_READARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/readarr
             envFrom:
               - secretRef:
                   name: *app
