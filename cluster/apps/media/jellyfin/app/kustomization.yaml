@@ -7,6 +7,6 @@ resources:
   - ./secret.sops.yaml
   #- ./pvc.yaml
   #- ../../../../templates/volsync
-  #- ./volsync.yaml
-  - ./claim.yaml
-  - ./minio.yaml
+  - ./volsync.yaml
+  #- ./claim.yaml
+  #- ./minio.yaml
