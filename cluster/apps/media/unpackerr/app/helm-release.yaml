@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -27,16 +27,19 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      unpackerr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/unpackerr
+              repository: ghcr.io/unpackerr/unpackerr
               tag: 0.12.0@sha256:8bbf35be449b89041f07fc069812f79b4eadf56e1c7c7720935fe166016376ef
             env:
               TZ: "${CLUSTER_TZ}"
+              UN_WEBSERVER_METRICS: true
+              UN_WEBSERVER_LOG_FILE: /logs
+              UN_ACTIVITY: true
               UN_SONARR_0_URL: http://sonarr:8080
               UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrrent/complete/sonarr
               UN_SONARR_1_URL: http://sonarr-uhd:8080
@@ -53,32 +56,44 @@ spec:
               - secretRef:
                   name: *app
             probes:
-              startup:
-                enabled: false
               liveness:
-                enabled: false
+                enabled: true
               readiness:
-                enabled: false
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
                 memory: 100Mi
               limits:
-                memory: 150Mi
+                memory: 1Gi
 
         pod:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups: [10000]
     service:
-      main:
-        enabled: false
+      app:
+        controller: unpackerr
+        ports:
+          http:
+            port: 5656
     serviceMonitor:
-      main:
-        enabled: false
+      app:
+        serviceName: unpackerr
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
       media:
         existingClaim: media

@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -32,20 +32,10 @@ spec:
       namespace: volsync
   values:
     controllers:
-      main:
-        type: statefulset
+      jellyfin:
         annotations:
           reloader.stakater.com/auto: "true"
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 50Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
         pod:
-          enableServiceLinks: false
           securityContext:
             runAsUser: 568
             runAsGroup: 568
@@ -65,7 +55,7 @@ spec:
               JELLYFIN_PublishedServerUrl: &loadBalancerIP 192.168.100.31
               TZ: "${CLUSTER_TZ}"
             probes:
-              liveness:: &probes
+              liveness: &probes
                 enabled: true
                 custom: true
                 spec:
@@ -77,8 +67,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 100m
@@ -87,7 +75,8 @@ spec:
                 memory: 4000Mi
 
     service:
-      main:
+      app:
+        controller: jellyfin
         type: LoadBalancer
         externalIPs: [*loadBalancerIP]
         externalTrafficPolicy: Cluster
@@ -95,7 +84,7 @@ spec:
           http:
             port: *port
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         hosts:
@@ -103,16 +92,29 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
     persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin
+        advancedMounts:
+          jellyfin:
+            app:
+              - path: /config
       transcode:
+        enabled: true
         type: emptyDir
         globalMounts:
           - path: /transcode
+      cache:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /cache
       media:
         type: persistentVolumeClaim
         existingClaim: media
