@@ -8,7 +8,7 @@ metadata:
 spec:
   sourcePVC: config-jellyfin-0
   trigger:
-    schedule: "0 0 * * *"
+    schedule: "0 * * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 10
@@ -21,5 +21,6 @@ spec:
       runAsGroup: 568
       fsGroup: 568
     retain:
-      daily: 10
-      within: 3d
+      hourly: 24
+      daily: 7
+      weekly: 5
