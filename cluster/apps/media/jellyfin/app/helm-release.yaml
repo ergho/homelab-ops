@@ -100,7 +100,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: jellyfin
+        existingClaim: config-jellyfin-0
         advancedMounts:
           jellyfin:
             app:
