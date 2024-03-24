@@ -101,10 +101,8 @@ spec:
       config:
         enabled: true
         existingClaim: config-jellyfin-0
-        advancedMounts:
-          jellyfin:
-            app:
-              - path: /config
+        globalMounts:
+          - path: /config
       transcode:
         enabled: true
         type: emptyDir
