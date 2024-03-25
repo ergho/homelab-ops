@@ -65,6 +65,8 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
     persistence:
+      config:
+        existingClaim: config-recyclarr-0
       config-file:
         type: configMap
         name: recyclarr-configmap
