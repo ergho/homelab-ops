@@ -6,4 +6,5 @@ resources:
   # Pre Flux-kustomizations
   - ./namespace.yaml
   # Flux-kustomizations
-  - ./actions-runner-controller/ks.yaml
+  - ./gha-runner-scale-set-controller/ks.yaml
+  - ./gha-runner-scale-set/ks.yaml
