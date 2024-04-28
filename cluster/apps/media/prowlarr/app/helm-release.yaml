@@ -61,9 +61,9 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 5
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 2
                   failureThreshold: 3
               readiness: *probes
             securityContext:
@@ -75,17 +75,17 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
-
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
     persistance:
       config:
-        enabled: true
+        type: emptyDir
+      tmp:
         type: emptyDir
     service:
       app:
@@ -95,15 +95,11 @@ spec:
             port: *port
     ingress:
       app:
-        enabled: true
         className: internal
         hosts:
-          - host: &host "{{ .Release.Name }}.ergho.org"
+          - host: "{{ .Release.Name }}.ergho.org"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
