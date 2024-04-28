@@ -5,7 +5,7 @@ name: "Flux Kustomization Sync"
 on:
   push:
     branches: ["main"]
-    paths: ["kubernetes/storage/**"]
+    paths: ["cluster/apps/**"]
 
 jobs:
   sync:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ["gha-runner-scale-set"]
     strategy:
       matrix:
-        cluster: ["storage"]
+        cluster: ["apps"]
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1
@@ -47,7 +47,6 @@ jobs:
         shell: bash
         run: |
           flux \
-              --context "${{ matrix.cluster }}" \
               --namespace flux-system \
               reconcile ks cluster \
               --with-source
