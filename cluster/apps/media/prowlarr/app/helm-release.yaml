@@ -84,8 +84,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         seccompProfile:
           type: RuntimeDefault
-
-    persistance:
+    persistence:
       config:
         type: emptyDir
       tmp:
