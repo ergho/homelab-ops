@@ -30,7 +30,7 @@ spec:
     provider: rfc2136
     env:
       - name: EXTERNAL_DNS_RFC2136_HOST
-        value: "192.168.90.212"
+        value: "192.168.90.211"
       - name: EXTERNAL_DNS_RFC2136_PORT
         value: "53"
       - name: EXTERNAL_DNS_RFC2136_ZONE
