@@ -9,3 +9,4 @@ resources:
   - ./external-dns/ks.yaml
   - ./nginx/ks.yaml
   - ./cloudflared/ks.yaml
+  - ./tailscale/ks.yaml
