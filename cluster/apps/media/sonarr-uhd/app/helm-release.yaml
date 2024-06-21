@@ -48,14 +48,15 @@ spec:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.5.1760@sha256:2be2e97e105573bc0810af388ae8f9ec6d8a8a0784aae0b1ed75d3002b66a87a
             env:
-              COMPlus_EnableDiagnostics: "0"
-              TZ: "${CLUSTER_TZ}"
-              SONARR__AUTHENTICATION_METHOD: External
-              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              SONARR__INSTANCE_NAME: Sonarr-uhd
-              SONARR__PORT: &port 8080
+              SONARR__APP__INSTANCENAME: Sonarr-uhd
+              SONARR__APP__THEME: dark
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__DBENABLE: "False"
               SONARR__LOG_LEVEL: info
-              SONARR__THEME: dark
+              SONARR__SERVER__PORT: &port 8080
+              SONARR__UPDATE__BRANCH: develop
+              TZ: "${CLUSTER_TZ}"
             envFrom: *envFrom
             probes:
               liveness: &probe
