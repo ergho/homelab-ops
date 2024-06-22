@@ -73,6 +73,18 @@ spec:
                 memory: 500Mi
               limits:
                 memory: 4000Mi
+        initContainers:
+          init-permission:
+            image:
+              repository: ghcr.io/cbc02009/busybox
+              tag: 1.36.1
+              pullPolicy: IfNotPresent
+            command:
+              - sh
+              - -c
+              - chown -R 568:568 /jellyfin/jellyfin-web
+            securityContext:
+              runAsUser: 0
 
     service:
       app:
