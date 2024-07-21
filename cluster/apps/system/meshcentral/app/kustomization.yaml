@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./configmap.yaml
+  - ./secret.sops.yaml
   - ../../../../templates/volsync
 generatorOptions:
   disableNameSuffixHash: true
