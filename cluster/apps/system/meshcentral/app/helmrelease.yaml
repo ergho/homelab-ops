@@ -24,7 +24,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/ylianst/meshcentral
               tag: 1.1.25
