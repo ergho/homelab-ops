@@ -5,4 +5,4 @@ collections:
   - name: community.sops
     version: 1.8.1
   - name: community.general
-    version: 9.2.0
+    version: 9.3.0
