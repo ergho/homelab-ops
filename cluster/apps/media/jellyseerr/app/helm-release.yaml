@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: docker.io/fallenbagel/jellyseerr
-              tag: 2.0.0
+              tag: 2.0.1
 
             env:
               TZ: "${CLUSTER_TZ}"
