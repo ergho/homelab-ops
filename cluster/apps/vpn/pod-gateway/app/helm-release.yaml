@@ -80,9 +80,9 @@ spec:
       - IP: 10
         hostname: qbittorrent-vpn-0
         ports:
-          - port: 57683
+          - port: 59982
             type: udp
-          - port: 57683
+          - port: 59982
             type: tcp
     routed_namespaces: ["downloaders"]
     settings:
