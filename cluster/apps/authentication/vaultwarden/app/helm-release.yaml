@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dani-garcia/vaultwarden
-              tag: 1.32.3@sha256:7de8fd442afc26e4932a0b2521e2eec82db9f17667eef7b46fd9c2fa2e639de2
+              tag: 1.32.5@sha256:84015c9306cc58f4be8b09c1adc62cfc3b2648b1430e9c15901482f3d870bd14
             env:
               TZ: "${CLUSTER_TZ}"
               DOMAIN: https://bitwarden.ergho.org
