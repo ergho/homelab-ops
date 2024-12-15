@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -10,96 +10,91 @@ spec:
   chart:
     spec:
       chart: thanos
-      version: 15.9.2
+      version: 1.19.2
       sourceRef:
         kind: HelmRepository
-        name: bitnami-charts
+        name: stevehipwell
         namespace: flux-system
   install:
     createNamespace: true
     remediation:
       retries: 5
   upgrade:
+    cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 5
   values:
-    image:
-      registry: quay.io
-      repository: thanos/thanos
-      tag: v0.37.2
     objstoreConfig:
       type: s3
       config:
         insecure: true
-    queryFrontend:
+    serviceMonitor:
       enabled: true
-      replicaCount: 1
-      ingress:
-        enabled: true
-        annotations:
-          hajimari.io/enable: "false"
-        ingressClassName: internal
-        hostname: &host "thanos.ergho.org"
-        tls: true
-        extraTls:
-          - hosts:
-              - *host
-    query:
-      enabled: true
-      replicaCount: 1
-      replicaLabel: ["__replica__"]
-      dnsDiscovery:
-        sidecarsService: kube-prometheus-stack-thanos-discovery
-        sidecarsNamespace: monitoring
-    bucketweb:
-      enabled: true
-      replicaCount: 1
-    compactor:
+    additionalEndpoints:
+      - dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local
+    additionalReplicaLabels: ["__replica__"]
+    compact:
       enabled: true
       extraFlags:
         - --compact.concurrency=4
         - --delete-delay=30m
-      retentionResolutionRaw: 14d
-      retentionResolution5m: 14d
-      retentionResolution1h: 14d
-      persistence:
+        - --retention.resolution-raw=14d
+        - --retention.resolution-5m=14d
+        - --retention.resolution-1h=30d
+      persistence: &persistence
         enabled: true
         storageClass: "ceph-block"
         size: 20Gi
-    storegateway:
+    query:
       enabled: true
-      replicaCount: 1
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 20Gi
-    ruler:
+      replicas: 1
+    queryFrontend:
       enabled: true
-      replicaCount: 1
-      replicaLabel: __replica__
-      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"]
-      extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
-      config: |-
-        groups:
-          - name: PrometheusWatcher
-            rules:
-              - alert: PrometheusDown
-                annotations:
-                  summary: A Prometheus has disappeared from Prometheus target discovery
-                expr: absent(up{job="kube-prometheus-stack-prometheus"})
-                for: 5m
-                labels:
-                  severity: critical
-      dnsDiscovery:
+      replicas: 1
+      extraEnv: &extraEnv
+        - name: THANOS_CACHE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: &configMap thanos-cache-configmap
+              key: cache.yaml
+      extraArgs: ["--query-range.response-cache-config=$(THANOS_CACHE_CONFIG)"]
+      ingress:
         enabled: true
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 20Gi
-    metrics:
+        ingressClassName: internal
+        hosts:
+          - thanos.ergho.org
+      podAnnotations: &podAnnotations
+        configmap.reloader.stakater.com/reload: *configMap
+    rule:
       enabled: true
-      serviceMonitor:
-        enabled: true
+      replicas: 1
+      extraArgs: ["--web.prefix-header=X-Forwarded-Prefix"]
+      alertmanagersConfig:
+        value: |-
+          alertmanagers:
+            - api_version: v2
+              static_configs:
+                - dnssrv+_http-web._tcp.alertmanager-operated.monitoring.svc.cluster.local
+      rules:
+        value: |-
+          groups:
+            - name: PrometheusWatcher
+              rules:
+                - alert: PrometheusDown
+                  annotations:
+                    summary: A Prometheus has disappeared from Prometheus target discovery
+                  expr: absent(up{job="kube-prometheus-stack-prometheus"})
+                  for: 5m
+                  labels:
+                    severity: critical
+      persistence: *persistence
+    storeGateway:
+      replicas: 2
+      extraEnv: *extraEnv
+      extraArgs: ["--index-cache.config=$(THANOS_CACHE_CONFIG)"]
+      persistence: *persistence
+      podAnnotations: *podAnnotations
   valuesFrom:
     - targetPath: objstoreConfig.config.bucket
       kind: ConfigMap
