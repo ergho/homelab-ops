@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: "Flux Image Test"
+name: "Pre-pull Images"
 
 on:
   pull_request:
@@ -17,11 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    strategy:
-      matrix:
-        paths: [ cluster ]
-      max-parallel: 4
-      fail-fast: false
     outputs:
       matrix: ${{ steps.extract-images.outputs.images }}
     steps:
@@ -53,7 +48,7 @@ jobs:
           path: pull
 
       - name: Gather Images in Default Branch
-        uses: docker://ghcr.io/allenporter/flux-local:main
+        uses: docker://ghcr.io/allenporter/flux-local:v6.1.1
         with:
           args: >-
             get cluster
@@ -91,11 +86,13 @@ jobs:
           images=$(jo -a $(grep -vf default.txt pull.txt))
           echo "images=${images}" >> $GITHUB_OUTPUT
           echo "${images}"
+          echo "### Images" >> $GITHUB_STEP_SUMMARY
+          echo "${images}" | jq --raw-output 'to_entries[] | "* \(.value)"' >> $GITHUB_STEP_SUMMARY
 
-  test-images:
+  pre-pull-images:
     if: ${{ needs.extract-images.outputs.matrix != '[]' }}
-    name: Test images
-    runs-on: ubuntu-latest
+    name: Pre-pull images
+    runs-on: ["gha-runner-scale-set"]
     needs: ["extract-images"]
     strategy:
       matrix:
@@ -103,14 +100,21 @@ jobs:
       max-parallel: 4
       fail-fast: false
     steps:
-      - name: Test Images
-        run: docker pull ${{ matrix.images }}
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Workflow Tools
+        shell: bash
+        run: brew install siderolabs/tap/talosctl
+
+      - name: Pre-pull Image
+        run: talosctl -n $NODE_IP image pull ${{ matrix.images }}
 
   # Summarize matrix https://github.community/t/status-check-for-a-matrix-jobs/127354/7
   test-images-success:
     if: ${{ always() }}
     needs: ["test-images"]
-    name: Test Images Successful
+    name: Pre-pull Images Successful
     runs-on: ubuntu-latest
     steps:
       - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}

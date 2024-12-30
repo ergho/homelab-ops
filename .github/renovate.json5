@@ -10,7 +10,6 @@
     ':semanticCommits',
     ':skipStatusChecks',
     ':timezone(Europe/Stockholm)',
-    'github>ergho/homelab-ops//.github/renovate/allowedVersions.json5',
     'github>ergho/homelab-ops//.github/renovate/autoMerge.json5',
     'github>ergho/homelab-ops//.github/renovate/commitMessage.json5',
     'github>ergho/homelab-ops//.github/renovate/customManagers.json5',
@@ -20,7 +19,7 @@
     'github>ergho/homelab-ops//.github/renovate/semanticCommits.json5',
   ],
   onboarding: false,
-  requireConfig: 'optional',
+  requireConfig: 'ignored',
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: [
     'prEditedNotification',
@@ -29,47 +28,23 @@
   ignorePaths: [
     '**/*.sops.*',
     '**/.archive/**',
+    '**/resources/**',
   ],
   flux: {
     fileMatch: [
-      'cluster/.+\\.ya?ml$',
+      '(^|/)cluster/.+\\.ya?ml$',
     ],
   },
   'helm-values': {
     fileMatch: [
-      'cluster/.+\\.ya?ml$',
+      '(^|/)cluster/.+\\.ya?ml$',
     ],
   },
   kubernetes: {
     fileMatch: [
-      'cluster/.+\\.ya?ml$',
-    ],
-  },
-  customManagers: [
-    {
-      customType: 'regex',
-      description: 'Process various dependencies',
-      fileMatch: [
-        'ansible/.+\\.ya?ml$',
-        'cluster/.+\\.ya?ml$',
-      ],
-      matchStrings: [
-        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?"(?<currentValue>.*)"\n',
-      ],
-      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
-      versioningTemplate: '{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}',
-    },
-    {
-      customType: 'regex',
-      description: 'Process imageName values',
-      fileMatch: [
-        'cluster/.+\\.ya?ml$',
-      ],
-      matchStrings: [
-        'imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)',
-      ],
-      datasourceTemplate: 'docker',
-      versioningTemplate: 'redhat',
-    },
-  ],
+      '(^|/)\\.taskfiles/.+\\.ya?ml$',
+      '(^|/)cluster/.+\\.ya?ml$',
+
+    ]
+  }
 }

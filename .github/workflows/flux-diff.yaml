@@ -18,13 +18,12 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        paths: ["cluster"]
         resources: ["helmrelease", "kustomization"]
       max-parallel: 4
       fail-fast: false
     steps:
       - name: Generate Token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
+        uses: actions/create-github-app-token@v1
         id: app-token
         with:
           app_id: "${{ secrets.APP_ID }}"
@@ -44,7 +43,7 @@ jobs:
           path: default
 
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:main
+        uses: docker://ghcr.io/allenporter/flux-local:v6.1.1
         with:
           args: >-
             diff ${{ matrix.resources }}
@@ -60,10 +59,17 @@ jobs:
       - name: Generate Diff
         id: diff
         run: |
+          cat diff.patch; {
+          echo 'diff<<EOF' >> $GITHUB_OUTPUT
           cat diff.patch
-          echo "diff<<EOF" >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo EOF
+          } >> "$GITHUB_OUTPUT";
+          {
+            echo "### Diff"
+            echo '```diff'
+            echo diff.patch
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add comment

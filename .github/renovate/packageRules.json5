@@ -2,16 +2,17 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": ["Loose versioning for non-semver packages"],
+      "description": ["Allowed postgresql major release"],
       "matchDatasources": ["docker"],
-      "versioning": "loose",
-      "matchPackagePatterns": ["qbittorrent"]
+      "matchPackagePatterns": ["postgresql"],
+      "allowedVersions": "<16"
     },
     {
-      "description": ["Custom versioning for miniflux"],
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>)$",
-      "matchPackagePatterns": ["miniflux"]
+      "description": ["Custom schedule for frequently updated container digests"],
+      "matchDataSources": ["docker"],
+      "matchPackagePatterns": ["postgresql"],
+      "matchUpdateTypes": ["digest"],
+      "schedule": ["every 3 months on the first day of the month"]
     },
   ]
 }

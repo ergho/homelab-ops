@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Publish Kubernetes Schemas"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches: ["main"]
+    paths: [".github/workflows/schemas.yaml"]
+
+jobs:
+  publish:
+    name: Schemas
+    runs-on: ["gha-runner-scale-set"]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Workflow Tools
+        shell: bash
+        run: brew install kubectl
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Install python dependencies
+        run: pip install pyyaml
+
+      - name: Download and Run crd-extractor
+        shell: bash
+        run: |
+          curl -fsSL -o $GITHUB_WORKSPACE/crd-extractor.sh \
+              https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/Utilities/crd-extractor.sh
+          chmow +x $GITHUB_WORKSPACE/crd-extractor.sh
+          bash "$GITHUB_WORKSPACE/crd-extractor.sh"
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+          accountId: "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+          workingDirectory: /home/runner/.datree/crdSchemas
+          command: pages deploy --project-name=kubernetes-schemas --branch main .
+
