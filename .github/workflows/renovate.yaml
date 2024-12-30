@@ -36,7 +36,6 @@ env:
   RENOVATE_PLATFORM: github
   RENOVATE_PLATFORM_COMMIT: true
   RENOVATE_DRY_RUN: "${{ inputs.dryRun == true }}"
-  RENOVATE_CONFIG_FILE: .github/renovate-bot.json5
   WORKFLOW_RENOVATE_VERSION: "${{ inputs.version || 'latest'}}"
 
 jobs:
@@ -59,6 +58,6 @@ jobs:
       - name: Renovate
         uses: renovatebot/github-action@v41.0.7
         with:
-          configurationFile: "${{ env.RENOVATE_CONFIG_FILE }}"
+          configurationFile: .github/renovate.json5
           token: "${{ steps.generate-token.outputs.token }}"
           renovate_version: "${{ env.WORKFLOW_RENOVATE_VERSION }}"
