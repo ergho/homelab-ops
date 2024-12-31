@@ -49,7 +49,16 @@ jobs:
       - name: Install python dependencies
         run: pip install pyyaml
 
+      - name: Write kubeconfig
+        id: kubeconfig
+        uses: timheuer/base64-to-file@v1
+        with:
+          encodedString: "${{ secrets.KUBECONFIG }}"
+          fileName: kubeconfig
+
       - name: Download and Run crd-extractor
+        env:
+          KUBECONFIG: "${{ steps.kubeconfig.outputs.filePath }}"
         shell: bash
         run: |
           curl -fsSL -o $GITHUB_WORKSPACE/crd-extractor.sh \
