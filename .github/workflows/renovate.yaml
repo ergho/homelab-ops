@@ -60,4 +60,4 @@ jobs:
         with:
           configurationFile: .github/renovate.json5
           token: "${{ steps.generate-token.outputs.token }}"
-          renovate_version: "${{ env.WORKFLOW_RENOVATE_VERSION }}"
+          renovate-version: "${{ env.WORKFLOW_RENOVATE_VERSION }}"
