@@ -54,7 +54,7 @@ jobs:
         run: |
           curl -fsSL -o $GITHUB_WORKSPACE/crd-extractor.sh \
               https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/Utilities/crd-extractor.sh
-          chmow +x $GITHUB_WORKSPACE/crd-extractor.sh
+          chmod +x $GITHUB_WORKSPACE/crd-extractor.sh
           bash "$GITHUB_WORKSPACE/crd-extractor.sh"
 
       - name: Deploy to Cloudflare Pages
