@@ -52,17 +52,17 @@ jobs:
         with:
           args: >-
             get cluster
-            --path /github/workspace/default/${{ matrix.paths }}
+            --path /github/workspace/default/cluster/flux
             --enable-images
             --output yaml
             --output-file default.yaml
 
       - name: Gather Images in Pull Request Branch
-        uses: docker://ghcr.io/allenporter/flux-local:main
+        uses: docker://ghcr.io/allenporter/flux-local:v6.1.1
         with:
           args: >-
             get cluster
-            --path /github/workspace/pull/${{ matrix.paths }}
+            --path /github/workspace/pull/cluster/flux
             --enable-images
             --output yaml
             --output-file pull.yaml
