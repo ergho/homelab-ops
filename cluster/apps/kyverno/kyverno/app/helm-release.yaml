@@ -31,40 +31,28 @@ spec:
       install: true
     grafana:
       enabled: true
-    backgroundController:
+    admissionController:
+      replicas: 1
+      clusterRole:
+        extraResources: &extraResources
+          - apiGroups: ["*"]
+            resources: ["*"]
+            verbs: ["get", "list", "watch" ]
       serviceMonitor:
         enabled: true
-      rbac:
-        clusterRole:
-          extraResources:
-            - apiGroups:
-                - ""
-              resources:
-                - pods
-              verbs:
-                - create
-                - update
-                - patch
-                - delete
-                - get
-                - list
+    backgroundController:
+      clusterRole:
+        extraResources: *extraResources
+      resources:
+        requests:
+          cpu: 100m
+        limits:
+          memory: 1Gi
+      serviceMonitor:
+        enabled: true
     cleanupController:
       serviceMonitor:
         enabled: true
     reportsController:
       serviceMonitor:
         enabled: true
-    admissionController:
-      serviceMonitor:
-        enabled: true
-      rbac:
-        clusterRole:
-          extraResources:
-            - apiGroups:
-                - ""
-              resources:
-                - pods
-              verbs:
-                - create
-                - update
-                - delete
