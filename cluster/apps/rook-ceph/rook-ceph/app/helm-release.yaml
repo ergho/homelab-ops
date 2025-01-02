@@ -24,8 +24,15 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: snapshot-controller
+      namespace: kube-system
   values:
+    csi:
+      enableVolumeGroupSnapshot: false
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
+    enableDiscoveryDaemon: true
     monitoring:
       enabled: true
