@@ -29,7 +29,7 @@ spec:
       namespace: kube-system
   values:
     csi:
-      enableVolumeGroupSnapshot: false
+      enableVolumeGroupSnapshot: true
       enableLiveness: true
       serviceMonitor:
         enabled: true
