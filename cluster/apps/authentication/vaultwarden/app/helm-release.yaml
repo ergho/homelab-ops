@@ -84,8 +84,6 @@ spec:
       app:
         enabled: true
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.ergho.org
         hosts:
           - host: &host "bitwarden.ergho.org"
             paths:
