@@ -6,6 +6,7 @@ metadata:
   name: &app qbittorrent-vpn
   namespace: flux-system
 spec:
+  targetNamespace: downloaders
   dependsOn:
     - name: cluster-apps-pod-gateway
     - name: cluster-apps-rook-ceph-cluster
