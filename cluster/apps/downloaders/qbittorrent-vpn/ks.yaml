@@ -20,10 +20,10 @@ spec:
   timeout: 5m
   postBuild:
     substitutes:
-    APP: *app
-    VOLSYNC_CAPACITY: 2Gi
-    VOLSYNC_ACCESSMODES: ReadWriteMany
-    VOLSYNC_STORAGECLASS: ceph-filesystem
-    VOLSYNC_SNAPSHOTCLAS: csi-ceph-filesystem
-    VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany # CephFS shallow snapshot
+      APP: *app
+      VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_ACCESSMODES: ReadWriteMany
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_SNAPSHOTCLAS: csi-ceph-filesystem
+      VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany # CephFS shallow snapshot
 
