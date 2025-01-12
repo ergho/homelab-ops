@@ -3,17 +3,27 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-qbittorrent-vpn
+  name: &app qbittorrent-vpn
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-apps-pod-gateway
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
   path: ./cluster/apps/downloaders/qbittorrent-vpn/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
+  wait: false
   interval: 30m
-  retryInterval: 1m
-  timeout: 3m
+  timeout: 5m
+  postBuild:
+    substitutes:
+    APP: *app
+    VOLSYNC_CAPACITY: 2Gi
+    VOLSYNC_ACCESSMODES: ReadWriteMany
+    VOLSYNC_STORAGECLASS: ceph-filesystem
+    VOLSYNC_SNAPSHOTCLAS: csi-ceph-filesystem
+    VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany # CephFS shallow snapshot
+

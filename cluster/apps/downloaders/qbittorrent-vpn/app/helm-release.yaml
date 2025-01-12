@@ -49,12 +49,14 @@ spec:
         pod:
           annotations:
             setGateway: "true"
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups: [10000]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: qbittorrent
@@ -73,7 +75,6 @@ spec:
             protocol: TCP
     ingress:
       app:
-        enabled: true
         className: internal
         hosts:
           - host: &host "qb-vpn.ergho.org"
@@ -87,7 +88,14 @@ spec:
               - *host
     persistence:
       config:
-        enabled: true
-        existingClaim: qbittorrent-config
+        existingClaim: qbittorrent-vpn
+      tmp:
+        type: emptyDir
       media:
-        existingClaim: downloaders
+        type: nfs
+        server: truenas.ergho.org
+        path: /mnt/BeepyBoopy/Media
+        globalMounts:
+          - path: /media/Downloads/qbittorrent
+            subPath: Downloads/qbittorrent
+
