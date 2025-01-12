@@ -19,7 +19,7 @@ spec:
   interval: 30m
   timeout: 5m
   postBuild:
-    substitutes:
+    substitute:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_ACCESSMODES: ReadWriteMany
