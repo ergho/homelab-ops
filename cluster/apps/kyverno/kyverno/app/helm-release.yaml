@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: kyverno-charts
         namespace: flux-system
-  maxHistory: 3
   install:
     createNamespace: true
     remediation:
@@ -23,6 +22,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
@@ -50,9 +50,11 @@ spec:
           memory: 1Gi
       serviceMonitor:
         enabled: true
-    cleanupController:
+    reportsController:
+      clusterRole:
+        extraResources: *extraResources
       serviceMonitor:
         enabled: true
-    reportsController:
+    cleanupController:
       serviceMonitor:
         enabled: true
