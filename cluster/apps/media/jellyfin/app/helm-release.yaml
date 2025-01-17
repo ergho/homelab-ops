@@ -78,7 +78,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44]
-        seccompProfile: { type: RunTimeDefault }
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: jellyfin
