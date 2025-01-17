@@ -11,7 +11,7 @@ spec:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
   path: ./cluster/apps/media/jellyfin/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
@@ -22,4 +22,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CACHE_CAPACITY: 20Gi
       VOLSYNC_CAPACITY: 50Gi
