@@ -6,5 +6,7 @@ resources:
   - ./helm-release.yaml
   - ./secret.sops.yaml
   #- ./pvc.yaml
-  #- ../../../../templates/volsync
-  - ./volsync.yaml
+  - ../../../../templates/volsync
+  #- ./volsync.yaml
+generatorOptions:
+  disableNameSuffixHash: true
