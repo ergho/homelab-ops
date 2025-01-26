@@ -144,15 +144,13 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-            jsonData:
-              prometheusType: Thanos
+            url: http://prometheus-operated.monitoring.svc.cluster.local:9090
             isDefault: true
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+            url: http://altertmanager-operated.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
     dashboards:
