@@ -23,8 +23,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
       authelia:
@@ -44,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/authelia/authelia
-              tag: v4.38.0-beta3@sha256:b48ae4d0ed9d1eee76efe382df60928bae550ec19e5663858dde6dc5f41cf285
+              tag: 4.38.18@sha256:a5e6fa4b1dbdc296f80f9175157b145a0598690ec8cd4d6e105cd4498fe0c731
             env:
               AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:80
               AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
@@ -52,7 +50,7 @@ spec:
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
               AUTHELIA_THEME: dark
               X_AUTHELIA_CONFIG: /config/configuration.yaml
-              X_AUTHELIA_CONFIG_FILTERS: expand-env
+              X_AUTHELIA_CONFIG_FILTERS: template
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -79,16 +77,13 @@ spec:
                 memory: 128Mi
         pod:
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
             runAsNonRoot: true
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: *app
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RunTimeDefault
     service:
       app:
         controller: authelia
@@ -112,7 +107,6 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.ergho.org
           nginx.ingress.kubernetes.io/configuration-snippet: |
             add_header Cache-Control "no-store";
             add_header Pragma "no-cache";
@@ -137,3 +131,10 @@ spec:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
             readOnly: true
+
+      secret-files:
+        enabled: true
+        type: secret
+        name: authelia-secret
+        globalMounts:
+          - path: /config/secret
