@@ -62,7 +62,10 @@ access_control:
     - domain:
         - "*.ergho.org"
       policy: one_factor
-      subject: [group:admins, group:users]
+      subject:
+        - [ 'group:admins' ]
+        - [ 'group:users' ]
+        - [ 'user:test' ]
       networks:
         - internal
 
