@@ -50,13 +50,6 @@ notifier:
     address: smtp.sendgrid.net
     sender: Authelia <authelia@ergho.org>
 
-totp:
-  disable: false
-  issuer: authelia.com
-
-webauthn:
-  disable: true
-
 duo_api:
   disable: true
 
@@ -92,9 +85,9 @@ identity_providers:
         redirect_uris:
           ["https://grafana.ergho.org/login/generic_oauth"]
         userinfo_signed_response_alg: none
-      - id: miniflux
-        description: Miniflux
-        secret: "${MINIFLUX_OAUTH_CLIENT_SECRET}"
+      - client_id: miniflux
+        client_name: Miniflux
+        client_secret: "${MINIFLUX_OAUTH_CLIENT_SECRET}"
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
