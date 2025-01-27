@@ -47,7 +47,7 @@ session:
 notifier:
   disable_startup_check: true
   smtp:
-    address: smtp.sendgrid.net
+    address: smtp.gmail.com:465
     sender: Authelia <authelia@ergho.org>
 
 log:
