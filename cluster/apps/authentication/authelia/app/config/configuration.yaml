@@ -47,8 +47,10 @@ session:
 notifier:
   disable_startup_check: true
   smtp:
-    address: smtp.gmail.com:465
+    address: smtp://smtp.gmail.com:465
     sender: Authelia <authelia@ergho.org>
+    tls:
+      server_name: smtp.gmail.com
 
 log:
   level: debug
