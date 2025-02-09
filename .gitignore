@@ -9,3 +9,4 @@ kubeconfig
 terraform.tfstate*
 homelab
 cluster/local
+homelab-venv

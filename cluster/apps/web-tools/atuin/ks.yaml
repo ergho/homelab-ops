@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
   path: ./cluster/apps/web-tools/atuin/app
-  prune: true
+  prune: false # revert to true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
