@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./cluster/apps/system/meshcentral/app"
-  prune: false # revert to true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster

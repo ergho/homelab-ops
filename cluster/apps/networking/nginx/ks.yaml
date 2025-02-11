@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cert-manager-issuers
   path: ./cluster/apps/networking/nginx/certificates
-  prune: false # revert to true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: cluster-apps-nginx-certificates
   path: ./cluster/apps/networking/nginx/external
-  prune: false # revert to true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
@@ -47,7 +47,7 @@ spec:
   dependsOn:
     - name: cluster-apps-nginx-certificates
   path: ./cluster/apps/networking/nginx/internal
-  prune: false # revert to true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
