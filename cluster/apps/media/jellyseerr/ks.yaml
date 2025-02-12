@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
   path: ./cluster/apps/media/jellyseerr/app
-  prune: true
+  prune: false # revert to true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
