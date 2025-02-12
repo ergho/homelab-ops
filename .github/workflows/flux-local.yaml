@@ -1,18 +1,41 @@
 ---
-name: "Flux Diff"
+name: "Flux local"
 
 on:
   pull_request:
     branches: ["main"]
-    paths: ["cluster/**"]
+    paths:
+     - "cluster/apps/**"
+     - "cluster/flux/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  flux-diff:
-    name: Flux Diff
+  test:
+    name: flux local test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Run flux-local test
+        uses: docker://ghcr.io/allenporter/flux-local:v7.0.0
+        with:
+          args: test --enable-helm --all-namespaces --path /github/workspace/cluster/flux/cluster -v
+
+  diff:
+    name: Flux Local Diff
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -29,7 +52,7 @@ jobs:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Checkout
+      - name: Checkout Pull Request Branch
         uses: actions/checkout@v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
@@ -42,14 +65,14 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
-      - name: Diff Resources
+      - name: Run flux local diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.0.0
         with:
           args: >-
             diff ${{ matrix.resources }}
             --unified 6
-            --path /github/workspace/pull/cluster/flux
-            --path-orig /github/workspace/default/cluster/flux
+            --path /github/workspace/pull/cluster/flux/cluster
+            --path-orig /github/workspace/default/cluster/flux/cluster
             --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
             --limit-bytes 10000
             --all-namespaces
@@ -82,10 +105,10 @@ jobs:
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
-  flux-diff-success:
+  flux-local-success:
+    needs: ["test", "diff"]
     if: ${{ always() }}
-    needs: ["flux-diff"]
-    name: Flux Diff Successful
+    name: Flux Local Successful
     runs-on: ubuntu-latest
     steps:
       - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
