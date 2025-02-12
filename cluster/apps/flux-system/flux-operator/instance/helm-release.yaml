@@ -27,4 +27,4 @@ spec:
       namespace: flux-system
   valuesFrom:
     - kind: ConfigMap
-      name: flux-instance-helm-valuehost s
+      name: flux-instance-helm-values
