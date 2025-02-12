@@ -1,0 +1,3 @@
+[env]
+KUBERNETES_DIR = '{{config_root}}/cluster'
+KUBECONFIG = '{{config_root}}/cluster/local/kubeconfig.newer'
