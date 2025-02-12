@@ -14,7 +14,7 @@ spec:
   prune: false # revert to true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
   interval: 30m
   timeout: 5m
 ---
@@ -35,7 +35,7 @@ spec:
   prune: false # revert to true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
   wait: true
   interval: 30m
   timeout: 5m

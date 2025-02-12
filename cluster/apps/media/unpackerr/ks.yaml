@@ -10,7 +10,7 @@ spec:
   prune: false # revert to true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
   wait: false
   interval: 30m
   retryInterval: 1m
