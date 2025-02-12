@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
   path: ./cluster/apps/media/radarr/app
-  prune: true
+  prune: false # revert to true
   sourceRef:
     kind: GitRepository
     name: homelab-cluster
