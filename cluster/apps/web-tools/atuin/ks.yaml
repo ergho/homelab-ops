@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app atuin
-  namespace: &namespace web-tools
+  namespace: flux-system
 spec:
   commonMetadata:
     labels:
@@ -17,7 +17,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: web-tools
   wait: false
   interval: 30m
   retryInterval: 1m
