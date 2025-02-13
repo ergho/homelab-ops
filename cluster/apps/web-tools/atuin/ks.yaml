@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
   path: ./cluster/apps/web-tools/atuin/app
-  prune: false # revert to true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

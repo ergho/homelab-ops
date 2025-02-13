@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: databases
   path: ./cluster/apps/databases/redis/app
-  prune: false # revert to true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
