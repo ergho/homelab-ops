@@ -10,6 +10,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
+      namespace: flux-system
   path: ./cluster/apps/web-tools/atuin/app
   prune: true
   sourceRef:
