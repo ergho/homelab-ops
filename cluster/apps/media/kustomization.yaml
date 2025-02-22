@@ -7,6 +7,7 @@ resources:
   - ./namespace.yaml
   - ./media-pvc.yaml
   # Flux Kustomization
+  - ./ersatztv/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./prowlarr/ks.yaml
