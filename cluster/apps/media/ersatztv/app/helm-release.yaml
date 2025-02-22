@@ -77,6 +77,8 @@ spec:
                   identifier: app
                   port: http
     persistence:
+      config:
+        type: emptyDir
       cache:
         type: emptyDir
       tmp:
