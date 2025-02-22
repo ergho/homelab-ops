@@ -42,6 +42,15 @@ spec:
                 enabled: true
               startup:
                 enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 4G
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
@@ -50,6 +59,7 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [100]
     service:
       app:
         controller: *app
