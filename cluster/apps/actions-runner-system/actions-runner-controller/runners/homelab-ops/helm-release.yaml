@@ -37,7 +37,6 @@ spec:
       valuesKey: github_app_private_key
   values:
     githubConfigUrl: https://github.com/ergho/homelab-ops
-    githubConfigSecret: homelab-ops-runner-secret
     minRunners: 1
     maxRunners: 3
     containerMode:
