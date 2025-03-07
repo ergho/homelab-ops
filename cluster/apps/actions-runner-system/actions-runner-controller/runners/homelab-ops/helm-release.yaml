@@ -22,21 +22,9 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  valuesFrom:
-    - targetPath: githubConfigSecret.github_app_id
-      kind: Secret
-      name: homelab-ops-runner-secret
-      valuesKey: github_app_id
-    - targetPath: githubConfigSecret.github_app_installation_id
-      kind: Secret
-      name: homelab-ops-runner-secret
-      valuesKey: github_app_installation_id
-    - targetPath: githubConfigSecret.github_app_private_key
-      kind: Secret
-      name: homelab-ops-runner-secret
-      valuesKey: github_app_private_key
   values:
     githubConfigUrl: https://github.com/ergho/homelab-ops
+    githubConfigSecret: homelab-ops-runner-secret
     minRunners: 1
     maxRunners: 3
     containerMode:
@@ -47,6 +35,7 @@ spec:
         - name: runner
           image:  ghcr.io/onedr0p/actions-runner:2.322.0@sha256:9db27092b7caab08b1dc08d5e639a3340f6e0d6ae2f91aaf93e740bd28ad9306
           command: ["/home/runner/run.sh"]
+        serviceAccoutnName: *name
     controllerServiceAccount:
       name: *name
       namespace: actions-runner-system
