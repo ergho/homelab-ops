@@ -18,8 +18,6 @@
     'github>ergho/homelab-ops//.github/renovate/packageRules.json5',
     'github>ergho/homelab-ops//.github/renovate/semanticCommits.json5',
   ],
-  onboarding: false,
-  requireConfig: 'ignored',
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: [
     'prEditedNotification',

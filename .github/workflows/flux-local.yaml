@@ -1,20 +1,34 @@
 ---
-name: "Flux local"
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Flux Local
 
 on:
   pull_request:
     branches: ["main"]
-    paths:
-     - "cluster/apps/**"
-     - "cluster/flux/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  pre-job:
+    name: Flux Local - Pre-Job
+    runs-on: ubuntu-latest
+    outputs:
+      any_changed: ${{ steps.changed-files.outputs.any_changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: kubernetes/**
   test:
-    name: flux local test
+    if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
+    name: Flux Local - Test
+    needs: pre-job
     runs-on: ubuntu-latest
     steps:
       - name: Generate Token
@@ -30,12 +44,13 @@ jobs:
           token: "${{ steps.app-token.outputs.token }}"
 
       - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v7.0.0
+        uses: docker://ghcr.io/allenporter/flux-local:v7.2.1
         with:
           args: test --enable-helm --all-namespaces --path /github/workspace/cluster/flux/cluster -v
 
   diff:
-    name: Flux Local Diff
+    if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
+    name: Flux Local - Diff
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -66,7 +81,7 @@ jobs:
           path: default
 
       - name: Run flux local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v7.0.0
+        uses: docker://ghcr.io/allenporter/flux-local:v7.2.1
         with:
           args: >-
             diff ${{ matrix.resources }}
@@ -82,20 +97,18 @@ jobs:
       - name: Generate Diff
         id: diff
         run: |
-          cat diff.patch; {
           echo 'diff<<EOF' >> $GITHUB_OUTPUT
-          cat diff.patch
-          echo EOF
-          } >> "$GITHUB_OUTPUT";
-          {
-            echo "### Diff"
-            echo '```diff'
-            echo diff.patch
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          cat diff.patch >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
 
-      - if: ${{ steps.diff.outputs.diff != '' }}
-        name: Add comment
+          echo '## Flux ${{ matrix.resources }} diff' >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          echo diff.patch >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Add Comment
+        if: ${{ steps.diff.outputs.diff != '' }}
+        continue-on-error: true
         uses: mshick/add-pr-comment@v2
         with:
           repo-token: "${{ steps.app-token.outputs.token }}"
@@ -105,12 +118,16 @@ jobs:
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
-  flux-local-success:
-    needs: ["test", "diff"]
+  status:
     if: ${{ always() }}
-    name: Flux Local Successful
+    name: Flux Local - Success
+    needs: ["test", "diff"]
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
-        name: Check matrix status
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
+
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
