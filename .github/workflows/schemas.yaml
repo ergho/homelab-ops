@@ -12,7 +12,7 @@ on:
 jobs:
   publish:
     name: Schemas
-    runs-on: ["gha-runner-scale-set"]
+    runs-on: ["homelab-ops-runner"]
     permissions:
       contents: read
       packages: write

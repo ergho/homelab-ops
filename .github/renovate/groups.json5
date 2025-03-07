@@ -4,34 +4,29 @@
     {
       "description": ["Actions Runner Controller Group"],
       "groupName": "Actions Runner Controller",
-      "matchPackagePatterns": [
-        "gha-runner-scale-set-controller",
-        "gha-runner-scale-set"
-      ],
-      "matchDatasources": ["helm", "docker"],
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": ["/gha-runner-scale-set/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
+      }
     },
     {
-      "description": "Flux images and tags",
-      "groupName": "Flux",
-      "matchPackagePatterns": ["fluxcd"],
-      "matchDatasources": ["docker", "github-tags"],
-      "versioning": "semver",
+      "description": "Flux Operator Group",
+      "groupName": "Flux Operator",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/flux-operator/", "/flux-instance/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
+      }
     },
     {
       "description": "Rook-Ceph charts",
       "groupName": "Rook-Ceph",
-      "matchPackagePatterns": ["rook.ceph"],
-      "matchDatasources": ["docker", "helm"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
+      "matchDatasources": ["helm"],
+      "matchPackageNames": ["/rook.ceph/"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    }
   ]
 }
