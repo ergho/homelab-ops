@@ -6,8 +6,5 @@ namespace: actions-runner-system
 components:
   - ../../components/common
 resources:
-  # Pre Flux-kustomizations
-  - ./namespace.yaml
-  # Flux-kustomizations
   - ./gha-runner-scale-set-controller/ks.yaml
   - ./gha-runner-scale-set/ks.yaml
