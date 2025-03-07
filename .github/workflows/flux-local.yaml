@@ -24,7 +24,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v45
         with:
-          files: kubernetes/**
+          files: cluster/**
   test:
     if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
     name: Flux Local - Test
