@@ -7,7 +7,8 @@
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
-      "matchPackagePatterns": ["ghcr.io/onedr0p", "ghcr.io/bjw-s"]
+      "matchPackagePatterns": ["ghcr.io/onedr0p", "ghcr.io/bjw-s"],
+      "ignoreTests": true
     },
     {
       "description": "Auto merge GitHub Actions",
@@ -16,6 +17,16 @@
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch"],
+      "ignoreTests": true
+    },
+    {
+      "description": "Auto-merge Helm Releases",
+      "matchDatasources": ["helm", "docker"],
+      "automerge": true,
+      "automergeType": "pr",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepNames": ["kube-prometheus-stack"],
+      "ignoreTests": false
     }
   ]
 }
