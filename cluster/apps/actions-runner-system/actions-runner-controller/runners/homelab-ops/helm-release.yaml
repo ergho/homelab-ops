@@ -3,9 +3,9 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: gha-runner-scale-set
+  name: &name homelab-ops-runner
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: gha-runner-scale-set
@@ -20,24 +20,24 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   valuesFrom:
     - targetPath: githubConfigSecret.github_app_id
       kind: Secret
-      name: actions-runner-controller-secret
+      name: actions-runner-secret
       valuesKey: github_app_id
     - targetPath: githubConfigSecret.github_app_installation_id
       kind: Secret
-      name: actions-runner-controller-secret
+      name: actions-runner-secret
       valuesKey: github_app_installation_id
     - targetPath: githubConfigSecret.github_app_private_key
       kind: Secret
-      name: actions-runner-controller-secret
+      name: actions-runner-secret
       valuesKey: github_app_private_key
   values:
-    nameOverride: gha-runner-scale-set
-    runnerScaleSetName: gha-runner-scale-set
     githubConfigUrl: https://github.com/ergho/homelab-ops
+    githubConfigSecret: homelab-ops-runner-secret
     minRunners: 1
     maxRunners: 3
     containerMode:
@@ -49,5 +49,5 @@ spec:
           image:  ghcr.io/onedr0p/actions-runner:2.322.0@sha256:9db27092b7caab08b1dc08d5e639a3340f6e0d6ae2f91aaf93e740bd28ad9306
           command: ["/home/runner/run.sh"]
     controllerServiceAccount:
-      name: gha-runner-scale-set-controller
+      name: *name
       namespace: actions-runner-system

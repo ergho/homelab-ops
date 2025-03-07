@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: gha-runner-scale-set-controller
-  namespace: actions-runner-system
+  name: &name actions-runner-controller
 spec:
-  interval: 15m
+  interval: 1h
   chart:
     spec:
       chart: gha-runner-scale-set-controller
@@ -15,7 +14,6 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
-  maxHistory: 3
   install:
     crds: CreateReplace
     remediation:
@@ -24,6 +22,8 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
   values:
-    fullnameOverride: gha-runner-scale-set-controller
+    fullnameOverride: *name
+    replicaCount: 1
