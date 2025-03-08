@@ -51,6 +51,7 @@ jobs:
   diff:
     if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
     name: Flux Local - Diff
+    needs: pre-job
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
