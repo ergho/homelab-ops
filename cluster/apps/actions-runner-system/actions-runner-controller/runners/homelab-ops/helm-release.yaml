@@ -29,6 +29,9 @@ spec:
     maxRunners: 3
     containerMode:
       type: dind
+    controllerServiceAccount:
+      name: actions-runner-controller
+      namespace: actions-runner-system
     template:
       spec:
         containers:
