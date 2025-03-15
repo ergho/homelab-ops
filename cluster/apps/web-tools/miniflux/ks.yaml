@@ -3,16 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: miniflux
-  namespace: flux-system
+  name: &app miniflux
+  namespace: &namespace flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-app
+    - name: cluster-apps-cloudnative-pg-app #todo
+      namespace: flux-system #todo
+  interval: 1h
   path: ./cluster/apps/web-tools/miniflux/app
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
