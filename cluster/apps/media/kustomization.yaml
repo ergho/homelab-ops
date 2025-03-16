@@ -2,11 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+components:
+  - ../../components/common
 resources:
-  # Pre Flux Kustomization
-  - ./namespace.yaml
-  - ./media-pvc.yaml
-  # Flux Kustomization
+  - ./media-pvc.yaml #  probably want to get rid of this
   - ./ersatztv/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml

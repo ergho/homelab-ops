@@ -3,16 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-radarr-uhd
-  namespace: flux-system
+  name: &app radarr-uhd
+  namespace: &namespace media
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
+      namespace: flux-system
+  interval: 1h
   path: ./cluster/apps/media/radarr-uhd/app
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
