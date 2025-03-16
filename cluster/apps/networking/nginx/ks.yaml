@@ -8,6 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cert-manager-issuers
+      namespace: cert-manager
   path: ./cluster/apps/networking/nginx/certificates
   prune: true
   sourceRef:
