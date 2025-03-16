@@ -15,7 +15,7 @@ spec:
     - name: lldap
       namespace: *namespace
     - name: redis
-      namespace: databses
+      namespace: databases
   interval: 1h
   path: ./cluster/apps/authentication/authelia/app
   prune: true
