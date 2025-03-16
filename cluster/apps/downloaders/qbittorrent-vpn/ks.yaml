@@ -23,7 +23,7 @@ spec:
       VOLSYNC_STORAGECLASS: ceph-filesystem
       VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
       VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany # CephFS shallow snapshot
-  prune: false
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

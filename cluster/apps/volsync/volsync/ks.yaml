@@ -14,7 +14,7 @@ spec:
       namespace: kube-system
   interval: 1h
   path: ./cluster/apps/volsync/volsync/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
