@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  YOUR_NAME: ergho
+  CLUSTER_TZ: "Europe/Stockholm"
+  NET_NODE_CIDR: "192.168.90.0/24"
+  NET_POD_CIDR: "10.60.0.0/16"
+  NET_SVC_CIDR: "10.40.0.0/16"
+  NET_EIP_CIDR: "192.168.100.0/24"
+  NETWORK_RESOURCES: "192.168.30.0/24"
+  NAS_ADDR: "192.168.90.25"
+  VPN_COUNTRY: "Netherlands"
+  CLUSTER_CLOUDFLARE_TUNNEL_ID: "ed6cc263-4e7f-416c-9eeb-7199dbb04a81"
