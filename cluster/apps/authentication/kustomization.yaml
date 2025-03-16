@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: authentication
 components:
   - ../../components/common
+  - ../../components/vars
 resources:
   - ./authelia/ks.yaml
   - ./lldap/ks.yaml
