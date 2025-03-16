@@ -12,8 +12,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: cluster-apps-cloudnative-pg-app #todo
-      namespace: flux-system #todo
+    - name: cloudnative-pg-app
+      namespace: databases
   interval: 1h
   path: ./cluster/apps/authentication/lldap/app
   prune: true

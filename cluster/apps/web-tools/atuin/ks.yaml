@@ -9,8 +9,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster #todo change to new value later
-      namespace: flux-system #todo
+    - name: cloudnative-pg-cluster
+      namespace: databases
   interval: 1h
   path: ./cluster/apps/web-tools/atuin/app
   postBuild:

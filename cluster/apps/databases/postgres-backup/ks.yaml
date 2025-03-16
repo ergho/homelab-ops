@@ -3,17 +3,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-postgres-backup
-  namespace: flux-system
+  name: &app postgres-backup
+  namespace: &namespace databases
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
+  interval: 1h
   path: "./cluster/apps/databases/postgres-backup/app"
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
   wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m

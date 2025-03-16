@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
-      namespace: flux-system
+    - name: cloudnative-pg-cluster
+      namespace: databases
   interval: 1h
   path: ./cluster/apps/media/radarr-uhd/app
   prune: true

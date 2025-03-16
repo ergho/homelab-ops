@@ -10,12 +10,12 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-app #todo
-      namespace: flux-system #todo
+    - name: cloudnative-pg-app
+      namespace: databases
     - name: lldap
       namespace: *namespace
-    - name: cluster-apps-redis #todo
-      namespace: flux-system #todo
+    - name: redis
+      namespace: databses
   interval: 1h
   path: ./cluster/apps/authentication/authelia/app
   prune: true

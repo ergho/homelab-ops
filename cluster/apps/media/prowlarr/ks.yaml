@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster #todo fix
-      namespace: flux-system #todo fix
+    - name: cloudnative-pg-cluster
+      namespace: databases
   interval: 1h
   path: ./cluster/apps/media/prowlarr/app
   prune: true
