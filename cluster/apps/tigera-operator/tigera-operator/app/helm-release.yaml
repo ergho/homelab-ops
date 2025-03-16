@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: tigera-operator
 spec:
-  interval: 15m
+  interval: 1h
   chart:
     spec:
       chart: tigera-operator
@@ -35,7 +35,7 @@ spec:
         linuxDataplane: Iptables
         ipPools:
           - blockSize: 26
-            cidr: "${NET_POD_CIDR}"
+            cidr: 10.60.0.0/16
             encapsulation: None
             natOutgoing: Enabled
             nodeSelector: all()
@@ -43,6 +43,6 @@ spec:
         containerIPForwarding: "Enabled"
         nodeAddressAutodetectionV4:
           cidrs:
-            - "${NET_NODE_CIDR}"
+            - 192.168.90.0/24
       nodeMetricsPort: 9091
       typhaMetricsPort: 9093
