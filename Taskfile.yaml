@@ -12,7 +12,7 @@ includes:
   an: .taskfiles/ansible/tasks.yaml
   fx: .taskfiles/flux/tasks.yaml
   ku: .taskfiles/kubernetes/tasks.yaml
-  vs: .taskfiles/volsync/tasks.yaml
+  volsync: .taskfiles/volsync/
 
 tasks:
   default:
