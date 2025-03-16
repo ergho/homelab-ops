@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack
   path: ./cluster/apps/monitoring/grafana/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
