@@ -13,7 +13,7 @@ spec:
       namespace: rook-ceph
     - name: cluster-apps-volsync
   path: ./cluster/apps/downloaders/qbittorrent-vpn/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -10,7 +10,7 @@ spec:
     - name: snapshot-controller
       namespace: kube-system
   path: ./cluster/apps/volsync/volsync/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
