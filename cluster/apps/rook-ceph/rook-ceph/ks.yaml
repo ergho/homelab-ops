@@ -9,6 +9,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: rook-ceph-operrator
+      namespace: *namespace
   interval: 1h
   path: ./cluster/apps/rook-ceph/rook-ceph/app
   prune: false # never delete
@@ -33,6 +38,22 @@ spec:
   dependsOn:
     - name: rook-ceph
       namespace: *namespace
+    - name: volsync
+      namespace: volsync
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      name: rook-ceph
+      namespace: *namespace
+  healthCheckExprs:
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      failed: status.ceph.health == 'HEALTH_ERR'
+      current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
   interval: 1h
   path: ./cluster/apps/rook-ceph/rook-ceph/cluster
   prune: false # never delete
