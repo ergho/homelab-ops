@@ -2,9 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+components:
+  - ../../components/common
+namespace: downloaders
 resources:
-  # Pre Flux-kustomization
-  - ./namespace.yaml
-  # Flux-kustomization
   - ./downloaders-pvc.yaml
   - ./qbittorrent-vpn/ks.yaml

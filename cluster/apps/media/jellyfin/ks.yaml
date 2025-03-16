@@ -12,8 +12,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: cluster-apps-volsync
-      namespace: flux-system
+    - name: volsync
+      namespace: volsync
   interval: 1h
   path: ./cluster/apps/media/jellyfin/app
   postBuild:
