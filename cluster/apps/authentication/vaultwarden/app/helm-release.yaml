@@ -37,7 +37,7 @@ spec:
               ICON_CACHE_FOLDER: "config/icon_cache"
               ATTACHMENTS_FOLDER: "config/attachments"
               SENDS_FOLDER: "config/sends"
-              SIGNUPS_ALLOWED: false
+              SIGNUPS_ALLOWED: true
               INVITATIONS_ALLOWED: true
               SENDS_ALLOWED: true
               EMERGENCY_ACCESS_ALLOWED: true
