@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cert-manager
-  namespace: cert-manager
 spec:
   interval: 15m
   chart:
@@ -15,17 +14,14 @@ spec:
         kind: HelmRepository
         name: jetstack-charts
         namespace: flux-system
-  maxHistory: 3
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
+      strategy: rollback
   values:
     installCRDs: true
     extraArgs:
