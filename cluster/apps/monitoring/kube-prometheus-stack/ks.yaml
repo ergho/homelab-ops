@@ -16,7 +16,7 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./cluster/apps/monitoring/kube-prometheus-stack/app
-  prune: false
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
