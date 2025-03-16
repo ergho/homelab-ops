@@ -13,7 +13,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 5Gi
-  prune: false
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
