@@ -4,9 +4,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: vaultwarden
-  namespace: authentication
 spec:
-  interval: 15m
+  interval: 1h
   chart:
     spec:
       chart: app-template
@@ -15,22 +14,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 3
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
       vaultwarden:
-        type: statefulset
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -59,21 +53,35 @@ spec:
             envFrom:
               - secretRef:
                   name: vaultwarden-secret
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 15Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups: [100]
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 768Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
     service:
       app:
         controller: vaultwarden
@@ -82,7 +90,6 @@ spec:
             port: *port
     ingress:
       app:
-        enabled: true
         className: external
         hosts:
           - host: &host "bitwarden.ergho.org"
@@ -94,3 +101,8 @@ spec:
         tls:
           - hosts:
               - *host
+    persistence:
+      config:
+        existingClaim: vaultwarden
+        globalMounts:
+          - path: /config

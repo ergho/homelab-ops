@@ -3,16 +3,29 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-vaultwarden
-  namespace: flux-system
+  name: &app vaultwarden
+  namespace: &namespace authentication
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../components/volsync
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+      namespace: flux-system
+  interval: 1h
   path: ./cluster/apps/authentication/vaultwarden/app
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 5Gi
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

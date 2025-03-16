@@ -3,18 +3,24 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-lldap
+  name: lldap
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-cloudnative-pg-app
+    - name: cluster-apps-rook-ceph-cluster #todo fix
+      namespace: flux-system #todo
+    - name: cluster-apps-cloudnative-pg-app #todo
+      namespace: flux-system #todo
+  interval: 1h
   path: ./cluster/apps/authentication/lldap/app
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
+  timeout: 5m
   wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
