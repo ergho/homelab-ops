@@ -2,6 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+components:
+  - ../../components/common
+namespace: system
 resources:
-  - ./namespace.yaml
   - ./meshcentral/ks.yaml
