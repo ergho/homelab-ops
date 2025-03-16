@@ -9,10 +9,11 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
   path: ./cluster/apps/media/sonarr/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   interval: 30m
   retryInterval: 1m
   timeout: 3m
