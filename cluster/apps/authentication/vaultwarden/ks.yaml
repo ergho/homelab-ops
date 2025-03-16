@@ -12,8 +12,8 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
-      namespace: flux-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./cluster/apps/authentication/vaultwarden/app
   postBuild:

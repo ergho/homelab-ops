@@ -9,7 +9,8 @@ spec:
   targetNamespace: downloaders
   dependsOn:
     - name: cluster-apps-pod-gateway
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: cluster-apps-volsync
   path: ./cluster/apps/downloaders/qbittorrent-vpn/app
   prune: true

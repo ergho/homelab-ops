@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster #todo fix
-      namespace: flux-system #todo
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: cluster-apps-cloudnative-pg-app #todo
       namespace: flux-system #todo
   interval: 1h
