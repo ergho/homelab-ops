@@ -3,8 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: lldap
-  namespace: flux-system
+  name: &app lldap
+  namespace: &namespace authentication
 spec:
   commonMetadata:
     labels:
@@ -22,5 +22,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: true
