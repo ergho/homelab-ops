@@ -6,6 +6,6 @@ namespace: authentication
 components:
   - ../../components/common
 resources:
-  - ./authelia/ks.yaml
+#  - ./authelia/ks.yaml
   - ./lldap/ks.yaml
   - ./vaultwarden/ks.yaml
