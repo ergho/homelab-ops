@@ -45,7 +45,7 @@ session:
           port: 26379
 
 notifier:
-  disable_startup_check: true
+  disable_startup_check: false
   smtp:
     address: smtp://smtp.gmail.com:465
     sender: Authelia <authelia@ergho.org>
