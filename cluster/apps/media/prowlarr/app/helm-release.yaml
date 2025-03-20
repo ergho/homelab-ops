@@ -33,15 +33,15 @@ spec:
           init-db:
             image:
               repository: ghcr.io/home-operations/containers/postgres-init
-              tag: 16.8
+              tag: 17.4
             envFrom: &envFrom
               - secretRef:
                   name: prowlarr-secret
         containers:
           main:
             image:
-              repository: ghcr.io/home-operations/containers/prowlarr-develop
-              tag: 1.32.2.4987@sha256:f3c0edbd19d744c8306ae8f72e75f0fb54ff662e9f7b22a4d9029e5c0b7f075c
+              repository: ghcr.io/home-operations/containers/prowlarr
+              tag: 1.32.2.4987@sha256:77f6b6850d6191f68d2d2d4d21655b103acc5c6f6243d8cb62bb75888499b78a
             env:
               PROWLARR__APP_INSTANCENAME: Prowlarr
               PROWLARR__APP__THEME: dark
@@ -50,6 +50,7 @@ spec:
               PROWLARR__LOG__DBENABLED: "False"
               PROWLARR__LOG_LEVEL: info
               PROWLARR__SERVER__PORT: &port 8080
+              PROWLARR__UPDATE_BRANCH: develop
               TZ: "${CLUSTER_TZ}"
             envFrom: *envFrom
             probes:
