@@ -35,7 +35,7 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
+              repository: ghcr.io/home-operations/containers/postgres-init
               tag: 16.8
               pullPolicy: IfNotPresent
             envFrom: &envFrom
@@ -44,7 +44,7 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/sonarr-develop
+              repository: ghcr.io/home-operations/containers/sonarr-develop
               tag: 4.0.14.2938@sha256:75da01d2da78d226cd89352fbab919f2eb26ea9a8d6c592bf812dde5f8949243
             env:
               SONARR__APP__INSTANCENAME: Sonarr-uhd
