@@ -35,7 +35,7 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/home-operations/containers/postgres-init
+              repository: ghcr.io/home-operations/postgres-init
               tag: 17.4
             envFrom: &envFrom
               - secretRef:
@@ -43,7 +43,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/containers/radarr
+              repository: ghcr.io/home-operations/radarr
               tag: 5.20.2.9777@sha256:e23ae79f0c88aa988aacaf9df34cf626632bed0205c51e7ba34bcc508d2f38a6
             env:
               RADARR__APP__INSTANCENAME: Radarr-uhd
