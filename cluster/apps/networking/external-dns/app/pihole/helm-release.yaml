@@ -14,17 +14,15 @@ spec:
         kind: HelmRepository
         name: external-dns-charts
         namespace: flux-system
-  maxHistory: 3
   install:
-    createNamespace: true
+    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
       retries: 3
   upgrade:
+    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     interval: 2m
     provider: pihole
