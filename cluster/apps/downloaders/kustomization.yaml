@@ -6,5 +6,4 @@ components:
   - ../../components/common
 namespace: downloaders
 resources:
-  - ./downloaders-pvc.yaml
   - ./qbittorrent-vpn/ks.yaml

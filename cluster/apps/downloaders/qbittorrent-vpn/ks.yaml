@@ -6,6 +6,8 @@ metadata:
   name: &app qbittorrent-vpn
   namespace: &namespace downloaders
 spec:
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: pod-gateway
       namespace: vpn
@@ -19,10 +21,6 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
-      VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany # CephFS shallow snapshot
   prune: true
   retryInterval: 2m
   sourceRef:
