@@ -9,6 +9,8 @@ on:
     branches: ["main"]
     paths: [".github/workflows/schemas.yaml"]
 
+env:
+  UV_SYSTEM_PYTHON: "1"
 jobs:
   publish:
     name: Schemas
