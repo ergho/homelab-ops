@@ -14,6 +14,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: volsync
+      namespace: volsync
   interval: 1h
   path: ./cluster/apps/authentication/vaultwarden/app
   postBuild:
