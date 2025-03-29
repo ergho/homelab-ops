@@ -9,11 +9,20 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: *namespace
+    - name: volsync
+      namespace: volsync
   interval: 1h
   path: "./cluster/apps/databases/postgres-backup/app"
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CACHE_CAPACITY: 10Gi
+      VOLSYNC_CAPACITY: 35Gi
   prune: true
   retryInterval: 2m
   sourceRef:
