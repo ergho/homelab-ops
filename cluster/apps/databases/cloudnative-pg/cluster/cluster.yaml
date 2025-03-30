@@ -33,6 +33,8 @@ spec:
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
+      tags:
+        retention: "30days"
       data:
         compression: gzip
       wal:
