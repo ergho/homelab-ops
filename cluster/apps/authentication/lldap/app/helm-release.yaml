@@ -74,6 +74,14 @@ spec:
             port: *port
           ldap:
             port: *ldapPort
+      lldap:
+        controller: lldap
+        externalIPs:
+          - 192.168.100.35
+        externalTrafficPolicy: Cluster
+        ports:
+          ldap:
+            port: *ldapPort
     ingress:
       app:
         enabled: true
