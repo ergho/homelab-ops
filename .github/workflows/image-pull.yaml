@@ -41,7 +41,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: "${{ steps.app-token.outputs.token }}"
           ref: "${{ matrix.branches == 'default' && github.event.repository.defualt_branch || '' }}"
 
       - name: Gather Images
