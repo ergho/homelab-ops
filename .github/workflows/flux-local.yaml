@@ -88,7 +88,7 @@ jobs:
         run: |
           echo 'diff<<EOF' >> $GITHUB_OUTPUT
           cat diff.patch >> $GITHUB_OUTPUT
-          echo EOF >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Generate Token
