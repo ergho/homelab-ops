@@ -63,7 +63,7 @@ jobs:
           echo '## Branch ${{ matrix.branch }} images' >> $GITHUB_STEP_SUMMARY
           echo '```json' >> $GITHUB_STEP_SUMMARY
           jq '.' images.json >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMAR
+          echo '```' >> $GITHUB_STEP_SUMMARY
   diff:
     if: ${{ needs.extract.outputs.default != needs.extract.outputs.pull }}
     needs: extract
