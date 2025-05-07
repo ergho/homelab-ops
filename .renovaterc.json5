@@ -29,20 +29,19 @@
     '**/resources/**',
   ],
   flux: {
-    fileMatch: [
-      '(^|/)cluster/.+\\.ya?ml$',
+    managerFilePatterns: [
+      '/(^|/)cluster/.+\\.ya?ml$/',
     ],
   },
   'helm-values': {
-    fileMatch: [
-      '(^|/)cluster/.+\\.ya?ml$',
+    managerFilePatterns: [
+      '/(^|/)cluster/.+\\.ya?ml$/',
     ],
   },
   kubernetes: {
-    fileMatch: [
-      '(^|/)\\.taskfiles/.+\\.ya?ml$',
-      '(^|/)cluster/.+\\.ya?ml$',
-
-    ]
-  }
+    managerFilePatterns: [
+      '/(^|/)\\.taskfiles/.+\\.ya?ml$/',
+      '/(^|/)cluster/.+\\.ya?ml$/',
+    ],
+  },
 }
