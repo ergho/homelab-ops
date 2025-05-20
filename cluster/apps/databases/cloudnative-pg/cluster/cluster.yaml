@@ -7,6 +7,7 @@ metadata:
   namespace: databases
   annotations:
     kyverno.io/ignore: "true"
+    cnpg.io/skipWalArchiving: "enabled"
 spec:
   instances: 3
 
