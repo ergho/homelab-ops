@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: nitnelave/lldap
-              tag: v0.6.1
+              tag: v0.6.2
             env:
               TZ: Europe/Stockholm
               LLDAP_HTTP_PORT: &port 80
