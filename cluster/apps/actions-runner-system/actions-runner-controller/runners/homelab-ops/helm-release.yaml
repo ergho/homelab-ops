@@ -36,6 +36,6 @@ spec:
       spec:
         containers:
         - name: runner
-          image:  ghcr.io/home-operations/actions-runner:2.327.0@sha256:5298b6088cd79be86c73e35607c868b0db1095ae8e97b2ed4040a22639990a1f
+          image:  ghcr.io/home-operations/actions-runner:2.328.0@sha256:c43873ef6800697dfa181582f6bb02366a9a0afb52026bde7bad7c71b21b1052
           command: ["/home/runner/run.sh"]
         serviceAccountName: *name
