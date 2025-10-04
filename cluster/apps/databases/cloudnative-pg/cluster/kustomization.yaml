@@ -6,4 +6,4 @@ namespace: databases
 resources:
   - ./cluster.yaml
   - ./secret.sops.yaml
-  - ./scheduledbackup.yaml
+  #- ./scheduledbackup.yaml
