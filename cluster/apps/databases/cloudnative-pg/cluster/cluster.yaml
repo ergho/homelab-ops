@@ -31,24 +31,24 @@ spec:
       max_connections: "600"
       max_slot_wal_keep_size: 10GB
 
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      tags:
-        retention: "30days"
-      data:
-        compression: gzip
-      wal:
-        compression: gzip
-        maxParallel: 8
-      destinationPath: s3://postgresql/v15/
-      endpointURL: https://truenas.ergho.org:9000
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-s3
-          key: S3_ACCESS_KEY
-        secretAccessKey:
-          name: cloudnative-pg-s3
-          key: S3_SECRET_KEY
+  #backup:
+  #  retentionPolicy: 30d
+  #  barmanObjectStore:
+  #    tags:
+  #      retention: "30days"
+  #    data:
+  #      compression: gzip
+  #    wal:
+  #      compression: gzip
+  #      maxParallel: 8
+  #    destinationPath: s3://postgresql/v15/
+  #    endpointURL: https://truenas.ergho.org:9000
+  #    s3Credentials:
+  #      accessKeyId:
+  #        name: cloudnative-pg-s3
+  #        key: S3_ACCESS_KEY
+  #      secretAccessKey:
+  #        name: cloudnative-pg-s3
+  #        key: S3_SECRET_KEY
 
   externalClusters: []
