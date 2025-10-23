@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/miniflux/miniflux
-              tag: 2.2.13-distroless
+              tag: 2.2.14-distroless
             env:
               BASE_URL: https://miniflux.ergho.org
               CREATE_ADMIN: "1"
