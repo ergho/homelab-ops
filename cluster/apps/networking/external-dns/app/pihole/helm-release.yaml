@@ -32,8 +32,9 @@ spec:
             key: pihole-password
     extraArgs:
       - --pihole-server=https://dns.ergho.org
-      - --ingress-class=internal
       - --pihole-tls-skip-verify
+      - --pihole-api-version=6
+      - --ingress-class=internal
     policy: upsert-only
     sources: ["service", "ingress"]
     registry: noop
