@@ -31,7 +31,7 @@ spec:
             name: external-dns-pihole-secret
             key: pihole-password
     extraArgs:
-      - --pihole-server=http://dns.ergho.org
+      - --pihole-server=http://192.168.90.5
       - --ingress-class=internal
       - --pihole-api-version=6
       - --pihole-tls-skip-verify
