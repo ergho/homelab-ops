@@ -33,6 +33,7 @@ spec:
     extraArgs:
       - --pihole-server=http://dns.ergho.org
       - --ingress-class=internal
+      - --pihole-api-version=6
     policy: upsert-only
     sources: ["service", "ingress"]
     registry: noop
