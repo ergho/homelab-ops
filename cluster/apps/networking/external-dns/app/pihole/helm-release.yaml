@@ -32,8 +32,9 @@ spec:
             key: pihole-password
     extraArgs:
       - --pihole-server=http://dns.ergho.org
+      - --ingress-class=internal
     policy: upsert-only
-    sources: ["service","ingress"]
+    sources: ["service", "ingress"]
     registry: noop
     serviceMonitor:
       enabled: true
