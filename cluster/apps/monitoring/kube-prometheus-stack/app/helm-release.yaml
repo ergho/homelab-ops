@@ -160,7 +160,7 @@ spec:
         enableAdminAPI: true
         walCompression: true
         thanos:
-          image: quay.io/thanos/thanos:v0.40.1
+          image: quay.io/thanos/thanos:v0.41.0
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
