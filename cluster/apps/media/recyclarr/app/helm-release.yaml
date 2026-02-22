@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
-              tag: 7.5.2
+              tag: 8.2.0
             env:
               COMPlus_EnableDiagnostics: "0"
               TZ: ${CLUSTER_TZ}
