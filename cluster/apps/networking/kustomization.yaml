@@ -6,7 +6,8 @@ components:
   - ../../components/common
 namespace: networking
 resources:
+  - ./cloudflared/ks.yaml
+  - ./envoy-gateway/ks.yaml
   - ./external-dns/ks.yaml
   - ./nginx/ks.yaml
-  - ./cloudflared/ks.yaml
   - ./tailscale/ks.yaml
