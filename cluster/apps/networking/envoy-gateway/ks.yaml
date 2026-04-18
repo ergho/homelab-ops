@@ -6,7 +6,7 @@ metadata:
   name: envoy-gateway
 spec:
   interval: 1h
-  path: ./cluster/apps/networking/envoy-gayeway/app
+  path: ./cluster/apps/networking/envoy-gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
