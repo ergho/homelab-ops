@@ -34,6 +34,7 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              talosctl
               kubectl
               fluxcd
               jq
@@ -44,8 +45,8 @@
 
             shellHook = ''
               echo "Homelab shell"
-              echo "Kubectl: $(kubectl --version | head -1)"
-              echo "fluxcd: $(fluxcd--version)"
+              echo "Kubectl: $(kubectl version --client | head -1)"
+              echo "fluxcd: $(flux version --client )"
 
             '';
           };
