@@ -85,7 +85,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClass: "ceph-block"
+              storageClassName: "ceph-block"
               resources:
                 requests:
                   storage: 1Gi
