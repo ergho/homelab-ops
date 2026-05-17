@@ -87,10 +87,12 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname internal.ergho.org
 spec:
   gatewayClassName: envoy
+  addresses:
+    - type: IPAddress
+      value: 192.168.100.39
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.100.30
   listeners:
     - name: http
       protocol: HTTP
