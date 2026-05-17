@@ -79,6 +79,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: qbittorrent-vpn
