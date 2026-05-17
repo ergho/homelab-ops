@@ -99,7 +99,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.ergho.org"
+          - "lldap.ergho.org"
         parentRefs:
           - name: envoy-internal
             namespace: networking
