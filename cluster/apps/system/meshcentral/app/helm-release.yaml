@@ -67,7 +67,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .ReleaseName }}.ergho.org"
+          - "{{ .Release.Name }}.ergho.org"
           - *host
         parentRefs:
           - name: envoy-internal
