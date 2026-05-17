@@ -55,12 +55,10 @@ spec:
   gatewayClassName: envoy
   addresses:
     - type: IPAddress
-      value: 192.168.90.138
+      value: 192.168.100.38
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      projectcalico.org/loadBalancerIPs: '["192.168.90.138"]'
-      #lbipam.cilium.io/ips: 192.168.69.126
   listeners:
     - name: http
       protocol: HTTP
