@@ -88,19 +88,14 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: external
-        hosts:
-          - host: &host "bitwarden.ergho.org"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.ergho.org"
+          - "bitwarden.ergho.org"
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
     persistence:
       config:
         existingClaim: vaultwarden

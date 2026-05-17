@@ -34,9 +34,8 @@ spec:
       - --pihole-server=https://dns.ergho.org
       - --pihole-tls-skip-verify
       - --pihole-api-version=6
-      - --ingress-class=internal
     policy: upsert-only
-    sources: ["service", "ingress"]
+    sources: ["service", "gateway-httproute"]
     registry: noop
     serviceMonitor:
       enabled: true

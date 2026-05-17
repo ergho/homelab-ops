@@ -71,6 +71,14 @@ spec:
               - severity = "critical"
             target_matchers:
               - severity = "warning"
+      route:
+        main:
+          enabled: true
+          hostnames:
+           - "alert-manager.ergho.org"
+          parentRefs:
+            - name: envoy-internal
+              namespace: networking
       ingress:
         enabled: true
         pathType: Prefix
@@ -133,18 +141,14 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          hajimari.io/appName: Prometheus
-          hajimari.io/icon: simple-icons:prometheus
-        pathType: Prefix
-        hosts:
-          - &host "prometheus.ergho.org"
-        tls:
-          - hosts:
-              - *host
+      route:
+        main:
+          enabled: true
+          hostnames:
+           - "prometheus.ergho.org"
+          parentRefs:
+            - name: envoy-internal
+              namespace: networking
       thanosService:
         enabled: true
       thanosServiceMonitor:

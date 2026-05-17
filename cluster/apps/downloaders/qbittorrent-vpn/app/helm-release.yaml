@@ -72,19 +72,13 @@ spec:
             enabled: true
             port: *bittorentPort
             protocol: TCP
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host "qb-vpn.ergho.org"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "qb-vpn.ergho.org"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     persistence:
       config:
         existingClaim: qbittorrent-vpn

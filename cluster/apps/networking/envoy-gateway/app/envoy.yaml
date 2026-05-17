@@ -44,18 +44,18 @@ spec:
     name: envoy
     namespace: networking
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname ext.ergho.org
+    external-dns.alpha.kubernetes.io/target: &hostname external.ergho.org
 spec:
   gatewayClassName: envoy
   addresses:
     - type: IPAddress
-      value: 192.168.100.38
+      value: 192.168.100.39
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
@@ -77,3 +77,106 @@ spec:
           - kind: Secret
             name: ergho-org-tls
             namespace: networking
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-internal
+  annotations:
+    external-dns.alpha.kubernetes.io/target: &hostname internal.ergho.org
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 192.168.100.30
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ergho-org-tls
+            namespace: networking
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: envoy
+spec:
+  compressor:
+    - type: Zstd
+      zstd: {}
+    - type: Brotli
+      brotli: {}
+    - type: Gzip
+      gzip: {}
+  retry:
+    numRetries: 2
+    retryOn:
+      triggers:
+        - reset
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+  tcpKeepalive: {}
+  timeout:
+    http:
+      requestTimeout: 0s
+#---
+## yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json
+#apiVersion: gateway.envoyproxy.io/v1alpha1
+#kind: ClientTrafficPolicy
+#metadata:
+#  name: envoy
+#spec:
+#  clientIPDetection:
+#    xForwardedFor:
+#      trustedCIDRs:
+#        - 10.42.0.0/16
+#  http2:
+#    onInvalidMessage: TerminateStream
+#  http3: {}
+#  targetSelectors:
+#    - group: gateway.networking.k8s.io
+#      kind: Gateway
+#  tcpKeepalive: {}
+#  tls:
+#    minVersion: "1.2"
+#    alpnProtocols:
+#      - h2
+#      - http/1.1
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.ergho.org/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: https-redirect
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  parentRefs:
+    - name: envoy-external
+      namespace: networking
+      sectionName: http
+    - name: envoy-internal
+      namespace: networking
+      sectionName: http
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

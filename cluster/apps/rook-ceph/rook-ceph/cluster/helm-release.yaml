@@ -29,15 +29,15 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
-    ingress:
+    route:
       dashboard:
-        ingressClassName: internal
         host:
-          name: &host "rook.ergho.org"
+          name: "rook.ergho.org"
           path: /
-        tls:
-          - hosts:
-              - *host
+          pathType: PathPrefix
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     toolbox:
       enabled: true
     configOverride: |

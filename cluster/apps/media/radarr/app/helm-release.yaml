@@ -92,20 +92,13 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "{{ .Release.Name }}.ergho.org"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.ergho.org"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     persistence:
       config:
         enabled: true

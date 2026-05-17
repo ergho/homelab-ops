@@ -307,14 +307,15 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      hosts:
-        - &host grafana.ergho.org
-      tls:
-        - hosts:
-            - *host
+
+    #ingress:
+    #  enabled: true
+    #  ingressClassName: internal
+    #  hosts:
+    #    - &host grafana.ergho.org
+    #  tls:
+    #    - hosts:
+    #        - *host
     persistence:
       enabled: false
     testFramework:

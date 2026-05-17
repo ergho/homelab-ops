@@ -58,11 +58,13 @@ spec:
               name: &configMap thanos-cache-configmap
               key: cache.yaml
       extraArgs: ["--query-range.response-cache-config=$(THANOS_CACHE_CONFIG)"]
-      ingress:
+      httpRoute:
         enabled: true
-        ingressClassName: internal
-        hosts:
+        hostnames:
           - thanos.ergho.org
+        parentRefs:
+          name: envoy-internal
+          namespace: networking
       podAnnotations: &podAnnotations
         configmap.reloader.stakater.com/reload: *configMap
     rule:

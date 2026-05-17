@@ -50,7 +50,7 @@ spec:
               ATUIN_METRICS__PORT: &metricsPort 8080
               ATUIN_TLS__ENABLE: "false"
             envFrom: *envFrom
-            args: 
+            args:
               - start
             probes:
               liveness:
@@ -107,16 +107,13 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: sh.ergho.org
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "sh.ergho.org"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     persistence:
       config:
         type: emptyDir

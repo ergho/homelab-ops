@@ -7,7 +7,7 @@ components:
   - ../../components/common
 resources:
   - ./media-pvc.yaml #  probably want to get rid of this
-  - ./ersatztv/ks.yaml
+#  - ./ersatztv/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./prowlarr/ks.yaml

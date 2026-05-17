@@ -64,18 +64,11 @@ spec:
         ports:
           http:
             port: 8080
-    ingress:
-      main:
-        className: internal
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: main
-        tls:
-          - hosts:
-              - *host
+    route:
+      app:
+        hostnames:
+          - "{{ .ReleaseName }}.ergho.org"
+          - *host
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking

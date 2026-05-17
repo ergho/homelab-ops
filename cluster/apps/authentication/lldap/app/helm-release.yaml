@@ -83,19 +83,6 @@ spec:
           ldap:
             port: *ldapPort
     ingress:
-      app:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "{{ .Release.Name }}.ergho.org"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
       tailscale:
         enabled: true
         className: tailscale
@@ -109,6 +96,13 @@ spec:
         tls:
           - hosts:
               - *tshost
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.ergho.org"
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     persistence:
       data:
         type: emptyDir

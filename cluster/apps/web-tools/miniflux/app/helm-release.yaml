@@ -114,17 +114,10 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-    ingress:
+    route:
       app:
-        enabled: true
-        className: external
-        hosts:
-          - host: &host "{{ .Release.Name }}.ergho.org"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.ergho.org"
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
