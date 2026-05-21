@@ -63,8 +63,8 @@ spec:
         hostnames:
           - thanos.ergho.org
         parentRefs:
-          name: envoy-internal
-          namespace: networking
+          - name: envoy-internal
+            namespace: networking
       podAnnotations: &podAnnotations
         configmap.reloader.stakater.com/reload: *configMap
     rule:
