@@ -27,12 +27,15 @@ spec:
     - name: snapshot-controller
       namespace: kube-system
   values:
+    crds:
+      enabled: true
     csi:
       enableVolumeGroupSnapshot: true
       enableLiveness: true
       serviceMonitor:
         enabled: true
-    enableDiscoveryDaemon: true
+    image:
+      repository: ghcr.io/rook/ceph
     monitoring:
       enabled: true
     resources:
