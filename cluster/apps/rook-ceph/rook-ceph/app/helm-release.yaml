@@ -23,15 +23,15 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: snapshot-controller
-      namespace: kube-system
+  #dependsOn:
+  #  - name: snapshot-controller
+  #    namespace: kube-system
   values:
-    crds:
-      enabled: true
+    #crds:
+    #  enabled: true
     csi:
-      enableVolumeGroupSnapshot: true
-      enableLiveness: true
+    #  enableVolumeGroupSnapshot: true
+    #  enableLiveness: true
       serviceMonitor:
         enabled: true
     image:
