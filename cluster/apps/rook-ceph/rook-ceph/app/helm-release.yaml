@@ -27,10 +27,10 @@ spec:
   #  - name: snapshot-controller
   #    namespace: kube-system
   values:
-    #crds:
-    #  enabled: true
+    crds:
+      enabled: true
     csi:
-    #  enableVolumeGroupSnapshot: true
+      enableVolumeGroupSnapshot: true
     #  enableLiveness: true
       serviceMonitor:
         enabled: true
