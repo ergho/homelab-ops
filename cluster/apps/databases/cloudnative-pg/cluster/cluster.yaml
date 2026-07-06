@@ -11,7 +11,7 @@ metadata:
 spec:
   instances: 3
 
-  imageName: ghcr.io/cloudnative-pg/postgresql:15.18@sha256:04598d2058f446fcbc3416838740e515e7d39c311d0bca57778b50c302db1ae5
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.14@sha256:9f917c9f05732db5c40f6bc72be4e7d34705f205c75761f0d0d63e1f77e932ab
 
   primaryUpdateStrategy: unsupervised
 
