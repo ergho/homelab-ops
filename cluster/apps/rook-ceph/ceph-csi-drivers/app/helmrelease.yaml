@@ -16,7 +16,7 @@ spec:
 #        clusterName: rook-ceph
     drivers:
       cephfs:
-        enabled: true
+        enabled: false
         name: rook-ceph.cephfs.csi.ceph.com
         snapshotPolicy: volumeGroupSnapshot
         kernelMountOptions:
