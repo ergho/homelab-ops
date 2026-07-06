@@ -45,7 +45,8 @@ spec:
           main:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 4.0.18.2978@sha256:2cd77fb3d81909a734d61bb8f71462044cb9d2f187e626a28a05a5c4e4be8fd2
+              tag: 4.0.17.2967@sha256:4ff5667a371e08b098858fa2457a99a5fef5f6a32640eb8567efe979d13ac9fc
+              #tag: 4.0.18.2978@sha256:2cd77fb3d81909a734d61bb8f71462044cb9d2f187e626a28a05a5c4e4be8fd2
             env:
               SONARR__APP__INSTANCENAME: Sonarr-uhd
               SONARR__APP__THEME: dark
@@ -81,12 +82,13 @@ spec:
                 memory: 1Gi
         pod:
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
             runAsNonRoot: true
-            fsGroup: 568
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [10000]
+            seccompProfile:
+              type: RunTimeDefault
     service:
       app:
         controller: sonarr-uhd
@@ -104,5 +106,7 @@ spec:
       config:
         enabled: true
         existingClaim: sonarr-uhd-config
+      tmp:
+        type: emptyDir
       media:
         existingClaim: media
