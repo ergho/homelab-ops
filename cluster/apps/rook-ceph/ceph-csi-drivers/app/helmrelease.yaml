@@ -19,8 +19,8 @@ spec:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
         snapshotPolicy: volumeGroupSnapshot
-        kernelMountOptions:
-          ms_mode: prefer-crc
+#        kernelMountOptions:
+#          ms_mode: prefer-crc
       nfs:
         enabled: false
       nvmeof:
