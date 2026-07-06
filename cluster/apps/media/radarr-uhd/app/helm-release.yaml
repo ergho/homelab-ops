@@ -103,5 +103,7 @@ spec:
       config:
         enabled: true
         existingClaim: radarr-uhd-config
+      tmp:
+        type: emptyDir
       media:
         existingClaim: media

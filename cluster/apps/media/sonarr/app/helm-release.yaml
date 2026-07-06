@@ -104,5 +104,7 @@ spec:
       config:
         enabled: true
         existingClaim: sonarr-config
+      tmp:
+        type: emptyDir
       media:
         existingClaim: media
