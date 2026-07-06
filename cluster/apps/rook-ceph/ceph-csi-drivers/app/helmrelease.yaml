@@ -11,16 +11,16 @@ spec:
     name: ceph-csi-drivers
   releaseName: ceph-csi-drivers
   values:
-    operatorConfig:
-      driverSpecDefaults:
-        clusterName: rook-ceph
+#    operatorConfig:
+#      driverSpecDefaults:
+#        clusterName: rook-ceph
     drivers:
       cephfs:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
         snapshotPolicy: volumeGroupSnapshot
-#        kernelMountOptions:
-#          ms_mode: prefer-crc
+        kernelMountOptions:
+          ms_mode: prefer-crc
       nfs:
         enabled: false
       nvmeof:

@@ -113,7 +113,7 @@ spec:
             resources:
               requests:
                 cpu: 1000m
-                memory: 4Gi
+                memory: 1Gi
               limits:
                 memory: 4Gi
         storageClass:
@@ -131,6 +131,7 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
+          volumeBindingMode: Immediate
     cephFileSystemsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-filesystem
