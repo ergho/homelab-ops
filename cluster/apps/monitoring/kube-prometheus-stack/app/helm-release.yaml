@@ -28,6 +28,62 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    crds:
+      enable: true
+    cleanPrometheusOperatorObjectNames: true
+    kubeApiServer:
+      enabled: true
+      endpoints:
+        - 192.168.90.100
+    kubeControllerManager:
+      enabled: true
+      endpoints:
+        - 192.168.90.100
+    kubeScheduler:
+      enabled: true
+      endpoints:
+        - 192.168.90.100
+    kubeEtcd:
+      enabled: true
+      endpoints:
+        - 192.168.90.100
+    kubeProxy:
+      enabled: false
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: [__meta_kubernetes_pod_node_name]
+              targetLabel: kubernetes_node
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - "persistentvolumeclaims=[*]"
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
     alertmanager:
       config:
         global:
@@ -97,49 +153,11 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    kube-state-metrics:
-      metricLabelsAllowlist:
-        - "persistentvolumeclaims=[*]"
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
-    grafana:
-      enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          multicluster:
-            etcd:
-              enabled: true
-    kubelet:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-          - action: replace
-            sourceLabels:
-              - node
-            targetLabel: instance
-    kubeApiServer:
-      enabled: true
-      endpoints:
-        - 192.168.90.100
-    kubeControllerManager:
-      enabled: true
-      endpoints:
-        - 192.168.90.100
-    kubeScheduler:
-      enabled: true
-      endpoints:
-        - 192.168.90.100
-    kubeProxy:
-      enabled: false
+    promertheusOperator:
+      thanosImage:
+        registry: quay.io
+        repository: thanos/thanos
+        tag: v0.41.0
     prometheus:
       route:
         main:
@@ -161,13 +179,9 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
-        thanos:
-          image: quay.io/thanos/thanos:v0.41.0
-          objectStorageConfig:
-            name: thanos-objstore-secret
-            key: objstore.yml
         retention: 2d
         retentionSize: 15GB
         storageSpec:
@@ -177,3 +191,16 @@ spec:
               resources:
                 requests:
                   storage: 20Gi
+        thanos:
+          objectStorageConfig:
+            existingSecret:
+              name: thanos-objectstore-secret
+              key: objstore.yml
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
