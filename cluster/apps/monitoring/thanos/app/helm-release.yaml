@@ -26,8 +26,8 @@ spec:
   values:
     objstoreConfig:
       create: false
-      name: thanos-objectstore-secret
-      key: objstore.yml
+      config:
+        insecure: true
     serviceMonitor:
       enabled: true
     additionalEndpoints:
@@ -96,24 +96,24 @@ spec:
     #  extraArgs: ["--index-cache.config=$(THANOS_CACHE_CONFIG)"]
     #  persistence: *persistence
     #  podAnnotations: *podAnnotations
-  #valuesFrom:
-  #  - targetPath: objstoreConfig.config.bucket
-  #    kind: ConfigMap
-  #    name: thanos-bucket-v1
-  #    valuesKey: BUCKET_NAME
-  #  - targetPath: objstoreConfig.config.endpoint
-  #    kind: ConfigMap
-  #    name: thanos-bucket-v1
-  #    valuesKey: BUCKET_HOST
-  #  - targetPath: objstoreConfig.config.region
-  #    kind: ConfigMap
-  #    name: thanos-bucket-v1
-  #    valuesKey: BUCKET_REGION
-  #  - targetPath: objstoreConfig.config.access_key
-  #    kind: Secret
-  #    name: thanos-bucket-v1
-  #    valuesKey: AWS_ACCESS_KEY_ID
-  #  - targetPath: objstoreConfig.config.secret_key
-  #    kind: Secret
-  #    name: thanos-bucket-v1
-  #    valuesKey: AWS_SECRET_ACCESS_KEY
+  valuesFrom:
+    - targetPath: objstoreConfig.config.bucket
+      kind: ConfigMap
+      name: thanos-bucket-v1
+      valuesKey: BUCKET_NAME
+    - targetPath: objstoreConfig.config.endpoint
+      kind: ConfigMap
+      name: thanos-bucket-v1
+      valuesKey: BUCKET_HOST
+    - targetPath: objstoreConfig.config.region
+      kind: ConfigMap
+      name: thanos-bucket-v1
+      valuesKey: BUCKET_REGION
+    - targetPath: objstoreConfig.config.access_key
+      kind: Secret
+      name: thanos-bucket-v1
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: objstoreConfig.config.secret_key
+      kind: Secret
+      name: thanos-bucket-v1
+      valuesKey: AWS_SECRET_ACCESS_KEY

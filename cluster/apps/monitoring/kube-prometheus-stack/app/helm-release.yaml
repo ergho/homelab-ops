@@ -194,8 +194,8 @@ spec:
         thanos:
           objectStorageConfig:
             existingSecret:
-              name: thanos-objectstore-secret
-              key: objstore.yml
+              name: thanos-objstore-config
+              key: config
     kubelet:
       enabled: true
       serviceMonitor:
