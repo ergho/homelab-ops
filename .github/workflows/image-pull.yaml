@@ -4,14 +4,15 @@ name: "Image Pull"
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  HOMEBREW_NO_ANALYTICS: "1"
+permissions:
+  contents: read
 
 jobs:
   filter:
@@ -26,87 +27,60 @@ jobs:
         with:
           patterns: cluster/**/*
   extract:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    if: >-
+      ${{
+        needs.filter.outputs.changed-files != '[]' &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      }}
     needs: filter
     name: Image Pull - Extract Images
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        branch: ["default", "pull"]
-      fail-fast: false
+    runs-on: ${{ github.event.repository.name }}-runner
     outputs:
-      default: ${{ steps.extract-images.outputs.default }}
-      pull: ${{ steps.extract-images.outputs.pull }}
+      images: ${{ steps.extract.outputs.images }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: "${{ matrix.branch == 'default' && github.event.repository.default_branch || '' }}"
-
-      - name: Gather Images
-        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Mise
+        uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
         with:
-          args: >-
-            get cluster
-            --all-namespaces
-            --path /github/workspace/cluster/flux/cluster
-            --enable-images
-            --only-images
-            --output json
-            --output-file images.json
-
+          cache: false
+          tool_versions: |
+            github:home-operations/flate 0.4.9
       - name: Extract Images
         id: extract
         run: |
-          echo "${{ matrix.branch }}=$(jq --compact-output '.' images.json)" >> $GITHUB_OUTPUT
-
-          echo '## Branch ${{ matrix.branch }} images' >> $GITHUB_STEP_SUMMARY
-          echo '```json' >> $GITHUB_STEP_SUMMARY
-          jq '.' images.json >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-  diff:
-    if: ${{ needs.extract.outputs.default != needs.extract.outputs.pull }}
-    needs: extract
-    name: Image Pull - Diff Images
-    runs-on: ubuntu-latest
-    outputs:
-      images: ${{ steps.diff.outputs.images }}
-    steps:
-      - name: Diff Images
-        id: diff
-        run: |
-          images=$(jq --compact-output --null-input \
-              --argjson f1 '${{ needs.extract.outputs.default }}' \
-              --argjson f2 '${{ needs.extract.outputs.pull }}' \
-              '$f2 - $f1' \
-          )
-          echo "images=${images}" >> $GITHUB_OUTPUT
-
-          echo '## New images to Pull' >> $GITHUB_STEP_SUMMARY
-          echo '```json' >> $GITHUB_STEP_SUMMARY
-          echo $images | jq >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
+          echo 'images<<EOF' >> $GITHUB_OUTPUT
+          flate diff images -p ./kubernetes/flux/cluster -o json >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
   pull:
-    if: ${{ needs.diff.outputs.images != '[]' }}
-    needs: diff
+    if: >-
+      ${{
+        needs.extract.outputs.images != '[]' &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      }}
+    needs: extract
     name: Image Pull - Pull Images
-    runs-on: "homelab-ops-runner"
+    runs-on: ${{ github.event.repository.name }}-runner
     strategy:
       matrix:
-        images: ${{ fromJSON(needs.diff.outputs.images) }}
+        image: ${{ fromJSON(needs.extract.outputs.images) }}
       max-parallel: 4
       fail-fast: false
     steps:
-      - name: Setup Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+      - name: Setup Mise
+        uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
+        with:
+          cache: false
+          tool_versions: |
+            talosctl latest
 
-      - name: Setup Workflow Tools
-        shell: bash
-        run: brew install siderolabs/tap/talosctl
-
-      - name: Pre-pull Image
-        run: talosctl -n $NODE_IP image pull ${{ matrix.images }}
+      - name: Pull Image
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: talosctl --nodes "$NODE" image pull "$IMAGE"
 
   success:
     if: ${{ !cancelled() }}

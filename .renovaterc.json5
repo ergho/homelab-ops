@@ -1,47 +1,146 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    'config:recommended',
-    'docker:enableMajor',
-    'replacements:k8s-registry-move',
-    ':automergeBranch',
-    ':disableRateLimiting',
-    ':dependencyDashboard',
-    ':semanticCommits',
-    ':skipStatusChecks',
-    ':timezone(Europe/Stockholm)',
-    'github>ergho/homelab-ops//.renovate/autoMerge.json5',
-    'github>ergho/homelab-ops//.renovate/commitMessage.json5',
-    'github>ergho/homelab-ops//.renovate/customManagers.json5',
-    'github>ergho/homelab-ops//.renovate/groups.json5',
-    'github>ergho/homelab-ops//.renovate/labels.json5',
-    'github>ergho/homelab-ops//.renovate/packageRules.json5',
-    'github>ergho/homelab-ops//.renovate/semanticCommits.json5',
+    "github>home-operations/renovate-presets#7.0.0",
+
+    ":timezone(Europe/Stockholm)",
+    //"github>ergho/homelab-ops//.renovate/autoMerge.json5",
+    //"github>ergho/homelab-ops//.renovate/commitMessage.json5",
+    //"github>ergho/homelab-ops//.renovate/customManagers.json5",
+    //"github>ergho/homelab-ops//.renovate/groups.json5",
+    //"github>ergho/homelab-ops//.renovate/labels.json5",
+    //"github>ergho/homelab-ops//.renovate/packageRules.json5",
+    //"github>ergho/homelab-ops//.renovate/semanticCommits.json5",
   ],
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
-  suppressNotifications: [
-    'prEditedNotification',
-    'prIgnoreNotification',
-  ],
+  lockFileMaintenance: {
+    enabled: true
+    schedule: ["before 3am on the first day of the month"],
+    commitMessageExtra: "({{manager}})"
+    additionalBranchPrefix: "({{manager}})-"
+  },
   ignorePaths: [
-    '**/*.sops.*',
-    '**/.archive/**',
-    '**/resources/**',
+    "**/*.sops.*",
+    "**/.archive/**",
+    "**/resources/**",
   ],
   flux: {
     managerFilePatterns: [
-      '/(^|/)cluster/.+\\.ya?ml$/',
+      "/(^|/)cluster/.+\\.ya?ml$/",
     ],
   },
-  'helm-values': {
+  "helm-values": {
     managerFilePatterns: [
-      '/(^|/)cluster/.+\\.ya?ml$/',
+      "/(^|/)cluster/.+\\.ya?ml$/",
     ],
   },
   kubernetes: {
     managerFilePatterns: [
-      '/(^|/)\\.taskfiles/.+\\.ya?ml$/',
-      '/(^|/)cluster/.+\\.ya?ml$/',
+      "/(^|/)\\.taskfiles/.+\\.ya?ml$/",
+      "/(^|/)cluster/.+\\.ya?ml$/",
     ],
   },
+
+  packageRules: [
+    //Auto-merge rules
+    {
+      description: "Auto-merge trusted OCI digests",
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["digest"],
+      matchPackageNames: ["/home-operations/"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+    },
+    {
+      description: "Auto-merge high-cadence OCI packages weekly",
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: ["/kube-prometheus-stack/"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: false,
+      schedule: ["before 6am on Monday"],
+    },
+    {
+      description: "Auto-merge GitHub Actions",
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "3 days",
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge trusted GitHub Actions",
+      matchManagers: ["github-actions"],
+      matchPackageNames: ["/^actions\\//", "/^renovatebot\\//"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "1 minute",
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge Renovate Presents",
+      matchManagers: ["renovate-config"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+    },
+    // Grouping rules
+    {
+      description: "Actions Runner Controller Group",
+      groupName: "actions-runner-controller",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Flux Operator Group",
+      groupName: "flux-operator",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Mise Tools Group",
+      matchManagers: ["mise"],
+      groupName: "mise tools",
+      groupSlug: "mise-tools",
+    },
+    {
+      description: "Rook-Ceph Group",
+      groupName: "rook-ceph",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    // Labeling rules
+    {
+      matchUpdateTypes: ["major"],
+      addLabels: ["type/major"],
+    },
+    {
+      matchUpdateTypes: ["minor"],
+      addLabels: ["type/minor"],
+    },
+    {
+      matchUpdateTypes: ["patch"],
+      addLabels: ["type/patch"],
+    },
+    {
+      matchUpdateTypes: ["digest"],
+      addLabels: ["type/digest"],
+    },
+  ],
 }
