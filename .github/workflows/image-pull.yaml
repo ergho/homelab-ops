@@ -53,7 +53,7 @@ jobs:
         id: extract
         run: |
           echo 'images<<EOF' >> $GITHUB_OUTPUT
-          flate diff images -p ./kubernetes/flux/cluster -o json >> $GITHUB_OUTPUT
+          flate diff images -p ./cluster/flux/cluster -o json >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   pull:
     if: >-

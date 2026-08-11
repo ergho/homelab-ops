@@ -14,6 +14,7 @@
     "**/*.sops.*",
     "**/.archive/**",
     "**/resources/**",
+    ".renovate/**",
   ],
   flux: {
     managerFilePatterns: [
