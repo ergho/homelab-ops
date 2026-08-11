@@ -15,8 +15,8 @@
   lockFileMaintenance: {
     enabled: true
     schedule: ["before 3am on the first day of the month"],
-    commitMessageExtra: "({{manager}})"
-    additionalBranchPrefix: "({{manager}})-"
+    commitMessageExtra: "({{manager}})",
+    additionalBranchPrefix: "({{manager}})-",
   },
   ignorePaths: [
     "**/*.sops.*",
