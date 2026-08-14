@@ -75,12 +75,12 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            talosctl latest
+            podman latest
 
       - name: Pull Image
         env:
           IMAGE: ${{ matrix.image }}
-        run: talosctl --nodes "$NODE" image pull "$IMAGE"
+        run: podman pull "$IMAGE"
 
   success:
     if: ${{ !cancelled() }}
