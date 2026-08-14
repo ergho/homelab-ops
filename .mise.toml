@@ -1,8 +1,0 @@
-[env]
-#file paths
-KUBECONFIG = '{{config_root}}/cluster/local/kubeconfig.newer'
-MINIJINJA_CONFIG_FILE='{{config_root}}/.minijinja.toml'
-
-#Directory paths
-ROOT_DIR = '{{config_root}}'
-KUBERNETES_DIR = '{{config_root}}/cluster'
