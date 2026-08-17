@@ -87,7 +87,7 @@ jobs:
       - name: Pull Image
         env:
           IMAGE: ${{ matrix.image }}
-        run: podman pull "$IMAGE"
+        run: crane manifest "$IMAGE"
 
   success:
     if: ${{ !cancelled() }}
