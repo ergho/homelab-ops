@@ -75,19 +75,12 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            podman latest
+            github:google/go-containerregistry latest
 
-      - name: Debug Podman
-        run: |
-          echo "PATH=$PATH"
-          ls -la /home/runner/.local/share/mise/installs/podman/latest
-          ls -la /home/runner/.local/share/mise/installs/podman/6.1.0
-          command -v podman || true
-          mise which podman || true
       - name: Pull Image
         env:
           IMAGE: ${{ matrix.image }}
-        run: crane manifest "$IMAGE"
+        run: mise exec -- crane manifest "$IMAGE"
 
   success:
     if: ${{ !cancelled() }}
