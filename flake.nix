@@ -34,6 +34,11 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              actionlint
+              oxfmt
+              zizmor
+              lefthook
+              mise
               talosctl
               kubectl
               fluxcd
