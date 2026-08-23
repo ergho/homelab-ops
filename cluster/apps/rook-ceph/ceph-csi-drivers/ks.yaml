@@ -14,12 +14,9 @@ spec:
     - name: rook-ceph
       namespace: rook-ceph
   path: ./cluster/apps/rook-ceph/ceph-csi-drivers/app
-  prune: false # never should be deleted
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 10m
+  interval: 1h

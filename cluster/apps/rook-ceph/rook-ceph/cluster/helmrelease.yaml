@@ -5,55 +5,56 @@ kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: rook-ceph-cluster
-      version: v1.20.6
-      sourceRef:
-        kind: HelmRepository
-        name: rook-ceph-charts
-        namespace: flux-system
-  maxHistory: 3
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+  chartRef:
+    kind: OCIRepository
+    name: rook-ceph-cluster
+  interval: 1h
+  timeout: 10m
   values:
-    monitoring:
-      enabled: true
-      createPrometheusRules: true
-    route:
-      dashboard:
-        host:
-          name: "rook.ergho.org"
-          path: /
-          pathType: PathPrefix
-        parentRefs:
-          - name: envoy-internal
-            namespace: networking
-    toolbox:
-      enabled: true
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      # EOF
     cephClusterSpec:
-      network:
-        provider: host
+      cephConfig:
+        mon:
+          mon_cluster_log_level: info
+      cleanupPolicy:
+        wipeDevicesFromOtherClusters: true
       crashCollector:
         disable: false
+      csi:
+        cephfs:
+          kernelMountOptions: ms_mode=prefer-crc
+        readAffinity:
+          enabled: false # https://github.com/ceph/ceph-csi/issues/5772
       dashboard:
         enabled: true
         urlPrefix: /
         ssl: false
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
+      mgr:
+        modules:
+          - name: pg_autoscaler
+            enabled: true
+      network:
+        provider: host
+      resources:
+        osd:
+          limits:
+            memory: 8Gi # Required for bootstrap
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+          csi:
+            keyType: aes # aes256k requires kernel 7.0+
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -69,6 +70,20 @@ spec:
           - name: k8worker-3
             devices:
               - name: "/dev/disk/by-id/nvme-KINGSTON_SKC3000S1024G_50026B7685F93BBA"
+    monitoring:
+      enabled: true
+      createPrometheusRules: true
+    toolbox:
+      enabled: true
+    route:
+      dashboard:
+        host:
+          name: "rook.ergho.org"
+          path: /
+          pathType: PathPrefix
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -78,9 +93,10 @@ spec:
         storageClass:
           enabled: true
           name: ceph-block
-          isDefault: true
-          reclaimPolicy: Delete
           allowVolumeExpansion: true
+          isDefault: true
+          mountOptions:
+            - discard
           parameters:
             imageFormat: "2"
             imageFeatures: layering
@@ -91,11 +107,13 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
+          reclaimPolicy: Delete
+          volumeBindingMode: Immediate
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-blockpool
-      isDefault: false
       deletionPolicy: Delete
+      isDefault: true
     cephFileSystems: []
       #- name: ceph-filesystem
       #  spec:
