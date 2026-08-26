@@ -1,36 +1,24 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: [
-    "github>home-operations/renovate-presets#8.1.0",
-    ":timezone(Europe/Stockholm)",
-  ],
+  extends: ["github>home-operations/renovate-presets#8.1.0", ":timezone(Europe/Stockholm)"],
   lockFileMaintenance: {
     enabled: true,
     schedule: ["before 3am on the first day of the month"],
     commitMessageExtra: "({{manager}})",
     additionalBranchPrefix: "({{manager}})-",
   },
-  ignorePaths: [
-    "**/*.sops.*",
-    "**/.archive/**",
-    "**/resources/**",
-    ".renovate/**",
-  ],
+  ignorePaths: ["**/*.sops.*", "**/.archive/**", "**/resources/**", ".renovate/**"],
   flux: {
-    managerFilePatterns: [
-      "/(^|/)cluster/.+\\.ya?ml$/",
-    ],
+    managerFilePatterns: ["/(^|/)cluster/.+\\.ya?ml$/"],
   },
   "helm-values": {
-    managerFilePatterns: [
-      "/(^|/)cluster/.+\\.ya?ml$/",
-    ],
+    managerFilePatterns: ["/(^|/)cluster/.+\\.ya?ml$/"],
   },
   kubernetes: {
-    managerFilePatterns: [
-      "/(^|/)\\.taskfiles/.+\\.ya?ml$/",
-      "/(^|/)cluster/.+\\.ya?ml$/",
-    ],
+    managerFilePatterns: ["/(^|/)\\.taskfiles/.+\\.ya?ml$/", "/(^|/)cluster/.+\\.ya?ml$/"],
+  },
+  nix: {
+    enabled: true,
   },
 
   packageRules: [
