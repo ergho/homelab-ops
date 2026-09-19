@@ -33,7 +33,6 @@ spec:
     extraArgs:
       - --pihole-server=https://dns.ergho.org
       - --pihole-tls-skip-verify
-      - --pihole-api-version=6
     policy: upsert-only
     sources: ["service", "gateway-httproute"]
     registry: noop
