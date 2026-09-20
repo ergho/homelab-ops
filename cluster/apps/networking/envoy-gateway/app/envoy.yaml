@@ -51,7 +51,7 @@ kind: Gateway
 metadata:
   name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.ergho.org
+    external-dns.kubernetes.io/target: &hostname external.ergho.org
 spec:
   gatewayClassName: envoy
   addresses:
@@ -59,7 +59,7 @@ spec:
       value: 192.168.100.39
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
   listeners:
     - name: http
       protocol: HTTP
@@ -85,7 +85,7 @@ kind: Gateway
 metadata:
   name: envoy-internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.ergho.org
+    external-dns.kubernetes.io/target: &hostname internal.ergho.org
 spec:
   gatewayClassName: envoy
   addresses:
@@ -93,7 +93,7 @@ spec:
       value: 192.168.100.30
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
   listeners:
     - name: http
       protocol: HTTP
