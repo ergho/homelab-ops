@@ -45,7 +45,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 5.0.0.2608@sha256:6c9d5f5e005ade94cdaa2a9e454f66a53e159c3b0950260484fd88c5ee4eea1a
+              tag: 5.0.0.2635@sha256:d40f6e5b384eb9489944ea939b20a6903dadffedc26624aaa322ca712a3c8260
               #tag: 4.0.18.2978@sha256:2cd77fb3d81909a734d61bb8f71462044cb9d2f187e626a28a05a5c4e4be8fd2
             env:
               SONARR__APP__INSTANCENAME: Sonarr-uhd
