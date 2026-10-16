@@ -47,43 +47,43 @@ url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/3849249
 provenance = "github-attestations"
 
 [[tools."github:mitsuhiko/minijinja"]]
-version = "2.24.0"
+version = "3.0.1"
 backend = "github:mitsuhiko/minijinja"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-arm64"]
-checksum = "sha256:b60f741e4101c0701a22a1115b2295fd8e4ae13cdffc0ebf4d1821d876e93347"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-aarch64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868827"
+checksum = "sha256:445bf828667b1ab083cc61383c71897c6c62435bdff797c30d0ca1d4c63f1e25"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229133"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-arm64-musl"]
-checksum = "sha256:5fd4d0ca9a37973564a9ba3d4444466dbca46c4737840b772ba64729cac4277b"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-aarch64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868829"
+checksum = "sha256:c661dce36c03ec45e36fb781d5edd95fea43556fd99cbad146f3a9a2a502329a"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-aarch64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229135"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-x64"]
-checksum = "sha256:04651ea786eee8e6d5311caf96e01874d984ff72f3d3d91c2195851f0b414580"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868860"
+checksum = "sha256:5b2eb07b18d5804e50b4e83ebdaae9b70dda37f4a2d058987881396e6c91c8b6"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229276"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-x64-musl"]
-checksum = "sha256:40a7b36eb04075d54f0e079cbf632d2fcf9cc32721539f6b799341632d16f50e"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868866"
+checksum = "sha256:15a34e7c71772d0db06c060c1c410bfe788448a28209bc64559f396108772382"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229296"
 
 [tools."github:mitsuhiko/minijinja"."platforms.macos-arm64"]
-checksum = "sha256:a0f1525bcac485a80313cec7e835ed03335bd55bc14dc5cf070c7eb9789d9905"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-aarch64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868818"
+checksum = "sha256:a171668f90ff02f6b9234437eb96b1588357e3fd522135cd79c36681282c1f4c"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229103"
 
 [tools."github:mitsuhiko/minijinja"."platforms.macos-x64"]
-checksum = "sha256:283d3e54ed52ff0f97bc4e8b736fa67d5f1bc55b47457ffc8e9310a5fe555997"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-x86_64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868854"
+checksum = "sha256:30fecfdee3c2548fba8b6cb37174698e6c34371406eb778d30173ab30ea3c304"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-x86_64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229232"
 
 [tools."github:mitsuhiko/minijinja"."platforms.windows-x64"]
-checksum = "sha256:5fca9cd605ec29b80722b7c8c4b4a8cb8a713117c147d4213aa04ee6ad89af2c"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/2.24.0/minijinja-cli-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/511868857"
+checksum = "sha256:fb50e280eb2356672319e092aee51f28b870e9feddc145ef56abcbeef22e5fd2"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.1/minijinja-cli-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/644229249"
 
 [[tools.go-containerregistry]]
 version = "0.22.1"
@@ -288,7 +288,7 @@ checksum = "sha256:9fef7eca6743a6b910989cd8e78712376b394fcb9b6e1e9c44a0799a287f9
 url = "https://nodejs.org/dist/v26.10.0/node-v26.10.0-win-x64.zip"
 
 [[tools.oxfmt]]
-version = "0.71.0"
+version = "0.73.0"
 backend = "npm:oxfmt"
 
 [[tools.podman]]
