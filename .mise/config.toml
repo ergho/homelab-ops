@@ -10,7 +10,7 @@ postinstall = "lefthook install"
 
 [tools]
 actionlint = "1.7.12"
-"github:mitsuhiko/minijinja" = "3.0.3"
+"github:mitsuhiko/minijinja" = "3.0.4"
 go-containerregistry = "0.22.1"
 jq = "1.8.2"
 just = "1.59.0"
